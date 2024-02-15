@@ -1,0 +1,331 @@
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+      name:  <unnamed>
+       log:  D:\Travail\Dropbox\mining_conflict\Data_Code_BCRT_AER\results\Table_4.log
+  log type:  text
+ opened on:  13 Dec 2016, 11:06:11
+
+. 
+. use "$Output_data\BCRT_actor_ethnic", clear
+
+. 
+. egen actor_country      = group(actor iso_1)
+
+. egen it                         = group(iso_1 year)
+
+. egen actor_group        = group(actor)
+
+. 
+. gen acled_exclu_ethnic = nb_acled_exclu_ethnic>0
+
+. 
+. g interact_t0           = price_ethnic*mines_t0 
+
+. g interact_t0_ni        = price_ethnic_ni*mines_t0_ni 
+
+. g interact_t0_nh        = price_ethnic_nh*mines_t0_nh
+
+. 
+. label var price_ethnic          "ln price main mineral (homeland in country)"
+
+. label var interact_t0           "ln price main mineral (homeland in country) $\times$ \# mines"
+
+. label var price_ethnic_ni       "ln price main mineral (entire homeland)"
+
+. label var interact_t0_ni        "ln price main mineral (entire  homeland) $\times$ \# mines"
+
+. label var price_ethnic_nh       "ln price main mineral (in country outside homeland)"
+
+. label var interact_t0_nh        "ln price main mineral (in country outside homeland) $\times$ \# mines"
+
+. 
+. * Baseline
+. eststo: reghdfe acled                            price_ethnic mines_t0 interact_t0 if sd_mine_ethnic==0, absorb(actor_country year) vce(cluster actor_group)   
+(converged in 3 iterations)
+note: mines_t0 omitted because of collinearity
+
+HDFE Linear regression                            Number of obs   =      2,352
+Absorbing 2 HDFE groups                           F(   2,    104) =    1093.04
+Statistics robust to heteroskedasticity           Prob > F        =     0.0000
+                                                  R-squared       =     0.2463
+                                                  Adj R-squared   =     0.1831
+                                                  Within R-sq.    =     0.0017
+Number of clusters (actor_group) =        105     Root MSE        =     0.3715
+
+                          (Std. Err. adjusted for 105 clusters in actor_group)
+------------------------------------------------------------------------------
+             |               Robust
+       acled |      Coef.   Std. Err.      t    P>|t|     [95% Conf. Interval]
+-------------+----------------------------------------------------------------
+price_ethnic |  -.7168008   .0574186   -12.48   0.000    -.8306641   -.6029375
+    mines_t0 |          0  (omitted)
+ interact_t0 |   .5622103   .0122601    45.86   0.000     .5378981    .5865224
+------------------------------------------------------------------------------
+
+Absorbed degrees of freedom:
+----------------------------------------------------------------+
+  Absorbed FE |  Num. Coefs.  =   Categories  -   Redundant     | 
+--------------+-------------------------------------------------|
+actor_country |            0             168            168 *   | 
+         year |           13              14              1     | 
+----------------------------------------------------------------+
+* = fixed effect nested within cluster; treated as redundant for DoF computation
+(est1 stored)
+
+. eststo: reghdfe acled                            price_ethnic mines_t0 interact_t0 if sd_mine_ethnic==0, absorb(actor_country it) vce(cluster actor_group)   
+(dropped 126 singleton observations)
+(converged in 3 iterations)
+note: mines_t0 omitted because of collinearity
+
+HDFE Linear regression                            Number of obs   =      2,226
+Absorbing 2 HDFE groups                           F(   2,    101) =       2.92
+Statistics robust to heteroskedasticity           Prob > F        =     0.0585
+                                                  R-squared       =     0.3603
+                                                  Adj R-squared   =     0.1968
+                                                  Within R-sq.    =     0.0005
+Number of clusters (actor_group) =        102     Root MSE        =     0.3695
+
+                          (Std. Err. adjusted for 102 clusters in actor_group)
+------------------------------------------------------------------------------
+             |               Robust
+       acled |      Coef.   Std. Err.      t    P>|t|     [95% Conf. Interval]
+-------------+----------------------------------------------------------------
+price_ethnic |  -.4011204   .1952163    -2.05   0.042    -.7883771   -.0138636
+    mines_t0 |          0  (omitted)
+ interact_t0 |   .2841153   .1189129     2.39   0.019      .048224    .5200065
+------------------------------------------------------------------------------
+
+Absorbed degrees of freedom:
+----------------------------------------------------------------+
+  Absorbed FE |  Num. Coefs.  =   Categories  -   Redundant     | 
+--------------+-------------------------------------------------|
+actor_country |            0             159            159 *   | 
+           it |          293             294              1     | 
+----------------------------------------------------------------+
+* = fixed effect nested within cluster; treated as redundant for DoF computation
+(est2 stored)
+
+. * Excluding homeland
+. eststo: reghdfe acled_exclu_ethnic   price_ethnic mines_t0 interact_t0 if sd_mine_ethnic==0, absorb(actor_country year) vce(cluster actor_group)   
+(converged in 3 iterations)
+note: mines_t0 omitted because of collinearity
+
+HDFE Linear regression                            Number of obs   =      2,352
+Absorbing 2 HDFE groups                           F(   2,    104) =      45.92
+Statistics robust to heteroskedasticity           Prob > F        =     0.0000
+                                                  R-squared       =     0.2364
+                                                  Adj R-squared   =     0.1723
+                                                  Within R-sq.    =     0.0013
+Number of clusters (actor_group) =        105     Root MSE        =     0.3082
+
+                          (Std. Err. adjusted for 105 clusters in actor_group)
+------------------------------------------------------------------------------
+             |               Robust
+acled_excl~c |      Coef.   Std. Err.      t    P>|t|     [95% Conf. Interval]
+-------------+----------------------------------------------------------------
+price_ethnic |  -.4171553    .188076    -2.22   0.029    -.7901171   -.0441936
+    mines_t0 |          0  (omitted)
+ interact_t0 |   .3743936    .091013     4.11   0.000     .1939113    .5548759
+------------------------------------------------------------------------------
+
+Absorbed degrees of freedom:
+----------------------------------------------------------------+
+  Absorbed FE |  Num. Coefs.  =   Categories  -   Redundant     | 
+--------------+-------------------------------------------------|
+actor_country |            0             168            168 *   | 
+         year |           13              14              1     | 
+----------------------------------------------------------------+
+* = fixed effect nested within cluster; treated as redundant for DoF computation
+(est3 stored)
+
+. eststo: reghdfe acled_exclu_ethnic   price_ethnic mines_t0 interact_t0 if sd_mine_ethnic==0, absorb(actor_country it) vce(cluster actor_group)   
+(dropped 126 singleton observations)
+(converged in 3 iterations)
+note: mines_t0 omitted because of collinearity
+
+HDFE Linear regression                            Number of obs   =      2,226
+Absorbing 2 HDFE groups                           F(   2,    101) =       1.06
+Statistics robust to heteroskedasticity           Prob > F        =     0.3507
+                                                  R-squared       =     0.3658
+                                                  Adj R-squared   =     0.2036
+                                                  Within R-sq.    =     0.0002
+Number of clusters (actor_group) =        102     Root MSE        =     0.3026
+
+                          (Std. Err. adjusted for 102 clusters in actor_group)
+------------------------------------------------------------------------------
+             |               Robust
+acled_excl~c |      Coef.   Std. Err.      t    P>|t|     [95% Conf. Interval]
+-------------+----------------------------------------------------------------
+price_ethnic |  -.1725133   .1947708    -0.89   0.378    -.5588862    .2138597
+    mines_t0 |          0  (omitted)
+ interact_t0 |   .1410401   .1114837     1.27   0.209    -.0801136    .3621938
+------------------------------------------------------------------------------
+
+Absorbed degrees of freedom:
+----------------------------------------------------------------+
+  Absorbed FE |  Num. Coefs.  =   Categories  -   Redundant     | 
+--------------+-------------------------------------------------|
+actor_country |            0             159            159 *   | 
+           it |          293             294              1     | 
+----------------------------------------------------------------+
+* = fixed effect nested within cluster; treated as redundant for DoF computation
+(est4 stored)
+
+. * Splitting the effect
+. eststo: reghdfe acled                            price_ethnic mines_t0 interact_t0 price_ethnic_ni mines_t0_ni interact_t0_ni price_ethnic_nh mines_t0_nh interact_t0_nh if sd_mine_ethnic==0, absorb(actor_country year) vce(cluster actor_group)   
+(converged in 3 iterations)
+note: mines_t0 omitted because of collinearity
+note: mines_t0_ni omitted because of collinearity
+note: mines_t0_nh omitted because of collinearity
+
+HDFE Linear regression                            Number of obs   =      2,352
+Absorbing 2 HDFE groups                           F(   6,    104) =      25.57
+Statistics robust to heteroskedasticity           Prob > F        =     0.0000
+                                                  R-squared       =     0.2542
+                                                  Adj R-squared   =     0.1902
+                                                  Within R-sq.    =     0.0121
+Number of clusters (actor_group) =        105     Root MSE        =     0.3699
+
+                             (Std. Err. adjusted for 105 clusters in actor_group)
+---------------------------------------------------------------------------------
+                |               Robust
+          acled |      Coef.   Std. Err.      t    P>|t|     [95% Conf. Interval]
+----------------+----------------------------------------------------------------
+   price_ethnic |  -1.407579   .3409822    -4.13   0.000     -2.08376   -.7313989
+       mines_t0 |          0  (omitted)
+    interact_t0 |   .9789781   .1672053     5.85   0.000     .6474036    1.310553
+price_ethnic_ni |   .0995914   .1168962     0.85   0.396    -.1322183     .331401
+    mines_t0_ni |          0  (omitted)
+ interact_t0_ni |  -.1073566   .0473837    -2.27   0.026    -.2013202   -.0133929
+price_ethnic_nh |   .1008383   .0882959     1.14   0.256    -.0742559    .2759324
+    mines_t0_nh |          0  (omitted)
+ interact_t0_nh |   .0344879   .0196487     1.76   0.082    -.0044762    .0734519
+---------------------------------------------------------------------------------
+
+Absorbed degrees of freedom:
+------------------------------------------------------------------+
+    Absorbed FE |  Num. Coefs.  =   Categories  -   Redundant     | 
+----------------+-------------------------------------------------|
+  actor_country |            0             168            168 *   | 
+           year |           13              14              1     | 
+------------------------------------------------------------------+
+* = fixed effect nested within cluster; treated as redundant for DoF computation
+(est5 stored)
+
+. eststo: reghdfe acled_exclu_ethnic   price_ethnic mines_t0 interact_t0 price_ethnic_ni mines_t0_ni interact_t0_ni price_ethnic_nh mines_t0_nh interact_t0_nh if sd_mine_ethnic==0, absorb(actor_country year) vce(cluster actor_group)   
+(converged in 3 iterations)
+note: mines_t0 omitted because of collinearity
+note: mines_t0_ni omitted because of collinearity
+note: mines_t0_nh omitted because of collinearity
+
+HDFE Linear regression                            Number of obs   =      2,352
+Absorbing 2 HDFE groups                           F(   6,    104) =      33.14
+Statistics robust to heteroskedasticity           Prob > F        =     0.0000
+                                                  R-squared       =     0.2445
+                                                  Adj R-squared   =     0.1796
+                                                  Within R-sq.    =     0.0119
+Number of clusters (actor_group) =        105     Root MSE        =     0.3069
+
+                             (Std. Err. adjusted for 105 clusters in actor_group)
+---------------------------------------------------------------------------------
+                |               Robust
+acled_exclu_e~c |      Coef.   Std. Err.      t    P>|t|     [95% Conf. Interval]
+----------------+----------------------------------------------------------------
+   price_ethnic |   -.941809   .4284282    -2.20   0.030    -1.791398   -.0922198
+       mines_t0 |          0  (omitted)
+    interact_t0 |   .7165691   .2120212     3.38   0.001     .2961231    1.137015
+price_ethnic_ni |   .0444435   .0693498     0.64   0.523    -.0930798    .1819669
+    mines_t0_ni |          0  (omitted)
+ interact_t0_ni |  -.0957882    .034304    -2.79   0.006    -.1638144    -.027762
+price_ethnic_nh |   .0621064   .0689636     0.90   0.370    -.0746511    .1988639
+    mines_t0_nh |          0  (omitted)
+ interact_t0_nh |   .0308806   .0197686     1.56   0.121    -.0083213    .0700825
+---------------------------------------------------------------------------------
+
+Absorbed degrees of freedom:
+------------------------------------------------------------------+
+    Absorbed FE |  Num. Coefs.  =   Categories  -   Redundant     | 
+----------------+-------------------------------------------------|
+  actor_country |            0             168            168 *   | 
+           year |           13              14              1     | 
+------------------------------------------------------------------+
+* = fixed effect nested within cluster; treated as redundant for DoF computation
+(est6 stored)
+
+. 
+. set linesize 250
+
+. esttab, mtitles drop(mines*) b(%5.3f) se(%5.3f) compress r2 starlevels(c 0.1 b 0.05 a 0.01)  se 
+
+----------------------------------------------------------------------------
+                 (1)        (2)        (3)        (4)        (5)        (6) 
+                est1       est2       est3       est4       est5       est6 
+----------------------------------------------------------------------------
+price_et~c    -0.717a    -0.401b    -0.417b    -0.173     -1.408a    -0.942b
+             (0.057)    (0.195)    (0.188)    (0.195)    (0.341)    (0.428) 
+
+interact~0     0.562a     0.284b     0.374a     0.141      0.979a     0.717a
+             (0.012)    (0.119)    (0.091)    (0.111)    (0.167)    (0.212) 
+
+price_et~i                                                 0.100      0.044 
+                                                         (0.117)    (0.069) 
+
+interact~i                                                -0.107b    -0.096a
+                                                         (0.047)    (0.034) 
+
+price_et~h                                                 0.101      0.062 
+                                                         (0.088)    (0.069) 
+
+interact~h                                                 0.034c     0.031 
+                                                         (0.020)    (0.020) 
+----------------------------------------------------------------------------
+N               2352       2226       2352       2226       2352       2352 
+R-sq           0.246      0.360      0.236      0.366      0.254      0.244 
+----------------------------------------------------------------------------
+Standard errors in parentheses
+c p<0.1, b p<0.05, a p<0.01
+
+. esttab, mtitles drop(mines*) b(%5.3f) se(%5.3f) r2  starlevels({$^c$} 0.1 {$^b$} 0.05 {$^a$} 0.01) se tex label  title(Table 4) 
+
+\begin{table}[htbp]\centering
+\def\sym#1{\ifmmode^{#1}\else\(^{#1}\)\fi}
+\caption{Table 4}
+\begin{tabular}{l*{6}{c}}
+\hline\hline
+                    &\multicolumn{1}{c}{(1)}&\multicolumn{1}{c}{(2)}&\multicolumn{1}{c}{(3)}&\multicolumn{1}{c}{(4)}&\multicolumn{1}{c}{(5)}&\multicolumn{1}{c}{(6)}\\
+                    &\multicolumn{1}{c}{est1}&\multicolumn{1}{c}{est2}&\multicolumn{1}{c}{est3}&\multicolumn{1}{c}{est4}&\multicolumn{1}{c}{est5}&\multicolumn{1}{c}{est6}\\
+\hline
+ln price main mineral (homeland in country)&      -0.717{$^a$}&      -0.401{$^b$}&      -0.417{$^b$}&      -0.173      &      -1.408{$^a$}&      -0.942{$^b$}\\
+                    &     (0.057)      &     (0.195)      &     (0.188)      &     (0.195)      &     (0.341)      &     (0.428)      \\
+[1em]
+ln price main mineral (homeland in country) $\times$ \# mines&       0.562{$^a$}&       0.284{$^b$}&       0.374{$^a$}&       0.141      &       0.979{$^a$}&       0.717{$^a$}\\
+                    &     (0.012)      &     (0.119)      &     (0.091)      &     (0.111)      &     (0.167)      &     (0.212)      \\
+[1em]
+ln price main mineral (entire homeland)&                  &                  &                  &                  &       0.100      &       0.044      \\
+                    &                  &                  &                  &                  &     (0.117)      &     (0.069)      \\
+[1em]
+ln price main mineral (entire  homeland) $\times$ \# mines&                  &                  &                  &                  &      -0.107{$^b$}&      -0.096{$^a$}\\
+                    &                  &                  &                  &                  &     (0.047)      &     (0.034)      \\
+[1em]
+ln price main mineral (in country outside homeland)&                  &                  &                  &                  &       0.101      &       0.062      \\
+                    &                  &                  &                  &                  &     (0.088)      &     (0.069)      \\
+[1em]
+ln price main mineral (in country outside homeland) $\times$ \# mines&                  &                  &                  &                  &       0.034{$^c$}&       0.031      \\
+                    &                  &                  &                  &                  &     (0.020)      &     (0.020)      \\
+\hline
+Observations        &        2352      &        2226      &        2352      &        2226      &        2352      &        2352      \\
+\(R^{2}\)           &       0.246      &       0.360      &       0.236      &       0.366      &       0.254      &       0.244      \\
+\hline\hline
+\multicolumn{7}{l}{\footnotesize Standard errors in parentheses}\\
+\multicolumn{7}{l}{\footnotesize {$^c$} p<0.1, {$^b$} p<0.05, {$^a$} p<0.01}\\
+\end{tabular}
+\end{table}
+
+. eststo clear
+
+. 
+. log close
+      name:  <unnamed>
+       log:  D:\Travail\Dropbox\mining_conflict\Data_Code_BCRT_AER\results\Table_4.log
+  log type:  text
+ closed on:  13 Dec 2016, 11:06:12
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------

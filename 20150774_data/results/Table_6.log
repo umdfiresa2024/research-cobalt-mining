@@ -1,0 +1,483 @@
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+      name:  <unnamed>
+       log:  D:\Travail\Dropbox\mining_conflict\Data_Code_BCRT_AER\results\Table_6.log
+  log type:  text
+ opened on:  13 Dec 2016, 12:48:22
+
+. 
+. use "$Output_data\BCRT_baseline", clear
+
+. 
+. g nb_acled_battle = log(nb_event1+nb_event2+nb_event3+1)
+
+. g acled_battle    = (nb_acled_battle>0)
+
+. 
+. drop if mainmineral == "diamond" | mainmineral == "tantalum" 
+(588 observations deleted)
+
+. 
+. drop for_company col_company gov_company other_company major_company
+
+. 
+. foreach var in for_company col_company gov_company other_company major_company{
+  2.         rename `var'_s `var'
+  3. }
+
+. sum for_company col_company gov_company other_company major_company, d
+
+             Presence of foreign company (share)
+-------------------------------------------------------------
+      Percentiles      Smallest
+ 1%            0              0
+ 5%            0              0
+10%            0              0       Obs               2,450
+25%            0              0       Sum of Wgt.       2,450
+
+50%            1                      Mean           .5744338
+                        Largest       Std. Dev.      .4672496
+75%            1              1
+90%            1              1       Variance       .2183222
+95%            1              1       Skewness      -.2917212
+99%            1              1       Kurtosis        1.19511
+
+       Presence of foreign company, colonizer country
+                           (share)
+-------------------------------------------------------------
+      Percentiles      Smallest
+ 1%            0              0
+ 5%            0              0
+10%            0              0       Obs               2,730
+25%            0              0       Sum of Wgt.       2,730
+
+50%            0                      Mean           .1172805
+                        Largest       Std. Dev.      .2974773
+75%            0              1
+90%           .5              1       Variance       .0884927
+95%            1              1       Skewness         2.4266
+99%            1              1       Kurtosis       7.259676
+
+        Presence of government owned company (share)
+-------------------------------------------------------------
+      Percentiles      Smallest
+ 1%            0              0
+ 5%            0              0
+10%            0              0       Obs               2,730
+25%            0              0       Sum of Wgt.       2,730
+
+50%            0                      Mean           .1107948
+                        Largest       Std. Dev.      .3031463
+75%            0              1
+90%          .75              1       Variance       .0918977
+95%            1              1       Skewness       2.491908
+99%            1              1       Kurtosis       7.366127
+
+        Presence of domestic private company (share)
+-------------------------------------------------------------
+      Percentiles      Smallest
+ 1%            0              0
+ 5%            0              0
+10%            0              0       Obs               2,730
+25%            0              0       Sum of Wgt.       2,730
+
+50%            0                      Mean           .2577465
+                        Largest       Std. Dev.       .405152
+75%           .5              1
+90%            1              1       Variance       .1641481
+95%            1              1       Skewness       1.075512
+99%            1              1       Kurtosis       2.341255
+
+              Presence of large company (share)
+-------------------------------------------------------------
+      Percentiles      Smallest
+ 1%            0              0
+ 5%            0              0
+10%            0              0       Obs               2,730
+25%            0              0       Sum of Wgt.       2,730
+
+50%            0                      Mean           .3795523
+                        Largest       Std. Dev.      .4566411
+75%            1              1
+90%            1              1       Variance       .2085211
+95%            1              1       Skewness       .4948149
+99%            1              1       Kurtosis       1.367977
+
+. 
+. g for_company2          = for_company-col_company /*foreign and colonizer*/
+(141,652 missing values generated)
+
+. g tot_share             = gov_company + for_company+other_company
+(141,652 missing values generated)
+
+. 
+. keep if tot_share       == .  | tot_share == 1
+(140 observations deleted)
+
+. 
+. tab for_company
+
+Presence of |
+    foreign |
+    company |
+    (share) |      Freq.     Percent        Cum.
+------------+-----------------------------------
+          0 |        770       33.33       33.33
+   .1428571 |         14        0.61       33.94
+         .2 |         14        0.61       34.55
+   .3333333 |         56        2.42       36.97
+         .4 |         14        0.61       37.58
+         .5 |        112        4.85       42.42
+   .5555556 |         14        0.61       43.03
+   .6666667 |         28        1.21       44.24
+   .8181818 |         14        0.61       44.85
+          1 |      1,274       55.15      100.00
+------------+-----------------------------------
+      Total |      2,310      100.00
+
+. 
+. foreach var in for_company other_company gov_company major_company{
+  2.         replace `var' = 0 if mines == 0 
+  3.         g triple_`var'   = main_lprice_mines*`var'
+  4. }
+(141,988 real changes made)
+(447 missing values generated)
+(141,467 real changes made)
+(331 missing values generated)
+(141,386 real changes made)
+(331 missing values generated)
+(141,568 real changes made)
+(331 missing values generated)
+
+. qui reg acled     main_lprice_mines   for_company other_company gov_company  if sd_mines == 0 
+
+. keep if e(sample)
+(1,890 observations deleted)
+
+. 
+. /*columns 1-2: foreign/domestic private/domestic public*/
+. eststo: my_reg2hdfespatial acled                triple_for_company triple_other_company triple_gov_company      if sd_mines == 0 , timevar(it) panelvar(cell) lat(latitude) lon(longitude) distcutoff(500) lagcutoff(100000) 
+ 
+OLS REGRESSION
+ 
+SE CORRECTED FOR CROSS-SECTIONAL SPATIAL DEPENDANCE
+             AND PANEL-SPECIFIC SERIAL CORRELATION
+ 
+DEPENDANT VARIABLE: acled
+INDEPENDANT VARIABLES:  triple_for_company triple_other_company triple_gov_company
+ 
+SPATIAL CORRELATION KERNAL CUTOFF: 500 KM
+(NOTE: LINEAR BARTLETT WINDOW USED FOR SPATIAL KERNAL)
+SERIAL CORRELATION KERNAL CUTOFF: 100000 PERIODS
+--------------------------------------------------------------------------------------
+               acled |      Coef.   Std. Err.      t    P>|t|     [95% Conf. Interval]
+---------------------+----------------------------------------------------------------
+  triple_for_company |   .1005057   .0378527     2.66   0.008     .0263152    .1746963
+triple_other_company |    .035345   .0298234     1.19   0.236    -.0231084    .0937983
+  triple_gov_company |   .0270377   .0365766     0.74   0.460    -.0446517     .098727
+--------------------------------------------------------------------------------------
+D:\Travail\Dropbox\mining_conflict
+(est1 stored)
+
+. eststo: my_reg2hdfespatial acled_battle         triple_for_company triple_other_company triple_gov_company  if sd_mines == 0 , timevar(it) panelvar(cell) lat(latitude) lon(longitude) distcutoff(500) lagcutoff(100000) 
+ 
+OLS REGRESSION
+ 
+SE CORRECTED FOR CROSS-SECTIONAL SPATIAL DEPENDANCE
+             AND PANEL-SPECIFIC SERIAL CORRELATION
+ 
+DEPENDANT VARIABLE: acled_battle
+INDEPENDANT VARIABLES:  triple_for_company triple_other_company triple_gov_company
+ 
+SPATIAL CORRELATION KERNAL CUTOFF: 500 KM
+(NOTE: LINEAR BARTLETT WINDOW USED FOR SPATIAL KERNAL)
+SERIAL CORRELATION KERNAL CUTOFF: 100000 PERIODS
+--------------------------------------------------------------------------------------
+        acled_battle |      Coef.   Std. Err.      t    P>|t|     [95% Conf. Interval]
+---------------------+----------------------------------------------------------------
+  triple_for_company |   .0298367   .0159349     1.87   0.061    -.0013954    .0610687
+triple_other_company |  -.0016034   .0057563    -0.28   0.781    -.0128856    .0096788
+  triple_gov_company |  -.0060739   .0114139    -0.53   0.595    -.0284449    .0162971
+--------------------------------------------------------------------------------------
+D:\Travail\Dropbox\mining_conflict
+(est2 stored)
+
+.         
+. drop triple*
+
+. 
+. foreach var in gov_company col_company for_company2 other_company{
+  2.         replace `var' = 0 if mines == 0
+  3.         g triple_`var'   = main_lprice_mines*`var'
+  4. }
+(0 real changes made)
+(141,134 real changes made)
+(141,232 real changes made)
+(0 real changes made)
+
+. 
+. /*columns 3-4: splitting foreign companies in colonizers vs non colonizers*/            
+. eststo: my_reg2hdfespatial acled             triple_*                                                                                                   if sd_mines == 0, timevar(it) panelvar(cell) lat(latitude) lon(longitude) distcutoff(500) lagcut
+> off(100000) 
+ 
+OLS REGRESSION
+ 
+SE CORRECTED FOR CROSS-SECTIONAL SPATIAL DEPENDANCE
+             AND PANEL-SPECIFIC SERIAL CORRELATION
+ 
+DEPENDANT VARIABLE: acled
+INDEPENDANT VARIABLES:  triple_gov_company triple_col_company triple_for_company2 triple_other_company
+ 
+SPATIAL CORRELATION KERNAL CUTOFF: 500 KM
+(NOTE: LINEAR BARTLETT WINDOW USED FOR SPATIAL KERNAL)
+SERIAL CORRELATION KERNAL CUTOFF: 100000 PERIODS
+--------------------------------------------------------------------------------------
+               acled |      Coef.   Std. Err.      t    P>|t|     [95% Conf. Interval]
+---------------------+----------------------------------------------------------------
+  triple_gov_company |   .0259978   .0364722     0.71   0.476    -.0454871    .0974826
+  triple_col_company |   .0222239   .0366307     0.61   0.544    -.0495715    .0940193
+ triple_for_company2 |   .1495908   .0515815     2.90   0.004     .0484922    .2506895
+triple_other_company |    .034043   .0298299     1.14   0.254     -.024423     .092509
+--------------------------------------------------------------------------------------
+D:\Travail\Dropbox\mining_conflict
+(est3 stored)
+
+. lincom triple_for_company2-triple_gov_company
+
+ ( 1)  - triple_gov_company + triple_for_company2 = 0
+
+------------------------------------------------------------------------------
+       acled |      Coef.   Std. Err.      t    P>|t|     [95% Conf. Interval]
+-------------+----------------------------------------------------------------
+         (1) |   .1235931    .063991     1.93   0.053     -.001828    .2490141
+------------------------------------------------------------------------------
+
+. lincom triple_for_company2-triple_col_company
+
+ ( 1)  - triple_col_company + triple_for_company2 = 0
+
+------------------------------------------------------------------------------
+       acled |      Coef.   Std. Err.      t    P>|t|     [95% Conf. Interval]
+-------------+----------------------------------------------------------------
+         (1) |   .1273669   .0615315     2.07   0.038     .0067664    .2479675
+------------------------------------------------------------------------------
+
+. lincom triple_for_company2-triple_other_company
+
+ ( 1)  triple_for_company2 - triple_other_company = 0
+
+------------------------------------------------------------------------------
+       acled |      Coef.   Std. Err.      t    P>|t|     [95% Conf. Interval]
+-------------+----------------------------------------------------------------
+         (1) |   .1155478   .0610687     1.89   0.058    -.0041456    .2352413
+------------------------------------------------------------------------------
+
+. eststo: my_reg2hdfespatial acled_battle      triple_*                                                                                                   if sd_mines == 0, timevar(it) panelvar(cell) lat(latitude) lon(longitude) distcutoff(500) lagcut
+> off(100000) 
+ 
+OLS REGRESSION
+ 
+SE CORRECTED FOR CROSS-SECTIONAL SPATIAL DEPENDANCE
+             AND PANEL-SPECIFIC SERIAL CORRELATION
+ 
+DEPENDANT VARIABLE: acled_battle
+INDEPENDANT VARIABLES:  triple_gov_company triple_col_company triple_for_company2 triple_other_company
+ 
+SPATIAL CORRELATION KERNAL CUTOFF: 500 KM
+(NOTE: LINEAR BARTLETT WINDOW USED FOR SPATIAL KERNAL)
+SERIAL CORRELATION KERNAL CUTOFF: 100000 PERIODS
+--------------------------------------------------------------------------------------
+        acled_battle |      Coef.   Std. Err.      t    P>|t|     [95% Conf. Interval]
+---------------------+----------------------------------------------------------------
+  triple_gov_company |  -.0065713   .0110713    -0.59   0.553     -.028271    .0151283
+  triple_col_company |  -.0076107   .0261125    -0.29   0.771    -.0587907    .0435692
+ triple_for_company2 |   .0533173   .0197711     2.70   0.007     .0145663    .0920684
+triple_other_company |  -.0022262   .0057999    -0.38   0.701    -.0135939    .0091415
+--------------------------------------------------------------------------------------
+D:\Travail\Dropbox\mining_conflict
+(est4 stored)
+
+. lincom triple_for_company2-triple_gov_company
+
+ ( 1)  - triple_gov_company + triple_for_company2 = 0
+
+------------------------------------------------------------------------------
+acled_battle |      Coef.   Std. Err.      t    P>|t|     [95% Conf. Interval]
+-------------+----------------------------------------------------------------
+         (1) |   .0598887   .0222194     2.70   0.007      .016339    .1034383
+------------------------------------------------------------------------------
+
+. lincom triple_for_company2-triple_col_company
+
+ ( 1)  - triple_col_company + triple_for_company2 = 0
+
+------------------------------------------------------------------------------
+acled_battle |      Coef.   Std. Err.      t    P>|t|     [95% Conf. Interval]
+-------------+----------------------------------------------------------------
+         (1) |   .0609281   .0346416     1.76   0.079    -.0069689     .128825
+------------------------------------------------------------------------------
+
+. lincom triple_for_company2-triple_other_company
+
+ ( 1)  triple_for_company2 - triple_other_company = 0
+
+------------------------------------------------------------------------------
+acled_battle |      Coef.   Std. Err.      t    P>|t|     [95% Conf. Interval]
+-------------+----------------------------------------------------------------
+         (1) |   .0555435   .0214267     2.59   0.010     .0135477    .0975394
+------------------------------------------------------------------------------
+
+.         
+. foreach var in major_company{
+  2.         replace `var' = 0 if mines == 0
+  3.         g triple_`var'   = main_lprice_mines*`var'
+  4. }
+(0 real changes made)
+
+. /*columns 5-6: controlling for company size*/           
+. eststo: my_reg2hdfespatial acled                     triple_* if sd_mines == 0, timevar(it) panelvar(cell) lat(latitude) lon(longitude) distcutoff(500) lagcutoff(100000) 
+ 
+OLS REGRESSION
+ 
+SE CORRECTED FOR CROSS-SECTIONAL SPATIAL DEPENDANCE
+             AND PANEL-SPECIFIC SERIAL CORRELATION
+ 
+DEPENDANT VARIABLE: acled
+INDEPENDANT VARIABLES:  triple_gov_company triple_col_company triple_for_company2 triple_other_company triple_major_company
+ 
+SPATIAL CORRELATION KERNAL CUTOFF: 500 KM
+(NOTE: LINEAR BARTLETT WINDOW USED FOR SPATIAL KERNAL)
+SERIAL CORRELATION KERNAL CUTOFF: 100000 PERIODS
+--------------------------------------------------------------------------------------
+               acled |      Coef.   Std. Err.      t    P>|t|     [95% Conf. Interval]
+---------------------+----------------------------------------------------------------
+  triple_gov_company |    .025621   .0364684     0.70   0.482    -.0458563    .0970983
+  triple_col_company |   .0348134   .0479324     0.73   0.468    -.0591332      .12876
+ triple_for_company2 |   .1594349   .0474524     3.36   0.001      .066429    .2524407
+triple_other_company |   .0468403   .0517279     0.91   0.365    -.0545454     .148226
+triple_major_company |  -.0181917   .0535877    -0.34   0.734    -.1232225     .086839
+--------------------------------------------------------------------------------------
+D:\Travail\Dropbox\mining_conflict
+(est5 stored)
+
+. eststo: my_reg2hdfespatial acled_battle      triple_* if sd_mines == 0, timevar(it) panelvar(cell) lat(latitude) lon(longitude) distcutoff(500) lagcutoff(100000) 
+ 
+OLS REGRESSION
+ 
+SE CORRECTED FOR CROSS-SECTIONAL SPATIAL DEPENDANCE
+             AND PANEL-SPECIFIC SERIAL CORRELATION
+ 
+DEPENDANT VARIABLE: acled_battle
+INDEPENDANT VARIABLES:  triple_gov_company triple_col_company triple_for_company2 triple_other_company triple_major_company
+ 
+SPATIAL CORRELATION KERNAL CUTOFF: 500 KM
+(NOTE: LINEAR BARTLETT WINDOW USED FOR SPATIAL KERNAL)
+SERIAL CORRELATION KERNAL CUTOFF: 100000 PERIODS
+--------------------------------------------------------------------------------------
+        acled_battle |      Coef.   Std. Err.      t    P>|t|     [95% Conf. Interval]
+---------------------+----------------------------------------------------------------
+  triple_gov_company |  -.0064372   .0110307    -0.58   0.560    -.0280571    .0151828
+  triple_col_company |  -.0120937    .025367    -0.48   0.634    -.0618126    .0376252
+ triple_for_company2 |    .049812   .0220857     2.26   0.024     .0065245    .0930996
+triple_other_company |  -.0067831   .0170666    -0.40   0.691    -.0402333     .026667
+triple_major_company |   .0064778   .0218617     0.30   0.767    -.0363706    .0493263
+--------------------------------------------------------------------------------------
+D:\Travail\Dropbox\mining_conflict
+(est6 stored)
+
+. 
+. foreach var in for_company{
+  2.         replace `var' = 0 if mines == 0
+  3.         g triple_`var'   = main_lprice_mines*`var'
+  4. }
+(0 real changes made)
+
+. label var triple_col_company            "$\ln$ price $\times$ mines $>0$ $\times$ Fgn Firms (col.)"
+
+. label var triple_for_company2           "$\ln$ price $\times$ mines $>0$ $\times$ Fgn Firms (non col.)"
+
+. label var triple_for_company            "$\ln$ price $\times$ mines $>0$ $\times$ Foreign Firms"
+
+. label var triple_major_company          "$\ln$ price $\times$ mines $>0$ $\times$ Large Firms"
+
+. label var triple_other_company          "$\ln$ price $\times$ mines $>0$ $\times$ Other Firms"
+
+. label var triple_gov_company            "$\ln$ price $\times$ mines $>0$ $\times$ Public Firms"
+
+. 
+. set linesize 250
+
+. esttab, mtitles drop() b(%5.3f) se(%5.3f) compress r2 starlevels(c 0.1 b 0.05 a 0.01)  se 
+
+----------------------------------------------------------------------------
+                 (1)        (2)        (3)        (4)        (5)        (6) 
+                est1       est2       est3       est4       est5       est6 
+----------------------------------------------------------------------------
+triple_f~y     0.101a     0.030c                                            
+             (0.038)    (0.016)                                             
+
+triple_o~y     0.035     -0.002      0.034     -0.002      0.047     -0.007 
+             (0.030)    (0.006)    (0.030)    (0.006)    (0.052)    (0.017) 
+
+triple_g~y     0.027     -0.006      0.026     -0.007      0.026     -0.006 
+             (0.037)    (0.011)    (0.036)    (0.011)    (0.036)    (0.011) 
+
+triple_c~y                           0.022     -0.008      0.035     -0.012 
+                                   (0.037)    (0.026)    (0.048)    (0.025) 
+
+triple_f~2                           0.150a     0.053a     0.159a     0.050b
+                                   (0.052)    (0.020)    (0.047)    (0.022) 
+
+triple_m~y                                                -0.018      0.006 
+                                                         (0.054)    (0.022) 
+----------------------------------------------------------------------------
+N             142072     142072     142072     142072     142072     142072 
+R-sq           0.000      0.000      0.000      0.000      0.000      0.000 
+----------------------------------------------------------------------------
+Standard errors in parentheses
+c p<0.1, b p<0.05, a p<0.01
+
+. esttab, mtitles drop() b(%5.3f) se(%5.3f) r2  starlevels({$^c$} 0.1 {$^b$} 0.05 {$^a$} 0.01) se tex label  title(Table 6) 
+
+\begin{table}[htbp]\centering
+\def\sym#1{\ifmmode^{#1}\else\(^{#1}\)\fi}
+\caption{Table 6}
+\begin{tabular}{l*{6}{c}}
+\hline\hline
+                    &\multicolumn{1}{c}{(1)}&\multicolumn{1}{c}{(2)}&\multicolumn{1}{c}{(3)}&\multicolumn{1}{c}{(4)}&\multicolumn{1}{c}{(5)}&\multicolumn{1}{c}{(6)}\\
+                    &\multicolumn{1}{c}{est1}&\multicolumn{1}{c}{est2}&\multicolumn{1}{c}{est3}&\multicolumn{1}{c}{est4}&\multicolumn{1}{c}{est5}&\multicolumn{1}{c}{est6}\\
+\hline
+$\ln$ price $\times$ mines $>0$ $\times$ Foreign Firms&       0.101{$^a$}&       0.030{$^c$}&                  &                  &                  &                  \\
+                    &     (0.038)      &     (0.016)      &                  &                  &                  &                  \\
+[1em]
+$\ln$ price $\times$ mines $>0$ $\times$ Other Firms&       0.035      &      -0.002      &       0.034      &      -0.002      &       0.047      &      -0.007      \\
+                    &     (0.030)      &     (0.006)      &     (0.030)      &     (0.006)      &     (0.052)      &     (0.017)      \\
+[1em]
+$\ln$ price $\times$ mines $>0$ $\times$ Public Firms&       0.027      &      -0.006      &       0.026      &      -0.007      &       0.026      &      -0.006      \\
+                    &     (0.037)      &     (0.011)      &     (0.036)      &     (0.011)      &     (0.036)      &     (0.011)      \\
+[1em]
+$\ln$ price $\times$ mines $>0$ $\times$ Fgn Firms (col.)&                  &                  &       0.022      &      -0.008      &       0.035      &      -0.012      \\
+                    &                  &                  &     (0.037)      &     (0.026)      &     (0.048)      &     (0.025)      \\
+[1em]
+$\ln$ price $\times$ mines $>0$ $\times$ Fgn Firms (non col.)&                  &                  &       0.150{$^a$}&       0.053{$^a$}&       0.159{$^a$}&       0.050{$^b$}\\
+                    &                  &                  &     (0.052)      &     (0.020)      &     (0.047)      &     (0.022)      \\
+[1em]
+$\ln$ price $\times$ mines $>0$ $\times$ Large Firms&                  &                  &                  &                  &      -0.018      &       0.006      \\
+                    &                  &                  &                  &                  &     (0.054)      &     (0.022)      \\
+\hline
+Observations        &      142072      &      142072      &      142072      &      142072      &      142072      &      142072      \\
+\(R^{2}\)           &       0.000      &       0.000      &       0.000      &       0.000      &       0.000      &       0.000      \\
+\hline\hline
+\multicolumn{7}{l}{\footnotesize Standard errors in parentheses}\\
+\multicolumn{7}{l}{\footnotesize {$^c$} p<0.1, {$^b$} p<0.05, {$^a$} p<0.01}\\
+\end{tabular}
+\end{table}
+
+. eststo clear                    
+
+.                                 
+. log close
+      name:  <unnamed>
+       log:  D:\Travail\Dropbox\mining_conflict\Data_Code_BCRT_AER\results\Table_6.log
+  log type:  text
+ closed on:  13 Dec 2016, 12:54:05
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------

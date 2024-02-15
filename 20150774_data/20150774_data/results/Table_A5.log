@@ -1,0 +1,365 @@
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+      name:  <unnamed>
+       log:  D:\Travail\Dropbox\mining_conflict\Data_Code_BCRT_AER\results\Table_A5.log
+  log type:  text
+ opened on:  14 Dec 2016, 10:16:02
+
+. 
+. use "$Output_data\BCRT_baseline", clear
+
+. 
+. /* drop diamonds and tantalum for baseline */
+. drop if mainmineral == "diamond" | mainmineral == "tantalum"
+(588 observations deleted)
+
+. 
+. /*condition for estimation with spatial lags of mines*/
+. g condition_around=((mainmineral != "diamond" & mainmineral_around != "diamond" & mainmineral != "tantalum" & mainmineral_around != "tantalum"))
+
+. 
+. * columns 1-2: neighbour conflict (1 degree cells) in RHS, not instrumented
+. eststo: reghdfe acled  main_lprice_mines acled_around_1                                                         if sd_mines == 0  & condition_around==1     , vce(cluster country_nb) absorb(cell it)
+(dropped 14 singleton observations)
+(converged in 3 iterations)
+
+HDFE Linear regression                            Number of obs   =    137,914
+Absorbing 2 HDFE groups                           F(   2,     50) =      54.80
+Statistics robust to heteroskedasticity           Prob > F        =     0.0000
+                                                  R-squared       =     0.4392
+                                                  Adj R-squared   =     0.3926
+                                                  Within R-sq.    =     0.0231
+Number of clusters (country_nb) =         51      Root MSE        =     0.1769
+
+                                 (Std. Err. adjusted for 51 clusters in country_nb)
+-----------------------------------------------------------------------------------
+                  |               Robust
+            acled |      Coef.   Std. Err.      t    P>|t|     [95% Conf. Interval]
+------------------+----------------------------------------------------------------
+main_lprice_mines |   .0566499   .0202328     2.80   0.007     .0160111    .0972887
+   acled_around_1 |   .0466472   .0050398     9.26   0.000     .0365246    .0567699
+-----------------------------------------------------------------------------------
+
+Absorbed degrees of freedom:
+--------------------------------------------------------------------+
+      Absorbed FE |  Num. Coefs.  =   Categories  -   Redundant     | 
+------------------+-------------------------------------------------|
+             cell |            0            9851           9851 *   | 
+               it |            0             714            714 *   | 
+--------------------------------------------------------------------+
+* = fixed effect nested within cluster; treated as redundant for DoF computation
+(est1 stored)
+
+. eststo: reghdfe acled  main_lprice_hist0 acled_around_1                                                         if condition_around==1                                          , vce(cluster country_nb) absorb(cell it)
+(dropped 14 singleton observations)
+(converged in 3 iterations)
+
+HDFE Linear regression                            Number of obs   =    139,412
+Absorbing 2 HDFE groups                           F(   2,     50) =      59.29
+Statistics robust to heteroskedasticity           Prob > F        =     0.0000
+                                                  R-squared       =     0.4393
+                                                  Adj R-squared   =     0.3928
+                                                  Within R-sq.    =     0.0227
+Number of clusters (country_nb) =         51      Root MSE        =     0.1781
+
+                                 (Std. Err. adjusted for 51 clusters in country_nb)
+-----------------------------------------------------------------------------------
+                  |               Robust
+            acled |      Coef.   Std. Err.      t    P>|t|     [95% Conf. Interval]
+------------------+----------------------------------------------------------------
+main_lprice_hist0 |   .0351846   .0111623     3.15   0.003     .0127644    .0576047
+   acled_around_1 |   .0464061   .0050194     9.25   0.000     .0363242    .0564879
+-----------------------------------------------------------------------------------
+
+Absorbed degrees of freedom:
+--------------------------------------------------------------------+
+      Absorbed FE |  Num. Coefs.  =   Categories  -   Redundant     | 
+------------------+-------------------------------------------------|
+             cell |            0            9958           9958 *   | 
+               it |            0             714            714 *   | 
+--------------------------------------------------------------------+
+* = fixed effect nested within cluster; treated as redundant for DoF computation
+(est2 stored)
+
+. * columns 3/4: neighbour conflict in RHS (1 and 2 degree cells), instrumented by prices in 1 and 2 degree cells
+. eststo: reghdfe acled  main_lprice_mines (acled_around = main_lprice_a)                         if sd_mines == 0  & condition_around==1 , vce(cluster country_nb) absorb(cell it)
+(dropped 14 singleton observations)
+(converged in 3 iterations)
+
+HDFE IV (2SLS) estimation
+-------------------------
+
+Estimates efficient for homoskedasticity only
+Statistics robust to heteroskedasticity and clustering on country_nb
+
+Number of clusters (country_nb) =     51              Number of obs =   137914
+                                                      F(  2,    50) =    40.16
+                                                      Prob > F      =   0.0000
+Total (centered) SS     =  4078.127439                Centered R2   =   0.4308
+Total (uncentered) SS   =  4078.127439                Uncentered R2 =        .
+Residual SS             =  4043.650802                Root MSE      =    .1782
+
+-----------------------------------------------------------------------------------
+                  |               Robust
+            acled |      Coef.   Std. Err.      t    P>|t|     [95% Conf. Interval]
+------------------+----------------------------------------------------------------
+     acled_around |   .0459144    .006507     7.06   0.000     .0328447     .058984
+main_lprice_mines |    .040915   .0239912     1.71   0.094    -.0072727    .0891027
+-----------------------------------------------------------------------------------
+Underidentification test (Kleibergen-Paap rk LM statistic):              5.777
+                                                   Chi-sq(1) P-val =    0.0162
+------------------------------------------------------------------------------
+Weak identification test (Cragg-Donald Wald F statistic):              300.555
+                         (Kleibergen-Paap rk Wald F statistic):         10.692
+Stock-Yogo weak ID test critical values: 10% maximal IV size             16.38
+                                         15% maximal IV size              8.96
+                                         20% maximal IV size              6.66
+                                         25% maximal IV size              5.53
+Source: Stock-Yogo (2005).  Reproduced by permission.
+NB: Critical values are for Cragg-Donald F statistic and i.i.d. errors.
+------------------------------------------------------------------------------
+Hansen J statistic (overidentification test of all instruments):         0.000
+                                                 (equation exactly identified)
+------------------------------------------------------------------------------
+Instrumented:         acled_around
+Included instruments: main_lprice_mines
+Excluded instruments: main_lprice_a
+------------------------------------------------------------------------------
+
+Absorbed degrees of freedom:
+--------------------------------------------------------------------+
+      Absorbed FE |  Num. Coefs.  =   Categories  -   Redundant     | 
+------------------+-------------------------------------------------|
+             cell |            0            9851           9851 *   | 
+               it |            0             714            714 *   | 
+--------------------------------------------------------------------+
+* = fixed effect nested within cluster; treated as redundant for DoF computation
+(est3 stored)
+
+. eststo: reghdfe acled  main_lprice_hist0 (acled_around = main_lprice_a)                         if condition_around==1                                  , vce(cluster country_nb) absorb(cell it)
+(dropped 14 singleton observations)
+(converged in 3 iterations)
+
+HDFE IV (2SLS) estimation
+-------------------------
+
+Estimates efficient for homoskedasticity only
+Statistics robust to heteroskedasticity and clustering on country_nb
+
+Number of clusters (country_nb) =     51              Number of obs =   139412
+                                                      F(  2,    50) =    50.33
+                                                      Prob > F      =   0.0000
+Total (centered) SS     =  4176.103844                Centered R2   =   0.4339
+Total (uncentered) SS   =  4176.103844                Uncentered R2 =        .
+Residual SS             =  4120.686427                Root MSE      =    .1789
+
+-----------------------------------------------------------------------------------
+                  |               Robust
+            acled |      Coef.   Std. Err.      t    P>|t|     [95% Conf. Interval]
+------------------+----------------------------------------------------------------
+     acled_around |   .0429131   .0071574     6.00   0.000      .028537    .0572892
+main_lprice_hist0 |   .0256308   .0139416     1.84   0.072    -.0023718    .0536334
+-----------------------------------------------------------------------------------
+Underidentification test (Kleibergen-Paap rk LM statistic):              6.113
+                                                   Chi-sq(1) P-val =    0.0134
+------------------------------------------------------------------------------
+Weak identification test (Cragg-Donald Wald F statistic):              319.036
+                         (Kleibergen-Paap rk Wald F statistic):         11.538
+Stock-Yogo weak ID test critical values: 10% maximal IV size             16.38
+                                         15% maximal IV size              8.96
+                                         20% maximal IV size              6.66
+                                         25% maximal IV size              5.53
+Source: Stock-Yogo (2005).  Reproduced by permission.
+NB: Critical values are for Cragg-Donald F statistic and i.i.d. errors.
+------------------------------------------------------------------------------
+Hansen J statistic (overidentification test of all instruments):         0.000
+                                                 (equation exactly identified)
+------------------------------------------------------------------------------
+Instrumented:         acled_around
+Included instruments: main_lprice_hist0
+Excluded instruments: main_lprice_a
+------------------------------------------------------------------------------
+
+Absorbed degrees of freedom:
+--------------------------------------------------------------------+
+      Absorbed FE |  Num. Coefs.  =   Categories  -   Redundant     | 
+------------------+-------------------------------------------------|
+             cell |            0            9958           9958 *   | 
+               it |            0             714            714 *   | 
+--------------------------------------------------------------------+
+* = fixed effect nested within cluster; treated as redundant for DoF computation
+(est4 stored)
+
+. * columns 5/6: neighbour conflict in degree 1 in RHS, instrumented by conflict in neighbours of neighbours
+. eststo: reghdfe acled  main_lprice_mines (acled_around_1 = acled_around_2)                      if sd_mines == 0  & condition_around==1 , vce(cluster country_nb) absorb(cell it)
+(dropped 14 singleton observations)
+(converged in 3 iterations)
+
+HDFE IV (2SLS) estimation
+-------------------------
+
+Estimates efficient for homoskedasticity only
+Statistics robust to heteroskedasticity and clustering on country_nb
+
+Number of clusters (country_nb) =     51              Number of obs =   137914
+                                                      F(  2,    50) =   339.78
+                                                      Prob > F      =   0.0000
+Total (centered) SS     =  4078.127439                Centered R2   =   0.4032
+Total (uncentered) SS   =  4078.127439                Uncentered R2 =        .
+Residual SS             =  4239.765598                Root MSE      =    .1825
+
+-----------------------------------------------------------------------------------
+                  |               Robust
+            acled |      Coef.   Std. Err.      t    P>|t|     [95% Conf. Interval]
+------------------+----------------------------------------------------------------
+   acled_around_1 |   .1240095   .0049125    25.24   0.000     .1141425    .1338766
+main_lprice_mines |   .0317833   .0177122     1.79   0.079    -.0037927    .0673593
+-----------------------------------------------------------------------------------
+Underidentification test (Kleibergen-Paap rk LM statistic):              9.686
+                                                   Chi-sq(1) P-val =    0.0019
+------------------------------------------------------------------------------
+Weak identification test (Cragg-Donald Wald F statistic):              1.3e+04
+                         (Kleibergen-Paap rk Wald F statistic):         85.007
+Stock-Yogo weak ID test critical values: 10% maximal IV size             16.38
+                                         15% maximal IV size              8.96
+                                         20% maximal IV size              6.66
+                                         25% maximal IV size              5.53
+Source: Stock-Yogo (2005).  Reproduced by permission.
+NB: Critical values are for Cragg-Donald F statistic and i.i.d. errors.
+------------------------------------------------------------------------------
+Hansen J statistic (overidentification test of all instruments):         0.000
+                                                 (equation exactly identified)
+------------------------------------------------------------------------------
+Instrumented:         acled_around_1
+Included instruments: main_lprice_mines
+Excluded instruments: acled_around_2
+------------------------------------------------------------------------------
+
+Absorbed degrees of freedom:
+--------------------------------------------------------------------+
+      Absorbed FE |  Num. Coefs.  =   Categories  -   Redundant     | 
+------------------+-------------------------------------------------|
+             cell |            0            9851           9851 *   | 
+               it |            0             714            714 *   | 
+--------------------------------------------------------------------+
+* = fixed effect nested within cluster; treated as redundant for DoF computation
+(est5 stored)
+
+. eststo: reghdfe acled  main_lprice_hist0 (acled_around_1 = acled_around_2)                      if condition_around==1                                  , vce(cluster country_nb) absorb(cell it) 
+(dropped 14 singleton observations)
+(converged in 3 iterations)
+
+HDFE IV (2SLS) estimation
+-------------------------
+
+Estimates efficient for homoskedasticity only
+Statistics robust to heteroskedasticity and clustering on country_nb
+
+Number of clusters (country_nb) =     51              Number of obs =   139412
+                                                      F(  2,    50) =   364.47
+                                                      Prob > F      =   0.0000
+Total (centered) SS     =  4176.103844                Centered R2   =   0.4025
+Total (uncentered) SS   =  4176.103844                Uncentered R2 =        .
+Residual SS             =  4349.052573                Root MSE      =    .1838
+
+-----------------------------------------------------------------------------------
+                  |               Robust
+            acled |      Coef.   Std. Err.      t    P>|t|     [95% Conf. Interval]
+------------------+----------------------------------------------------------------
+   acled_around_1 |   .1248351   .0048534    25.72   0.000     .1150867    .1345834
+main_lprice_hist0 |   .0189721   .0106831     1.78   0.082    -.0024855    .0404298
+-----------------------------------------------------------------------------------
+Underidentification test (Kleibergen-Paap rk LM statistic):              9.895
+                                                   Chi-sq(1) P-val =    0.0017
+------------------------------------------------------------------------------
+Weak identification test (Cragg-Donald Wald F statistic):              1.3e+04
+                         (Kleibergen-Paap rk Wald F statistic):         86.328
+Stock-Yogo weak ID test critical values: 10% maximal IV size             16.38
+                                         15% maximal IV size              8.96
+                                         20% maximal IV size              6.66
+                                         25% maximal IV size              5.53
+Source: Stock-Yogo (2005).  Reproduced by permission.
+NB: Critical values are for Cragg-Donald F statistic and i.i.d. errors.
+------------------------------------------------------------------------------
+Hansen J statistic (overidentification test of all instruments):         0.000
+                                                 (equation exactly identified)
+------------------------------------------------------------------------------
+Instrumented:         acled_around_1
+Included instruments: main_lprice_hist0
+Excluded instruments: acled_around_2
+------------------------------------------------------------------------------
+
+Absorbed degrees of freedom:
+--------------------------------------------------------------------+
+      Absorbed FE |  Num. Coefs.  =   Categories  -   Redundant     | 
+------------------+-------------------------------------------------|
+             cell |            0            9958           9958 *   | 
+               it |            0             714            714 *   | 
+--------------------------------------------------------------------+
+* = fixed effect nested within cluster; treated as redundant for DoF computation
+(est6 stored)
+
+. 
+. set linesize 250
+
+. esttab, mtitles drop() b(%5.3f) se(%5.3f) compress r2 starlevels(c 0.1 b 0.05 a 0.01)  se 
+
+----------------------------------------------------------------------------
+                 (1)        (2)        (3)        (4)        (5)        (6) 
+                est1       est2       est3       est4       est5       est6 
+----------------------------------------------------------------------------
+main_lpr~s     0.057a                0.041c                0.032c           
+             (0.020)               (0.024)               (0.018)            
+
+acled_ar~1     0.047a     0.046a                           0.124a     0.125a
+             (0.005)    (0.005)                          (0.005)    (0.005) 
+
+main_lpr~0                0.035a                0.026c                0.019c
+                        (0.011)               (0.014)               (0.011) 
+
+acled_ar~d                           0.046a     0.043a                      
+                                   (0.007)    (0.007)                       
+----------------------------------------------------------------------------
+N             137914     139412     137914     139412     137914     139412 
+R-sq           0.439      0.439      0.431      0.434      0.403      0.403 
+----------------------------------------------------------------------------
+Standard errors in parentheses
+c p<0.1, b p<0.05, a p<0.01
+
+. esttab, mtitles drop() b(%5.3f) se(%5.3f) r2  starlevels({$^c$} 0.1 {$^b$} 0.05 {$^a$} 0.01) se tex label  title() 
+
+{
+\def\sym#1{\ifmmode^{#1}\else\(^{#1}\)\fi}
+\begin{tabular}{l*{6}{c}}
+\hline\hline
+                    &\multicolumn{1}{c}{(1)}&\multicolumn{1}{c}{(2)}&\multicolumn{1}{c}{(3)}&\multicolumn{1}{c}{(4)}&\multicolumn{1}{c}{(5)}&\multicolumn{1}{c}{(6)}\\
+                    &\multicolumn{1}{c}{est1}&\multicolumn{1}{c}{est2}&\multicolumn{1}{c}{est3}&\multicolumn{1}{c}{est4}&\multicolumn{1}{c}{est5}&\multicolumn{1}{c}{est6}\\
+\hline
+$\ln$ price $\times$ mines $>0$&       0.057{$^a$}&                  &       0.041{$^c$}&                  &       0.032{$^c$}&                  \\
+                    &     (0.020)      &                  &     (0.024)      &                  &     (0.018)      &                  \\
+[1em]
+\# of conflicts around cell&       0.047{$^a$}&       0.046{$^a$}&                  &                  &       0.124{$^a$}&       0.125{$^a$}\\
+                    &     (0.005)      &     (0.005)      &                  &                  &     (0.005)      &     (0.005)      \\
+[1em]
+$\ln$ price $\times$ mines $>0$ (ever)&                  &       0.035{$^a$}&                  &       0.026{$^c$}&                  &       0.019{$^c$}\\
+                    &                  &     (0.011)      &                  &     (0.014)      &                  &     (0.011)      \\
+[1em]
+\# neighbouring cells in conflict&                  &                  &       0.046{$^a$}&       0.043{$^a$}&                  &                  \\
+                    &                  &                  &     (0.007)      &     (0.007)      &                  &                  \\
+\hline
+Observations        &      137914      &      139412      &      137914      &      139412      &      137914      &      139412      \\
+\(R^{2}\)           &       0.439      &       0.439      &       0.431      &       0.434      &       0.403      &       0.403      \\
+\hline\hline
+\multicolumn{7}{l}{\footnotesize Standard errors in parentheses}\\
+\multicolumn{7}{l}{\footnotesize {$^c$} p<0.1, {$^b$} p<0.05, {$^a$} p<0.01}\\
+\end{tabular}
+}
+
+. eststo clear
+
+. 
+. log close
+      name:  <unnamed>
+       log:  D:\Travail\Dropbox\mining_conflict\Data_Code_BCRT_AER\results\Table_A5.log
+  log type:  text
+ closed on:  14 Dec 2016, 10:16:17
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------

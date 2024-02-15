@@ -1,0 +1,308 @@
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+      name:  <unnamed>
+       log:  D:\Travail\Dropbox\mining_conflict\Data_Code_BCRT_AER\results\Table_8.log
+  log type:  text
+ opened on:  13 Dec 2016, 13:09:48
+
+. 
+. use "$Output_data\BCRT_baseline", clear
+
+. 
+. /* drop diamonds and tantalum for baseline */
+. drop if mainmineral == "diamond" | mainmineral == "tantalum"
+(588 observations deleted)
+
+. 
+. /* mining areas: from the first time a mine was observed onwards */
+. sort cell year
+
+. bys  cell: gen cum_mines=sum(mines)
+
+. g mining_area = cum_mines>0 
+
+. replace mining_area = . if cum_mines ==0 & max_mine>0
+(489 real changes made, 489 to missing)
+
+. 
+. /* mining areas: mine is observed in 1997 */
+. g temp1 = (year == 1997 & mines == 1)
+
+. bys gid: egen mining_area2 = max(temp1)
+
+. drop temp1
+
+. 
+. /* interactions */
+. g main_lprice_hist1 = main_lprice*mining_area
+(489 missing values generated)
+
+. g main_lprice_hist2 = main_lprice*mining_area2
+
+. g main_lprice_hist3 = main_lprice*mining_area_prior5
+
+. g main_lprice_hist4 = main_lprice*mining_area_priorall
+
+. 
+. keep if main_lprice_mines != .
+(334 observations deleted)
+
+. 
+. /*baseline*/
+. eststo: my_reg2hdfespatial acled  main_lprice_mines if sd_mines == 0                                                     , timevar(it) panelvar(cell) lat(latitude) lon(longitude) distcutoff(500) lagcutoff(100000) 
+ 
+OLS REGRESSION
+ 
+SE CORRECTED FOR CROSS-SECTIONAL SPATIAL DEPENDANCE
+             AND PANEL-SPECIFIC SERIAL CORRELATION
+ 
+DEPENDANT VARIABLE: acled
+INDEPENDANT VARIABLES:  main_lprice_mines
+ 
+SPATIAL CORRELATION KERNAL CUTOFF: 500 KM
+(NOTE: LINEAR BARTLETT WINDOW USED FOR SPATIAL KERNAL)
+SERIAL CORRELATION KERNAL CUTOFF: 100000 PERIODS
+-----------------------------------------------------------------------------------
+            acled |      Coef.   Std. Err.      t    P>|t|     [95% Conf. Interval]
+------------------+----------------------------------------------------------------
+main_lprice_mines |   .0716129   .0198858     3.60   0.000     .0326372    .1105886
+-----------------------------------------------------------------------------------
+D:\Travail\Dropbox\mining_conflict
+(est1 stored)
+
+. /*mine at some point over the period*/
+. eststo: my_reg2hdfespatial acled    main_lprice_hist0                                                                                   , timevar(it) panelvar(cell) lat(latitude) lon(longitude) distcutoff(500) lagcutoff(100000) 
+ 
+OLS REGRESSION
+ 
+SE CORRECTED FOR CROSS-SECTIONAL SPATIAL DEPENDANCE
+             AND PANEL-SPECIFIC SERIAL CORRELATION
+ 
+DEPENDANT VARIABLE: acled
+INDEPENDANT VARIABLES:  main_lprice_hist0
+ 
+SPATIAL CORRELATION KERNAL CUTOFF: 500 KM
+(NOTE: LINEAR BARTLETT WINDOW USED FOR SPATIAL KERNAL)
+SERIAL CORRELATION KERNAL CUTOFF: 100000 PERIODS
+-----------------------------------------------------------------------------------
+            acled |      Coef.   Std. Err.      t    P>|t|     [95% Conf. Interval]
+------------------+----------------------------------------------------------------
+main_lprice_hist0 |   .0432159   .0139884     3.09   0.002      .015799    .0706329
+-----------------------------------------------------------------------------------
+D:\Travail\Dropbox\mining_conflict
+(est2 stored)
+
+. /*lagged mine dummy*/
+. eststo: my_reg2hdfespatial acled  mines_l1 main_lprice main_lprice_mines_l1 m_lprice_mines_l1   , timevar(it) panelvar(cell) lat(latitude) lon(longitude) distcutoff(500) lagcutoff(100000) 
+ 
+OLS REGRESSION
+ 
+SE CORRECTED FOR CROSS-SECTIONAL SPATIAL DEPENDANCE
+             AND PANEL-SPECIFIC SERIAL CORRELATION
+ 
+DEPENDANT VARIABLE: acled
+INDEPENDANT VARIABLES:  mines_l1 main_lprice main_lprice_mines_l1 m_lprice_mines_l1
+ 
+SPATIAL CORRELATION KERNAL CUTOFF: 500 KM
+(NOTE: LINEAR BARTLETT WINDOW USED FOR SPATIAL KERNAL)
+SERIAL CORRELATION KERNAL CUTOFF: 100000 PERIODS
+--------------------------------------------------------------------------------------
+               acled |      Coef.   Std. Err.      t    P>|t|     [95% Conf. Interval]
+---------------------+----------------------------------------------------------------
+            mines_l1 |   .0258549   .0795749     0.32   0.745    -.1301104    .1818203
+         main_lprice |   .0107935   .0283483     0.38   0.703    -.0447686    .0663556
+main_lprice_mines_l1 |   .0334148   .0322182     1.04   0.300    -.0297322    .0965618
+   m_lprice_mines_l1 |  -.0361648   .0369474    -0.98   0.328     -.108581    .0362514
+--------------------------------------------------------------------------------------
+D:\Travail\Dropbox\mining_conflict
+(est3 stored)
+
+. /*coded as mining area after opening of first mine ownwards (drop years before)*/
+. eststo: my_reg2hdfespatial acled    main_lprice_hist1                                                                                   , timevar(it) panelvar(cell) lat(latitude) lon(longitude) distcutoff(500) lagcutoff(100000) 
+ 
+OLS REGRESSION
+ 
+SE CORRECTED FOR CROSS-SECTIONAL SPATIAL DEPENDANCE
+             AND PANEL-SPECIFIC SERIAL CORRELATION
+ 
+DEPENDANT VARIABLE: acled
+INDEPENDANT VARIABLES:  main_lprice_hist1
+ 
+SPATIAL CORRELATION KERNAL CUTOFF: 500 KM
+(NOTE: LINEAR BARTLETT WINDOW USED FOR SPATIAL KERNAL)
+SERIAL CORRELATION KERNAL CUTOFF: 100000 PERIODS
+-----------------------------------------------------------------------------------
+            acled |      Coef.   Std. Err.      t    P>|t|     [95% Conf. Interval]
+------------------+----------------------------------------------------------------
+main_lprice_hist1 |   .0504579   .0164294     3.07   0.002     .0182565    .0826593
+-----------------------------------------------------------------------------------
+D:\Travail\Dropbox\mining_conflict
+(est4 stored)
+
+. /*coded as mining area if existing mine in 1997*/
+. eststo: my_reg2hdfespatial acled    main_lprice_hist2                                                                                   , timevar(it) panelvar(cell) lat(latitude) lon(longitude) distcutoff(500) lagcutoff(100000) 
+ 
+OLS REGRESSION
+ 
+SE CORRECTED FOR CROSS-SECTIONAL SPATIAL DEPENDANCE
+             AND PANEL-SPECIFIC SERIAL CORRELATION
+ 
+DEPENDANT VARIABLE: acled
+INDEPENDANT VARIABLES:  main_lprice_hist2
+ 
+SPATIAL CORRELATION KERNAL CUTOFF: 500 KM
+(NOTE: LINEAR BARTLETT WINDOW USED FOR SPATIAL KERNAL)
+SERIAL CORRELATION KERNAL CUTOFF: 100000 PERIODS
+-----------------------------------------------------------------------------------
+            acled |      Coef.   Std. Err.      t    P>|t|     [95% Conf. Interval]
+------------------+----------------------------------------------------------------
+main_lprice_hist2 |   .0562587   .0190144     2.96   0.003     .0189909    .0935266
+-----------------------------------------------------------------------------------
+D:\Travail\Dropbox\mining_conflict
+(est5 stored)
+
+. /*coded as mining area if existing mine in 1992-1996 */
+. eststo: my_reg2hdfespatial acled    main_lprice_hist3                                                                                   , timevar(it) panelvar(cell) lat(latitude) lon(longitude) distcutoff(500) lagcutoff(100000) 
+ 
+OLS REGRESSION
+ 
+SE CORRECTED FOR CROSS-SECTIONAL SPATIAL DEPENDANCE
+             AND PANEL-SPECIFIC SERIAL CORRELATION
+ 
+DEPENDANT VARIABLE: acled
+INDEPENDANT VARIABLES:  main_lprice_hist3
+ 
+SPATIAL CORRELATION KERNAL CUTOFF: 500 KM
+(NOTE: LINEAR BARTLETT WINDOW USED FOR SPATIAL KERNAL)
+SERIAL CORRELATION KERNAL CUTOFF: 100000 PERIODS
+-----------------------------------------------------------------------------------
+            acled |      Coef.   Std. Err.      t    P>|t|     [95% Conf. Interval]
+------------------+----------------------------------------------------------------
+main_lprice_hist3 |   .0555753   .0196182     2.83   0.005     .0171241    .0940266
+-----------------------------------------------------------------------------------
+D:\Travail\Dropbox\mining_conflict
+(est6 stored)
+
+. /*coded as mining area if existing mine before 1997 */
+. eststo: my_reg2hdfespatial acled    main_lprice_hist4                                                                                   , timevar(it) panelvar(cell) lat(latitude) lon(longitude) distcutoff(500) lagcutoff(100000) 
+ 
+OLS REGRESSION
+ 
+SE CORRECTED FOR CROSS-SECTIONAL SPATIAL DEPENDANCE
+             AND PANEL-SPECIFIC SERIAL CORRELATION
+ 
+DEPENDANT VARIABLE: acled
+INDEPENDANT VARIABLES:  main_lprice_hist4
+ 
+SPATIAL CORRELATION KERNAL CUTOFF: 500 KM
+(NOTE: LINEAR BARTLETT WINDOW USED FOR SPATIAL KERNAL)
+SERIAL CORRELATION KERNAL CUTOFF: 100000 PERIODS
+-----------------------------------------------------------------------------------
+            acled |      Coef.   Std. Err.      t    P>|t|     [95% Conf. Interval]
+------------------+----------------------------------------------------------------
+main_lprice_hist4 |   .0499607   .0188249     2.65   0.008     .0130643    .0868571
+-----------------------------------------------------------------------------------
+D:\Travail\Dropbox\mining_conflict
+(est7 stored)
+
+. 
+. set linesize 250
+
+. esttab, mtitles drop() b(%5.3f) se(%5.3f) compress r2 starlevels(c 0.1 b 0.05 a 0.01)  se 
+
+---------------------------------------------------------------------------------------
+                 (1)        (2)        (3)        (4)        (5)        (6)        (7) 
+                est1       est2       est3       est4       est5       est6       est7 
+---------------------------------------------------------------------------------------
+main_lpr~s     0.072a                                                                  
+             (0.020)                                                                   
+
+main_lpr~0                0.043a                                                       
+                        (0.014)                                                        
+
+mines_l1                             0.026                                             
+                                   (0.080)                                             
+
+main_lpr~e                           0.011                                             
+                                   (0.028)                                             
+
+main_lp~l1                           0.033                                             
+                                   (0.032)                                             
+
+m_lprice~1                          -0.036                                             
+                                   (0.037)                                             
+
+main_lp~t1                                      0.050a                                 
+                                              (0.016)                                  
+
+main_lpr~2                                                 0.056a                      
+                                                         (0.019)                       
+
+main_lpr~3                                                            0.056a           
+                                                                    (0.020)            
+
+main_lpr~4                                                                       0.050a
+                                                                               (0.019) 
+---------------------------------------------------------------------------------------
+N             142296     143768     133492     143375     143768     143768     143768 
+R-sq           0.000      0.000      0.000      0.000      0.000      0.000      0.000 
+---------------------------------------------------------------------------------------
+Standard errors in parentheses
+c p<0.1, b p<0.05, a p<0.01
+
+. esttab, mtitles drop() b(%5.3f) se(%5.3f) r2  starlevels({$^c$} 0.1 {$^b$} 0.05 {$^a$} 0.01) se tex label  title(Table 8) 
+
+\begin{table}[htbp]\centering
+\def\sym#1{\ifmmode^{#1}\else\(^{#1}\)\fi}
+\caption{Table 8}
+\begin{tabular}{l*{7}{c}}
+\hline\hline
+                    &\multicolumn{1}{c}{(1)}&\multicolumn{1}{c}{(2)}&\multicolumn{1}{c}{(3)}&\multicolumn{1}{c}{(4)}&\multicolumn{1}{c}{(5)}&\multicolumn{1}{c}{(6)}&\multicolumn{1}{c}{(7)}\\
+                    &\multicolumn{1}{c}{est1}&\multicolumn{1}{c}{est2}&\multicolumn{1}{c}{est3}&\multicolumn{1}{c}{est4}&\multicolumn{1}{c}{est5}&\multicolumn{1}{c}{est6}&\multicolumn{1}{c}{est7}\\
+\hline
+$\ln$ price $\times$ mines $>0$&       0.072{$^a$}&                  &                  &                  &                  &                  &                  \\
+                    &     (0.020)      &                  &                  &                  &                  &                  &                  \\
+[1em]
+$\ln$ price $\times$ mines $>0$ (ever)&                  &       0.043{$^a$}&                  &                  &                  &                  &                  \\
+                    &                  &     (0.014)      &                  &                  &                  &                  &                  \\
+[1em]
+mines(t-1) $>0$     &                  &                  &       0.026      &                  &                  &                  &                  \\
+                    &                  &                  &     (0.080)      &                  &                  &                  &                  \\
+[1em]
+$\ln$ price main mineral&                  &                  &       0.011      &                  &                  &                  &                  \\
+                    &                  &                  &     (0.028)      &                  &                  &                  &                  \\
+[1em]
+$\ln$ price $\times$ mines(t-1) $>0$&                  &                  &       0.033      &                  &                  &                  &                  \\
+                    &                  &                  &     (0.032)      &                  &                  &                  &                  \\
+[1em]
+mines\_l1*m\_main\_lprice&                  &                  &      -0.036      &                  &                  &                  &                  \\
+                    &                  &                  &     (0.037)      &                  &                  &                  &                  \\
+[1em]
+main\_lprice\_hist1   &                  &                  &                  &       0.050{$^a$}&                  &                  &                  \\
+                    &                  &                  &                  &     (0.016)      &                  &                  &                  \\
+[1em]
+main\_lprice\_hist2   &                  &                  &                  &                  &       0.056{$^a$}&                  &                  \\
+                    &                  &                  &                  &                  &     (0.019)      &                  &                  \\
+[1em]
+main\_lprice\_hist3   &                  &                  &                  &                  &                  &       0.056{$^a$}&                  \\
+                    &                  &                  &                  &                  &                  &     (0.020)      &                  \\
+[1em]
+main\_lprice\_hist4   &                  &                  &                  &                  &                  &                  &       0.050{$^a$}\\
+                    &                  &                  &                  &                  &                  &                  &     (0.019)      \\
+\hline
+Observations        &      142296      &      143768      &      133492      &      143375      &      143768      &      143768      &      143768      \\
+\(R^{2}\)           &       0.000      &       0.000      &       0.000      &       0.000      &       0.000      &       0.000      &       0.000      \\
+\hline\hline
+\multicolumn{8}{l}{\footnotesize Standard errors in parentheses}\\
+\multicolumn{8}{l}{\footnotesize {$^c$} p<0.1, {$^b$} p<0.05, {$^a$} p<0.01}\\
+\end{tabular}
+\end{table}
+
+. eststo clear
+
+. 
+. log close 
+      name:  <unnamed>
+       log:  D:\Travail\Dropbox\mining_conflict\Data_Code_BCRT_AER\results\Table_8.log
+  log type:  text
+ closed on:  13 Dec 2016, 13:15:13
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------

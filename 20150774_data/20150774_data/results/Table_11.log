@@ -1,0 +1,2344 @@
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+      name:  <unnamed>
+       log:  D:\Travail\Dropbox\mining_conflict\Data_Code_BCRT_AER\results\Table_11.log
+  log type:  text
+ opened on:  13 Dec 2016, 13:20:48
+
+. 
+. 
+. ***********
+. // SAMPLE A
+. ***********
+. 
+. use "$Output_data\BCRT_baseline", clear
+
+. 
+. /* drop diamonds and tantalum for baseline */
+. drop if mainmineral == "diamond" | mainmineral == "tantalum"
+(588 observations deleted)
+
+. 
+. g nb_acled_pos = nb_acled if nb_acled>0
+(136,166 missing values generated)
+
+. tab nb_acled_pos
+
+nb_acled_po |
+          s |      Freq.     Percent        Cum.
+------------+-----------------------------------
+          1 |      3,570       44.98       44.98
+          2 |      1,493       18.81       63.80
+          3 |        733        9.24       73.03
+          4 |        440        5.54       78.58
+          5 |        299        3.77       82.35
+          6 |        237        2.99       85.33
+          7 |        180        2.27       87.60
+          8 |        133        1.68       89.28
+          9 |        103        1.30       90.57
+         10 |         81        1.02       91.60
+         11 |         68        0.86       92.45
+         12 |         64        0.81       93.26
+         13 |         56        0.71       93.96
+         14 |         39        0.49       94.46
+         15 |         26        0.33       94.78
+         16 |         23        0.29       95.07
+         17 |         23        0.29       95.36
+         18 |         30        0.38       95.74
+         19 |         25        0.32       96.06
+         20 |         23        0.29       96.35
+         21 |         20        0.25       96.60
+         22 |         16        0.20       96.80
+         23 |         17        0.21       97.01
+         24 |         10        0.13       97.14
+         25 |         14        0.18       97.32
+         26 |         14        0.18       97.49
+         27 |          8        0.10       97.59
+         28 |         20        0.25       97.85
+         29 |          8        0.10       97.95
+         30 |          9        0.11       98.06
+         31 |         11        0.14       98.20
+         32 |          6        0.08       98.27
+         33 |          2        0.03       98.30
+         34 |          7        0.09       98.39
+         35 |          6        0.08       98.46
+         36 |          8        0.10       98.56
+         37 |          3        0.04       98.60
+         38 |          4        0.05       98.65
+         39 |          5        0.06       98.71
+         40 |          4        0.05       98.77
+         41 |          3        0.04       98.80
+         42 |          5        0.06       98.87
+         43 |          4        0.05       98.92
+         44 |          2        0.03       98.94
+         45 |          2        0.03       98.97
+         46 |          2        0.03       98.99
+         47 |          1        0.01       99.00
+         48 |          5        0.06       99.07
+         49 |          2        0.03       99.09
+         50 |          3        0.04       99.13
+         52 |          3        0.04       99.17
+         54 |          3        0.04       99.21
+         55 |          1        0.01       99.22
+         56 |          1        0.01       99.23
+         57 |          5        0.06       99.29
+         58 |          2        0.03       99.32
+         59 |          1        0.01       99.33
+         61 |          2        0.03       99.36
+         62 |          1        0.01       99.37
+         63 |          1        0.01       99.38
+         64 |          3        0.04       99.42
+         65 |          1        0.01       99.43
+         66 |          3        0.04       99.47
+         67 |          1        0.01       99.48
+         69 |          1        0.01       99.50
+         70 |          1        0.01       99.51
+         71 |          1        0.01       99.52
+         72 |          2        0.03       99.55
+         75 |          2        0.03       99.57
+         77 |          1        0.01       99.58
+         78 |          2        0.03       99.61
+         80 |          1        0.01       99.62
+         82 |          1        0.01       99.63
+         84 |          2        0.03       99.66
+         85 |          1        0.01       99.67
+         87 |          1        0.01       99.68
+         89 |          1        0.01       99.70
+         90 |          1        0.01       99.71
+         92 |          1        0.01       99.72
+         93 |          1        0.01       99.74
+         95 |          1        0.01       99.75
+         96 |          1        0.01       99.76
+        102 |          1        0.01       99.77
+        106 |          1        0.01       99.79
+        108 |          1        0.01       99.80
+        111 |          1        0.01       99.81
+        113 |          2        0.03       99.84
+        120 |          1        0.01       99.85
+        134 |          1        0.01       99.86
+        143 |          1        0.01       99.87
+        145 |          1        0.01       99.89
+        153 |          1        0.01       99.90
+        164 |          1        0.01       99.91
+        168 |          1        0.01       99.92
+        183 |          1        0.01       99.94
+        212 |          1        0.01       99.95
+        264 |          1        0.01       99.96
+        293 |          1        0.01       99.97
+        334 |          1        0.01       99.99
+        709 |          1        0.01      100.00
+------------+-----------------------------------
+      Total |      7,936      100.00
+
+. egen p99_nb_acled  = pctile(nb_acled_pos), p(99)
+
+. egen p95_nb_acled  = pctile(nb_acled_pos), p(95)
+
+. egen p90_nb_acled  = pctile(nb_acled_pos), p(90)
+
+. egen mean_nb_acled = mean(nb_acled_pos)
+
+. egen sd_nb_acled   = sd(nb_acled_pos)
+
+. g cutoff_nb_acled  = mean_nb_acled+2*sd_nb_acled
+
+. 
+. /*condition for estimation with spatial lags of mines*/
+. global condition_around "(mainmineral != "diamond" & mainmineral_around != "diamond" & mainmineral != "tantalum" & mainmineral_around != "tantalum")"
+
+. 
+. g lnb_acled     = log(nb_acled+1)
+
+. g nb_acled_sine = log(nb_acled+(nb_acled^2+1)^(0.5))
+
+. 
+. g condition_around = (mainmineral != "diamond" & mainmineral_around != "diamond" & mainmineral != "tantalum" & mainmineral_around != "tantalum")
+
+. 
+. /*column 1: untransformed number of events - baseline */
+. eststo: my_reg2hdfespatial nb_acled  main_lprice_mines                                  if sd_mines == 0                                                                , timevar(it) panelvar(cell) lat(latitude) lon(longitude) distcutoff(500) lagcut
+> off(100000) 
+ 
+OLS REGRESSION
+ 
+SE CORRECTED FOR CROSS-SECTIONAL SPATIAL DEPENDANCE
+             AND PANEL-SPECIFIC SERIAL CORRELATION
+ 
+DEPENDANT VARIABLE: nb_acled
+INDEPENDANT VARIABLES:  main_lprice_mines
+ 
+SPATIAL CORRELATION KERNAL CUTOFF: 500 KM
+(NOTE: LINEAR BARTLETT WINDOW USED FOR SPATIAL KERNAL)
+SERIAL CORRELATION KERNAL CUTOFF: 100000 PERIODS
+-----------------------------------------------------------------------------------
+         nb_acled |      Coef.   Std. Err.      t    P>|t|     [95% Conf. Interval]
+------------------+----------------------------------------------------------------
+main_lprice_mines |   .2488651   .2399626     1.04   0.300    -.2214571    .7191872
+-----------------------------------------------------------------------------------
+D:\Travail\Dropbox\mining_conflict
+(est1 stored)
+
+. /*column 2: untransformed number of events - dropping top 5%*/
+. eststo: my_reg2hdfespatial nb_acled  main_lprice_mines                                  if sd_mines == 0        & nb_acled<p95_nb_acled         , timevar(it) panelvar(cell) lat(latitude) lon(longitude) distcutoff(500) lagcutoff(100000) 
+ 
+OLS REGRESSION
+ 
+SE CORRECTED FOR CROSS-SECTIONAL SPATIAL DEPENDANCE
+             AND PANEL-SPECIFIC SERIAL CORRELATION
+ 
+DEPENDANT VARIABLE: nb_acled
+INDEPENDANT VARIABLES:  main_lprice_mines
+ 
+SPATIAL CORRELATION KERNAL CUTOFF: 500 KM
+(NOTE: LINEAR BARTLETT WINDOW USED FOR SPATIAL KERNAL)
+SERIAL CORRELATION KERNAL CUTOFF: 100000 PERIODS
+-----------------------------------------------------------------------------------
+         nb_acled |      Coef.   Std. Err.      t    P>|t|     [95% Conf. Interval]
+------------------+----------------------------------------------------------------
+main_lprice_mines |   .2628439   .0995354     2.64   0.008     .0677565    .4579313
+-----------------------------------------------------------------------------------
+D:\Travail\Dropbox\mining_conflict
+(est2 stored)
+
+. /*column 3: nb events with mine open the entire period - dropping above mean + 2 sd */
+. eststo: my_reg2hdfespatial nb_acled  main_lprice_mines                                  if sd_mines == 0        & nb_acled<cutoff_nb_acled      , timevar(it) panelvar(cell) lat(latitude) lon(longitude) distcutoff(500) lagcutoff(100000) 
+ 
+OLS REGRESSION
+ 
+SE CORRECTED FOR CROSS-SECTIONAL SPATIAL DEPENDANCE
+             AND PANEL-SPECIFIC SERIAL CORRELATION
+ 
+DEPENDANT VARIABLE: nb_acled
+INDEPENDANT VARIABLES:  main_lprice_mines
+ 
+SPATIAL CORRELATION KERNAL CUTOFF: 500 KM
+(NOTE: LINEAR BARTLETT WINDOW USED FOR SPATIAL KERNAL)
+SERIAL CORRELATION KERNAL CUTOFF: 100000 PERIODS
+-----------------------------------------------------------------------------------
+         nb_acled |      Coef.   Std. Err.      t    P>|t|     [95% Conf. Interval]
+------------------+----------------------------------------------------------------
+main_lprice_mines |   .2561401   .1545148     1.66   0.097    -.0467059    .5589862
+-----------------------------------------------------------------------------------
+D:\Travail\Dropbox\mining_conflict
+(est3 stored)
+
+. /*column 4: PPML, no cleaning */
+. eststo: xtpqml nb_acled  main_lprice_mines yeard*                                               if sd_mines == 0                                                                , i(cell) cluster(country_nb) 
+note: 7649 groups (107086 obs) dropped because of all zero outcomes
+note: yeard2 dropped because of collinearity
+
+Iteration 0:   log likelihood = -41318.457  
+Iteration 1:   log likelihood = -40623.846  
+Iteration 2:   log likelihood = -40618.967  
+Iteration 3:   log likelihood = -40618.967  
+
+Conditional fixed-effects Poisson regression    Number of obs     =     35,210
+Group variable: cell                            Number of groups  =      2,515
+
+                                                Obs per group:
+                                                              min =         14
+                                                              avg =       14.0
+                                                              max =         14
+
+                                                Wald chi2(14)     =    1371.07
+Log likelihood  = -40618.967                    Prob > chi2       =     0.0000
+
+-----------------------------------------------------------------------------------
+         nb_acled |      Coef.   Std. Err.      z    P>|z|     [95% Conf. Interval]
+------------------+----------------------------------------------------------------
+main_lprice_mines |    .195168   .0485812     4.02   0.000     .0999505    .2903855
+           yeard1 |   -.197407   .0309663    -6.37   0.000    -.2580997   -.1367142
+           yeard3 |   .3742446    .027018    13.85   0.000     .3212904    .4271988
+           yeard4 |   .2713863   .0276037     9.83   0.000     .2172841    .3254886
+           yeard5 |   .1451715   .0283968     5.11   0.000     .0895147    .2008282
+           yeard6 |   .2672021   .0276259     9.67   0.000     .2130564    .3213479
+           yeard7 |   .0766922   .0288514     2.66   0.008     .0201445    .1332399
+           yeard8 |   -.046591    .029745    -1.57   0.117    -.1048902    .0117081
+           yeard9 |  -.2402778    .031324    -7.67   0.000    -.3016718   -.1788839
+          yeard10 |  -.2201728   .0311678    -7.06   0.000    -.2812605   -.1590851
+          yeard11 |  -.1092152   .0302752    -3.61   0.000    -.1685536   -.0498768
+          yeard12 |   .2065589    .028074     7.36   0.000     .1515348     .261583
+          yeard13 |   .0971923   .0287863     3.38   0.001     .0407723    .1536123
+          yeard14 |   .3202878   .0274794    11.66   0.000     .2664292    .3741464
+-----------------------------------------------------------------------------------
+Calculating Robust Standard Errors...
+-----------------------------------------------------------------------------------
+         nb_acled |      Coef.   Std. Err.      z    P>|z|     [95% Conf. Interval]
+------------------+----------------------------------------------------------------
+nb_acled          |
+main_lprice_mines |    .195168   .2832513     0.69   0.491    -.3599943    .7503302
+           yeard1 |   -.197407   .1638262    -1.20   0.228    -.5185004    .1236864
+           yeard3 |   .3742446   .2242068     1.67   0.095    -.0651927    .8136819
+           yeard4 |   .2713863   .1885271     1.44   0.150    -.0981199    .6408926
+           yeard5 |   .1451715   .2687187     0.54   0.589    -.3815076    .6718505
+           yeard6 |   .2672021   .3187709     0.84   0.402    -.3575774    .8919816
+           yeard7 |   .0766922   .3106448     0.25   0.805    -.5321605    .6855449
+           yeard8 |   -.046591   .3135724    -0.15   0.882    -.6611817    .5679997
+           yeard9 |  -.2402778   .2866861    -0.84   0.402    -.8021723    .3216166
+          yeard10 |  -.2201728    .302061    -0.73   0.466    -.8122014    .3718558
+          yeard11 |  -.1092152   .3068345    -0.36   0.722    -.7105998    .4921693
+          yeard12 |   .2065589   .3269255     0.63   0.528    -.4342034    .8473212
+          yeard13 |   .0971923   .3310635     0.29   0.769    -.5516802    .7460649
+          yeard14 |   .3202878   .4628881     0.69   0.489    -.5869561    1.227532
+-----------------------------------------------------------------------------------
+Wald chi2(14) =   104.19                                Prob > chi2 =   0.0000
+(est4 stored)
+
+. /*column 5: PPML - dropping top 5%*/
+. eststo: xtpqml nb_acled  main_lprice_mines yeard*                                               if sd_mines == 0        & nb_acled<p95_nb_acled         , i(cell) cluster(country_nb) 
+note: 7652 groups (107125 obs) dropped because of all zero outcomes
+note: yeard3 dropped because of collinearity
+
+Iteration 0:   log likelihood = -27784.265  
+Iteration 1:   log likelihood = -27555.473  
+Iteration 2:   log likelihood =  -27554.63  
+Iteration 3:   log likelihood =  -27554.63  
+
+Conditional fixed-effects Poisson regression    Number of obs     =     34,769
+Group variable: cell                            Number of groups  =      2,509
+
+                                                Obs per group:
+                                                              min =          3
+                                                              avg =       13.9
+                                                              max =         14
+
+                                                Wald chi2(14)     =     458.14
+Log likelihood  =  -27554.63                    Prob > chi2       =     0.0000
+
+-----------------------------------------------------------------------------------
+         nb_acled |      Coef.   Std. Err.      z    P>|z|     [95% Conf. Interval]
+------------------+----------------------------------------------------------------
+main_lprice_mines |   .4402097   .0808822     5.44   0.000     .2816834    .5987359
+           yeard1 |  -.2570387   .0383766    -6.70   0.000    -.3322553    -.181822
+           yeard2 |  -.0882272   .0366314    -2.41   0.016    -.1600234   -.0164309
+           yeard4 |   .0835089   .0354046     2.36   0.018     .0141171    .1529006
+           yeard5 |  -.1104057    .037383    -2.95   0.003    -.1836751   -.0371363
+           yeard6 |   .0748598   .0357216     2.10   0.036     .0048467    .1448729
+           yeard7 |   -.327205   .0393822    -8.31   0.000    -.4043926   -.2500173
+           yeard8 |  -.1596971    .037518    -4.26   0.000     -.233231   -.0861631
+           yeard9 |  -.2150329   .0379882    -5.66   0.000    -.2894883   -.1405775
+          yeard10 |  -.2329783   .0381496    -6.11   0.000    -.3077501   -.1582065
+          yeard11 |  -.2822692    .038937    -7.25   0.000    -.3585843   -.2059542
+          yeard12 |  -.0124069   .0365251    -0.34   0.734    -.0839948     .059181
+          yeard13 |   .0623301   .0355278     1.75   0.079    -.0073031    .1319633
+          yeard14 |   .1256823   .0348396     3.61   0.000      .057398    .1939666
+-----------------------------------------------------------------------------------
+Calculating Robust Standard Errors...
+-----------------------------------------------------------------------------------
+         nb_acled |      Coef.   Std. Err.      z    P>|z|     [95% Conf. Interval]
+------------------+----------------------------------------------------------------
+nb_acled          |
+main_lprice_mines |   .4402097   .1974168     2.23   0.026     .0532798    .8271395
+           yeard1 |  -.2570387   .1262806    -2.04   0.042    -.5045441   -.0095333
+           yeard2 |  -.0882272   .1014755    -0.87   0.385    -.2871156    .1106612
+           yeard4 |   .0835089   .2073639     0.40   0.687    -.3229169    .4899346
+           yeard5 |  -.1104057   .1525594    -0.72   0.469    -.4094166    .1886052
+           yeard6 |   .0748598   .2852096     0.26   0.793    -.4841407    .6338603
+           yeard7 |   -.327205   .2692345    -1.22   0.224    -.8548949     .200485
+           yeard8 |  -.1596971   .2850842    -0.56   0.575    -.7184518    .3990577
+           yeard9 |  -.2150329   .2355522    -0.91   0.361    -.6767067    .2466409
+          yeard10 |  -.2329783   .2640487    -0.88   0.378    -.7505043    .2845477
+          yeard11 |  -.2822692   .2825469    -1.00   0.318    -.8360509    .2715125
+          yeard12 |  -.0124069   .2840836    -0.04   0.965    -.5692004    .5443866
+          yeard13 |   .0623301   .2555999     0.24   0.807    -.4386364    .5632967
+          yeard14 |   .1256823   .3009156     0.42   0.676    -.4641013     .715466
+-----------------------------------------------------------------------------------
+Wald chi2(14) =   103.87                                Prob > chi2 =   0.0000
+(est5 stored)
+
+. /*column 6: PPML - dropping above mean + 2 sd */
+. eststo: xtpqml nb_acled  main_lprice_mines yeard*                                               if sd_mines == 0        & nb_acled<cutoff_nb_acled      , i(cell) cluster(country_nb) 
+note: 7650 groups (107099 obs) dropped because of all zero outcomes
+note: yeard4 dropped because of collinearity
+
+Iteration 0:   log likelihood = -33052.748  
+Iteration 1:   log likelihood =  -32748.63  
+Iteration 2:   log likelihood = -32748.008  
+Iteration 3:   log likelihood = -32748.008  
+
+Conditional fixed-effects Poisson regression    Number of obs     =     35,064
+Group variable: cell                            Number of groups  =      2,514
+
+                                                Obs per group:
+                                                              min =          2
+                                                              avg =       13.9
+                                                              max =         14
+
+                                                Wald chi2(14)     =     602.62
+Log likelihood  = -32748.008                    Prob > chi2       =     0.0000
+
+-----------------------------------------------------------------------------------
+         nb_acled |      Coef.   Std. Err.      z    P>|z|     [95% Conf. Interval]
+------------------+----------------------------------------------------------------
+main_lprice_mines |   .3010421   .0677202     4.45   0.000     .1683129    .4337713
+           yeard1 |  -.3968226   .0338773   -11.71   0.000    -.4632209   -.3304243
+           yeard2 |  -.1933032    .032075    -6.03   0.000     -.256169   -.1304373
+           yeard3 |  -.0507706   .0310049    -1.64   0.102    -.1115391    .0099978
+           yeard5 |  -.1238746   .0316206    -3.92   0.000    -.1858497   -.0618995
+           yeard6 |   .0386583   .0304173     1.27   0.204    -.0209586    .0982752
+           yeard7 |  -.3293536   .0334671    -9.84   0.000    -.3949479   -.2637593
+           yeard8 |  -.2682216   .0328529    -8.16   0.000    -.3326121    -.203831
+           yeard9 |  -.3422785   .0331164   -10.34   0.000    -.4071854   -.2773716
+          yeard10 |  -.3517307   .0335381   -10.49   0.000    -.4174641   -.2859973
+          yeard11 |  -.3411918   .0335564   -10.17   0.000    -.4069612   -.2754225
+          yeard12 |   -.036091   .0310027    -1.16   0.244    -.0968552    .0246731
+          yeard13 |  -.0557724   .0308925    -1.81   0.071    -.1163205    .0047757
+          yeard14 |  -.0083667   .0307308    -0.27   0.785     -.068598    .0518647
+-----------------------------------------------------------------------------------
+Calculating Robust Standard Errors...
+-----------------------------------------------------------------------------------
+         nb_acled |      Coef.   Std. Err.      z    P>|z|     [95% Conf. Interval]
+------------------+----------------------------------------------------------------
+nb_acled          |
+main_lprice_mines |   .3010421   .2394575     1.26   0.209    -.1682859    .7703702
+           yeard1 |  -.3968226   .1497312    -2.65   0.008    -.6902904   -.1033547
+           yeard2 |  -.1933032   .1656401    -1.17   0.243    -.5179518    .1313454
+           yeard3 |  -.0507706   .2108276    -0.24   0.810    -.4639851    .3624439
+           yeard5 |  -.1238746   .1009723    -1.23   0.220    -.3217767    .0740275
+           yeard6 |   .0386583    .191764     0.20   0.840    -.3371923    .4145089
+           yeard7 |  -.3293536   .2223124    -1.48   0.138    -.7650779    .1063706
+           yeard8 |  -.2682216   .2266265    -1.18   0.237    -.7124013    .1759581
+           yeard9 |  -.3422785   .2258394    -1.52   0.130    -.7849156    .1003587
+          yeard10 |  -.3517307   .2139699    -1.64   0.100    -.7711039    .0676425
+          yeard11 |  -.3411918   .2230869    -1.53   0.126    -.7784342    .0960505
+          yeard12 |   -.036091   .2024211    -0.18   0.858    -.4328291     .360647
+          yeard13 |  -.0557724   .2251774    -0.25   0.804    -.4971119    .3855672
+          yeard14 |  -.0083667   .2465743    -0.03   0.973    -.4916435    .4749101
+-----------------------------------------------------------------------------------
+Wald chi2(14) =    68.91                                Prob > chi2 =   0.0000
+(est6 stored)
+
+. /*column 7: log(x+1) - no cleaning */
+. eststo: my_reg2hdfespatial lnb_acled  main_lprice_mines                                 if sd_mines == 0                                                                , timevar(it) panelvar(cell) lat(latitude) lon(longitude) distcutoff(500) lagcut
+> off(100000) 
+ 
+OLS REGRESSION
+ 
+SE CORRECTED FOR CROSS-SECTIONAL SPATIAL DEPENDANCE
+             AND PANEL-SPECIFIC SERIAL CORRELATION
+ 
+DEPENDANT VARIABLE: lnb_acled
+INDEPENDANT VARIABLES:  main_lprice_mines
+ 
+SPATIAL CORRELATION KERNAL CUTOFF: 500 KM
+(NOTE: LINEAR BARTLETT WINDOW USED FOR SPATIAL KERNAL)
+SERIAL CORRELATION KERNAL CUTOFF: 100000 PERIODS
+-----------------------------------------------------------------------------------
+        lnb_acled |      Coef.   Std. Err.      t    P>|t|     [95% Conf. Interval]
+------------------+----------------------------------------------------------------
+main_lprice_mines |   .0936408   .0316838     2.96   0.003     .0315411    .1557404
+-----------------------------------------------------------------------------------
+D:\Travail\Dropbox\mining_conflict
+(est7 stored)
+
+. /*column 8: inverse hyperbolic sine - no cleaning */
+. eststo: my_reg2hdfespatial nb_acled_sine  main_lprice_mines                     if sd_mines == 0                                                                , timevar(it) panelvar(cell) lat(latitude) lon(longitude) distcutoff(500) lagcutoff(1000
+> 00) 
+ 
+OLS REGRESSION
+ 
+SE CORRECTED FOR CROSS-SECTIONAL SPATIAL DEPENDANCE
+             AND PANEL-SPECIFIC SERIAL CORRELATION
+ 
+DEPENDANT VARIABLE: nb_acled_sine
+INDEPENDANT VARIABLES:  main_lprice_mines
+ 
+SPATIAL CORRELATION KERNAL CUTOFF: 500 KM
+(NOTE: LINEAR BARTLETT WINDOW USED FOR SPATIAL KERNAL)
+SERIAL CORRELATION KERNAL CUTOFF: 100000 PERIODS
+-----------------------------------------------------------------------------------
+    nb_acled_sine |      Coef.   Std. Err.      t    P>|t|     [95% Conf. Interval]
+------------------+----------------------------------------------------------------
+main_lprice_mines |   .1208625   .0396248     3.05   0.002     .0431987    .1985263
+-----------------------------------------------------------------------------------
+D:\Travail\Dropbox\mining_conflict
+(est8 stored)
+
+. 
+. set linesize 250
+
+. esttab, mtitles drop() b(%5.3f) se(%5.3f) compress r2 starlevels(c 0.1 b 0.05 a 0.01)  se 
+
+--------------------------------------------------------------------------------------------------
+                 (1)        (2)        (3)        (4)        (5)        (6)        (7)        (8) 
+                est1       est2       est3       est4       est5       est6       est7       est8 
+--------------------------------------------------------------------------------------------------
+main                                                                                              
+main_lpr~s     0.249      0.263a     0.256c     0.195      0.440b     0.301      0.094a     0.121a
+             (0.240)    (0.100)    (0.155)    (0.283)    (0.197)    (0.239)    (0.032)    (0.040) 
+
+yeard1                                         -0.197     -0.257b    -0.397a                      
+                                              (0.164)    (0.126)    (0.150)                       
+
+yeard3                                          0.374c               -0.051                       
+                                              (0.224)               (0.211)                       
+
+yeard4                                          0.271      0.084                                  
+                                              (0.189)    (0.207)                                  
+
+yeard5                                          0.145     -0.110     -0.124                       
+                                              (0.269)    (0.153)    (0.101)                       
+
+yeard6                                          0.267      0.075      0.039                       
+                                              (0.319)    (0.285)    (0.192)                       
+
+yeard7                                          0.077     -0.327     -0.329                       
+                                              (0.311)    (0.269)    (0.222)                       
+
+yeard8                                         -0.047     -0.160     -0.268                       
+                                              (0.314)    (0.285)    (0.227)                       
+
+yeard9                                         -0.240     -0.215     -0.342                       
+                                              (0.287)    (0.236)    (0.226)                       
+
+yeard10                                        -0.220     -0.233     -0.352                       
+                                              (0.302)    (0.264)    (0.214)                       
+
+yeard11                                        -0.109     -0.282     -0.341                       
+                                              (0.307)    (0.283)    (0.223)                       
+
+yeard12                                         0.207     -0.012     -0.036                       
+                                              (0.327)    (0.284)    (0.202)                       
+
+yeard13                                         0.097      0.062     -0.056                       
+                                              (0.331)    (0.256)    (0.225)                       
+
+yeard14                                         0.320      0.126     -0.008                       
+                                              (0.463)    (0.301)    (0.247)                       
+
+yeard2                                                    -0.088     -0.193                       
+                                                         (0.101)    (0.166)                       
+--------------------------------------------------------------------------------------------------
+N             142296     141894     142163      35210      34769      35064     142296     142296 
+R-sq           0.000      0.000      0.000                                       0.000      0.000 
+--------------------------------------------------------------------------------------------------
+Standard errors in parentheses
+c p<0.1, b p<0.05, a p<0.01
+
+. esttab, mtitles drop() b(%5.3f) se(%5.3f) r2  starlevels({$^c$} 0.1 {$^b$} 0.05 {$^a$} 0.01) se tex label  title(Table 11a) 
+
+\begin{table}[htbp]\centering
+\def\sym#1{\ifmmode^{#1}\else\(^{#1}\)\fi}
+\caption{Table 11a}
+\begin{tabular}{l*{8}{c}}
+\hline\hline
+                    &\multicolumn{1}{c}{(1)}&\multicolumn{1}{c}{(2)}&\multicolumn{1}{c}{(3)}&\multicolumn{1}{c}{(4)}&\multicolumn{1}{c}{(5)}&\multicolumn{1}{c}{(6)}&\multicolumn{1}{c}{(7)}&\multicolumn{1}{c}{(8)}\\
+                    &\multicolumn{1}{c}{est1}&\multicolumn{1}{c}{est2}&\multicolumn{1}{c}{est3}&\multicolumn{1}{c}{est4}&\multicolumn{1}{c}{est5}&\multicolumn{1}{c}{est6}&\multicolumn{1}{c}{est7}&\multicolumn{1}{c}{est8}\\
+\hline
+main                &                  &                  &                  &                  &                  &                  &                  &                  \\
+$\ln$ price $\times$ mines $>0$&       0.249      &       0.263{$^a$}&       0.256{$^c$}&       0.195      &       0.440{$^b$}&       0.301      &       0.094{$^a$}&       0.121{$^a$}\\
+                    &     (0.240)      &     (0.100)      &     (0.155)      &     (0.283)      &     (0.197)      &     (0.239)      &     (0.032)      &     (0.040)      \\
+[1em]
+year==  1997.0000   &                  &                  &                  &      -0.197      &      -0.257{$^b$}&      -0.397{$^a$}&                  &                  \\
+                    &                  &                  &                  &     (0.164)      &     (0.126)      &     (0.150)      &                  &                  \\
+[1em]
+year==  1999.0000   &                  &                  &                  &       0.374{$^c$}&                  &      -0.051      &                  &                  \\
+                    &                  &                  &                  &     (0.224)      &                  &     (0.211)      &                  &                  \\
+[1em]
+year==  2000.0000   &                  &                  &                  &       0.271      &       0.084      &                  &                  &                  \\
+                    &                  &                  &                  &     (0.189)      &     (0.207)      &                  &                  &                  \\
+[1em]
+year==  2001.0000   &                  &                  &                  &       0.145      &      -0.110      &      -0.124      &                  &                  \\
+                    &                  &                  &                  &     (0.269)      &     (0.153)      &     (0.101)      &                  &                  \\
+[1em]
+year==  2002.0000   &                  &                  &                  &       0.267      &       0.075      &       0.039      &                  &                  \\
+                    &                  &                  &                  &     (0.319)      &     (0.285)      &     (0.192)      &                  &                  \\
+[1em]
+year==  2003.0000   &                  &                  &                  &       0.077      &      -0.327      &      -0.329      &                  &                  \\
+                    &                  &                  &                  &     (0.311)      &     (0.269)      &     (0.222)      &                  &                  \\
+[1em]
+year==  2004.0000   &                  &                  &                  &      -0.047      &      -0.160      &      -0.268      &                  &                  \\
+                    &                  &                  &                  &     (0.314)      &     (0.285)      &     (0.227)      &                  &                  \\
+[1em]
+year==  2005.0000   &                  &                  &                  &      -0.240      &      -0.215      &      -0.342      &                  &                  \\
+                    &                  &                  &                  &     (0.287)      &     (0.236)      &     (0.226)      &                  &                  \\
+[1em]
+year==  2006.0000   &                  &                  &                  &      -0.220      &      -0.233      &      -0.352      &                  &                  \\
+                    &                  &                  &                  &     (0.302)      &     (0.264)      &     (0.214)      &                  &                  \\
+[1em]
+year==  2007.0000   &                  &                  &                  &      -0.109      &      -0.282      &      -0.341      &                  &                  \\
+                    &                  &                  &                  &     (0.307)      &     (0.283)      &     (0.223)      &                  &                  \\
+[1em]
+year==  2008.0000   &                  &                  &                  &       0.207      &      -0.012      &      -0.036      &                  &                  \\
+                    &                  &                  &                  &     (0.327)      &     (0.284)      &     (0.202)      &                  &                  \\
+[1em]
+year==  2009.0000   &                  &                  &                  &       0.097      &       0.062      &      -0.056      &                  &                  \\
+                    &                  &                  &                  &     (0.331)      &     (0.256)      &     (0.225)      &                  &                  \\
+[1em]
+year==  2010.0000   &                  &                  &                  &       0.320      &       0.126      &      -0.008      &                  &                  \\
+                    &                  &                  &                  &     (0.463)      &     (0.301)      &     (0.247)      &                  &                  \\
+[1em]
+year==  1998.0000   &                  &                  &                  &                  &      -0.088      &      -0.193      &                  &                  \\
+                    &                  &                  &                  &                  &     (0.101)      &     (0.166)      &                  &                  \\
+\hline
+Observations        &      142296      &      141894      &      142163      &       35210      &       34769      &       35064      &      142296      &      142296      \\
+\(R^{2}\)           &       0.000      &       0.000      &       0.000      &                  &                  &                  &       0.000      &       0.000      \\
+\hline\hline
+\multicolumn{9}{l}{\footnotesize Standard errors in parentheses}\\
+\multicolumn{9}{l}{\footnotesize {$^c$} p<0.1, {$^b$} p<0.05, {$^a$} p<0.01}\\
+\end{tabular}
+\end{table}
+
+. eststo clear
+
+. 
+. ***********
+. // SAMPLE B
+. ***********
+. 
+. use "$Output_data\BCRT_baseline", clear
+
+. 
+. /* drop diamonds and tantalum for baseline */
+. drop if mainmineral == "diamond" | mainmineral == "tantalum"
+(588 observations deleted)
+
+. 
+. g nb_acled_pos = nb_acled if nb_acled>0
+(136,166 missing values generated)
+
+. tab nb_acled_pos
+
+nb_acled_po |
+          s |      Freq.     Percent        Cum.
+------------+-----------------------------------
+          1 |      3,570       44.98       44.98
+          2 |      1,493       18.81       63.80
+          3 |        733        9.24       73.03
+          4 |        440        5.54       78.58
+          5 |        299        3.77       82.35
+          6 |        237        2.99       85.33
+          7 |        180        2.27       87.60
+          8 |        133        1.68       89.28
+          9 |        103        1.30       90.57
+         10 |         81        1.02       91.60
+         11 |         68        0.86       92.45
+         12 |         64        0.81       93.26
+         13 |         56        0.71       93.96
+         14 |         39        0.49       94.46
+         15 |         26        0.33       94.78
+         16 |         23        0.29       95.07
+         17 |         23        0.29       95.36
+         18 |         30        0.38       95.74
+         19 |         25        0.32       96.06
+         20 |         23        0.29       96.35
+         21 |         20        0.25       96.60
+         22 |         16        0.20       96.80
+         23 |         17        0.21       97.01
+         24 |         10        0.13       97.14
+         25 |         14        0.18       97.32
+         26 |         14        0.18       97.49
+         27 |          8        0.10       97.59
+         28 |         20        0.25       97.85
+         29 |          8        0.10       97.95
+         30 |          9        0.11       98.06
+         31 |         11        0.14       98.20
+         32 |          6        0.08       98.27
+         33 |          2        0.03       98.30
+         34 |          7        0.09       98.39
+         35 |          6        0.08       98.46
+         36 |          8        0.10       98.56
+         37 |          3        0.04       98.60
+         38 |          4        0.05       98.65
+         39 |          5        0.06       98.71
+         40 |          4        0.05       98.77
+         41 |          3        0.04       98.80
+         42 |          5        0.06       98.87
+         43 |          4        0.05       98.92
+         44 |          2        0.03       98.94
+         45 |          2        0.03       98.97
+         46 |          2        0.03       98.99
+         47 |          1        0.01       99.00
+         48 |          5        0.06       99.07
+         49 |          2        0.03       99.09
+         50 |          3        0.04       99.13
+         52 |          3        0.04       99.17
+         54 |          3        0.04       99.21
+         55 |          1        0.01       99.22
+         56 |          1        0.01       99.23
+         57 |          5        0.06       99.29
+         58 |          2        0.03       99.32
+         59 |          1        0.01       99.33
+         61 |          2        0.03       99.36
+         62 |          1        0.01       99.37
+         63 |          1        0.01       99.38
+         64 |          3        0.04       99.42
+         65 |          1        0.01       99.43
+         66 |          3        0.04       99.47
+         67 |          1        0.01       99.48
+         69 |          1        0.01       99.50
+         70 |          1        0.01       99.51
+         71 |          1        0.01       99.52
+         72 |          2        0.03       99.55
+         75 |          2        0.03       99.57
+         77 |          1        0.01       99.58
+         78 |          2        0.03       99.61
+         80 |          1        0.01       99.62
+         82 |          1        0.01       99.63
+         84 |          2        0.03       99.66
+         85 |          1        0.01       99.67
+         87 |          1        0.01       99.68
+         89 |          1        0.01       99.70
+         90 |          1        0.01       99.71
+         92 |          1        0.01       99.72
+         93 |          1        0.01       99.74
+         95 |          1        0.01       99.75
+         96 |          1        0.01       99.76
+        102 |          1        0.01       99.77
+        106 |          1        0.01       99.79
+        108 |          1        0.01       99.80
+        111 |          1        0.01       99.81
+        113 |          2        0.03       99.84
+        120 |          1        0.01       99.85
+        134 |          1        0.01       99.86
+        143 |          1        0.01       99.87
+        145 |          1        0.01       99.89
+        153 |          1        0.01       99.90
+        164 |          1        0.01       99.91
+        168 |          1        0.01       99.92
+        183 |          1        0.01       99.94
+        212 |          1        0.01       99.95
+        264 |          1        0.01       99.96
+        293 |          1        0.01       99.97
+        334 |          1        0.01       99.99
+        709 |          1        0.01      100.00
+------------+-----------------------------------
+      Total |      7,936      100.00
+
+. egen p99_nb_acled  = pctile(nb_acled_pos), p(99)
+
+. egen p95_nb_acled  = pctile(nb_acled_pos), p(95)
+
+. egen p90_nb_acled  = pctile(nb_acled_pos), p(90)
+
+. egen mean_nb_acled = mean(nb_acled_pos)
+
+. egen sd_nb_acled   = sd(nb_acled_pos)
+
+. g cutoff_nb_acled  = mean_nb_acled+2*sd_nb_acled
+
+. 
+. /*condition for estimation with spatial lags of mines*/
+. global condition_around "(mainmineral != "diamond" & mainmineral_around != "diamond" & mainmineral != "tantalum" & mainmineral_around != "tantalum")"
+
+. 
+. g lnb_acled     = log(nb_acled+1)
+
+. g nb_acled_sine = log(nb_acled+(nb_acled^2+1)^(0.5))
+
+. 
+. g condition_around = (mainmineral != "diamond" & mainmineral_around != "diamond" & mainmineral != "tantalum" & mainmineral_around != "tantalum")
+
+. 
+. /*column 1: untransformed number of events - baseline */
+. eststo: my_reg2hdfespatial nb_acled  main_lprice_hist0                                                                                                                  , timevar(it) panelvar(cell) lat(latitude) lon(longitude) distcutoff(500) lagcut
+> off(100000) 
+ 
+OLS REGRESSION
+ 
+SE CORRECTED FOR CROSS-SECTIONAL SPATIAL DEPENDANCE
+             AND PANEL-SPECIFIC SERIAL CORRELATION
+ 
+DEPENDANT VARIABLE: nb_acled
+INDEPENDANT VARIABLES:  main_lprice_hist0
+ 
+SPATIAL CORRELATION KERNAL CUTOFF: 500 KM
+(NOTE: LINEAR BARTLETT WINDOW USED FOR SPATIAL KERNAL)
+SERIAL CORRELATION KERNAL CUTOFF: 100000 PERIODS
+-----------------------------------------------------------------------------------
+         nb_acled |      Coef.   Std. Err.      t    P>|t|     [95% Conf. Interval]
+------------------+----------------------------------------------------------------
+main_lprice_hist0 |   .2448293   .1361878     1.80   0.072    -.0220961    .5117548
+-----------------------------------------------------------------------------------
+D:\Travail\Dropbox\mining_conflict
+(est1 stored)
+
+. /*column 2: untransformed number of events - dropping top 5%*/
+. eststo: my_reg2hdfespatial nb_acled  main_lprice_hist0          if  nb_acled<p95_nb_acled &  main_lprice_mines !=.      , timevar(it) panelvar(cell) lat(latitude) lon(longitude) distcutoff(500) lagcutoff(100000) 
+ 
+OLS REGRESSION
+ 
+SE CORRECTED FOR CROSS-SECTIONAL SPATIAL DEPENDANCE
+             AND PANEL-SPECIFIC SERIAL CORRELATION
+ 
+DEPENDANT VARIABLE: nb_acled
+INDEPENDANT VARIABLES:  main_lprice_hist0
+ 
+SPATIAL CORRELATION KERNAL CUTOFF: 500 KM
+(NOTE: LINEAR BARTLETT WINDOW USED FOR SPATIAL KERNAL)
+SERIAL CORRELATION KERNAL CUTOFF: 100000 PERIODS
+-----------------------------------------------------------------------------------
+         nb_acled |      Coef.   Std. Err.      t    P>|t|     [95% Conf. Interval]
+------------------+----------------------------------------------------------------
+main_lprice_hist0 |    .215518   .0788031     2.73   0.006     .0610654    .3699706
+-----------------------------------------------------------------------------------
+D:\Travail\Dropbox\mining_conflict
+(est2 stored)
+
+. /*column 3: nb events with mine open the entire period - dropping above mean + 2 sd */
+. eststo: my_reg2hdfespatial nb_acled  main_lprice_hist0          if  nb_acled<cutoff_nb_acled & main_lprice_mines !=., timevar(it) panelvar(cell) lat(latitude) lon(longitude) distcutoff(500) lagcutoff(100000) 
+ 
+OLS REGRESSION
+ 
+SE CORRECTED FOR CROSS-SECTIONAL SPATIAL DEPENDANCE
+             AND PANEL-SPECIFIC SERIAL CORRELATION
+ 
+DEPENDANT VARIABLE: nb_acled
+INDEPENDANT VARIABLES:  main_lprice_hist0
+ 
+SPATIAL CORRELATION KERNAL CUTOFF: 500 KM
+(NOTE: LINEAR BARTLETT WINDOW USED FOR SPATIAL KERNAL)
+SERIAL CORRELATION KERNAL CUTOFF: 100000 PERIODS
+-----------------------------------------------------------------------------------
+         nb_acled |      Coef.   Std. Err.      t    P>|t|     [95% Conf. Interval]
+------------------+----------------------------------------------------------------
+main_lprice_hist0 |    .217106    .100139     2.17   0.030     .0208355    .4133766
+-----------------------------------------------------------------------------------
+D:\Travail\Dropbox\mining_conflict
+(est3 stored)
+
+. /*column 4: PPML, no cleaning */
+. eststo: xtpqml nb_acled  main_lprice_hist0 yeard*                                                                                                                               , i(cell) cluster(country_nb) 
+note: 7706 groups (107884 obs) dropped because of all zero outcomes
+note: yeard3 dropped because of collinearity
+
+Iteration 0:   log likelihood = -42298.961  
+Iteration 1:   log likelihood = -41565.155  
+Iteration 2:   log likelihood = -41560.286  
+Iteration 3:   log likelihood = -41560.286  
+
+Conditional fixed-effects Poisson regression    Number of obs     =     35,980
+Group variable: cell                            Number of groups  =      2,570
+
+                                                Obs per group:
+                                                              min =         14
+                                                              avg =       14.0
+                                                              max =         14
+
+                                                Wald chi2(14)     =    1444.83
+Log likelihood  = -41560.286                    Prob > chi2       =     0.0000
+
+-----------------------------------------------------------------------------------
+         nb_acled |      Coef.   Std. Err.      z    P>|z|     [95% Conf. Interval]
+------------------+----------------------------------------------------------------
+main_lprice_hist0 |    .253448   .0419352     6.04   0.000     .1712566    .3356394
+           yeard1 |   -.575181   .0285971   -20.11   0.000    -.6312303   -.5191316
+           yeard2 |  -.3640895   .0268141   -13.58   0.000    -.4166441   -.3115349
+           yeard4 |  -.0885027   .0248241    -3.57   0.000     -.137157   -.0398485
+           yeard5 |  -.2238408   .0257478    -8.69   0.000    -.2743056    -.173376
+           yeard6 |  -.0907368    .024833    -3.65   0.000    -.1394086   -.0420649
+           yeard7 |  -.2882242   .0262018   -11.00   0.000    -.3395788   -.2368695
+           yeard8 |  -.4219992   .0272437   -15.49   0.000    -.4753958   -.3686026
+           yeard9 |    -.60594    .028847   -21.01   0.000    -.6624792   -.5494009
+          yeard10 |  -.5993146    .028799   -20.81   0.000    -.6557595   -.5428696
+          yeard11 |  -.4829528    .027802   -17.37   0.000    -.5374437   -.4284619
+          yeard12 |  -.1496351   .0253163    -5.91   0.000    -.1992541   -.1000162
+          yeard13 |  -.2644895   .0260994   -10.13   0.000    -.3156435   -.2133356
+          yeard14 |  -.0567528   .0248195    -2.29   0.022    -.1053982   -.0081075
+-----------------------------------------------------------------------------------
+Calculating Robust Standard Errors...
+-----------------------------------------------------------------------------------
+         nb_acled |      Coef.   Std. Err.      z    P>|z|     [95% Conf. Interval]
+------------------+----------------------------------------------------------------
+nb_acled          |
+main_lprice_hist0 |    .253448   .2636252     0.96   0.336     -.263248     .770144
+           yeard1 |   -.575181   .3024624    -1.90   0.057    -1.167996    .0176344
+           yeard2 |  -.3640895   .2255907    -1.61   0.107    -.8062392    .0780602
+           yeard4 |  -.0885027   .3185013    -0.28   0.781    -.7127538    .5357483
+           yeard5 |  -.2238408   .3641199    -0.61   0.539    -.9375027    .4898211
+           yeard6 |  -.0907368   .4387199    -0.21   0.836    -.9506119    .7691384
+           yeard7 |  -.2882242   .4206347    -0.69   0.493    -1.112653    .5362048
+           yeard8 |  -.4219992   .4349627    -0.97   0.332     -1.27451     .430512
+           yeard9 |    -.60594   .4125814    -1.47   0.142    -1.414585    .2027046
+          yeard10 |  -.5993146   .4142318    -1.45   0.148    -1.411194    .2125649
+          yeard11 |  -.4829528   .4259158    -1.13   0.257    -1.317732    .3518268
+          yeard12 |  -.1496351   .4512596    -0.33   0.740    -1.034088    .7348173
+          yeard13 |  -.2644895   .4342537    -0.61   0.542    -1.115611    .5866321
+          yeard14 |  -.0567528   .5482823    -0.10   0.918    -1.131366    1.017861
+-----------------------------------------------------------------------------------
+Wald chi2(14) =   145.39                                Prob > chi2 =   0.0000
+(est4 stored)
+
+. /*column 5: PPML - dropping top 5%*/
+. eststo: xtpqml nb_acled  main_lprice_hist0 yeard*                       if nb_acled<p95_nb_acled & main_lprice_mines !=.        , i(cell) cluster(country_nb) 
+note: 7710 groups (107889 obs) dropped because of all zero outcomes
+note: yeard3 dropped because of collinearity
+
+Iteration 0:   log likelihood = -28524.363  
+Iteration 1:   log likelihood = -28269.133  
+Iteration 2:   log likelihood = -28268.179  
+Iteration 3:   log likelihood = -28268.179  
+
+Conditional fixed-effects Poisson regression    Number of obs     =     35,472
+Group variable: cell                            Number of groups  =      2,563
+
+                                                Obs per group:
+                                                              min =          3
+                                                              avg =       13.8
+                                                              max =         14
+
+                                                Wald chi2(14)     =     510.97
+Log likelihood  = -28268.179                    Prob > chi2       =     0.0000
+
+-----------------------------------------------------------------------------------
+         nb_acled |      Coef.   Std. Err.      z    P>|z|     [95% Conf. Interval]
+------------------+----------------------------------------------------------------
+main_lprice_hist0 |   .3951628   .0611496     6.46   0.000     .2753119    .5150138
+           yeard1 |  -.2692321   .0381351    -7.06   0.000    -.3439755   -.1944887
+           yeard2 |  -.0784234   .0361918    -2.17   0.030     -.149358   -.0074887
+           yeard4 |   .0901219   .0349736     2.58   0.010     .0215749    .1586688
+           yeard5 |   -.104922   .0369194    -2.84   0.004    -.1772826   -.0325613
+           yeard6 |   .0909314   .0352092     2.58   0.010     .0219226    .1599401
+           yeard7 |  -.3310681   .0389937    -8.49   0.000    -.4074944   -.2546418
+           yeard8 |  -.1675289   .0371745    -4.51   0.000    -.2403896   -.0946683
+           yeard9 |  -.2111831   .0375192    -5.63   0.000    -.2847193   -.1376468
+          yeard10 |  -.2467764   .0378642    -6.52   0.000    -.3209888    -.172564
+          yeard11 |  -.2833666   .0385145    -7.36   0.000    -.3588536   -.2078795
+          yeard12 |  -.0036295   .0360903    -0.10   0.920    -.0743653    .0671062
+          yeard13 |   .0655396   .0351397     1.87   0.062    -.0033329    .1344122
+          yeard14 |    .120936   .0345688     3.50   0.000     .0531825    .1886895
+-----------------------------------------------------------------------------------
+Calculating Robust Standard Errors...
+-----------------------------------------------------------------------------------
+         nb_acled |      Coef.   Std. Err.      z    P>|z|     [95% Conf. Interval]
+------------------+----------------------------------------------------------------
+nb_acled          |
+main_lprice_hist0 |   .3951628   .1718309     2.30   0.021     .0583805    .7319452
+           yeard1 |  -.2692321   .1256177    -2.14   0.032    -.5154383   -.0230259
+           yeard2 |  -.0784234   .1073734    -0.73   0.465    -.2888713    .1320245
+           yeard4 |   .0901219    .211372     0.43   0.670    -.3241596    .5044034
+           yeard5 |   -.104922   .1611663    -0.65   0.515    -.4208021    .2109582
+           yeard6 |   .0909314   .2957375     0.31   0.758    -.4887034    .6705662
+           yeard7 |  -.3310681   .2673938    -1.24   0.216    -.8551503    .1930141
+           yeard8 |  -.1675289   .2848213    -0.59   0.556    -.7257684    .3907105
+           yeard9 |  -.2111831   .2365994    -0.89   0.372    -.6749095    .2525433
+          yeard10 |  -.2467764   .2621495    -0.94   0.347    -.7605801    .2670272
+          yeard11 |  -.2833666    .278943    -1.02   0.310    -.8300848    .2633516
+          yeard12 |  -.0036295     .29411    -0.01   0.990    -.5800745    .5728154
+          yeard13 |   .0655396   .2565424     0.26   0.798    -.4372742    .5683535
+          yeard14 |    .120936   .3034195     0.40   0.690    -.4737554    .7156274
+-----------------------------------------------------------------------------------
+Wald chi2(14) =    98.64                                Prob > chi2 =   0.0000
+(est5 stored)
+
+. /*column 6: PPML - dropping above mean + 2 sd */
+. eststo: xtpqml nb_acled  main_lprice_hist0 yeard*                       if nb_acled<cutoff_nb_acled  & main_lprice_mines !=., i(cell) cluster(country_nb) 
+note: 7708 groups (107863 obs) dropped because of all zero outcomes
+note: yeard3 dropped because of collinearity
+
+Iteration 0:   log likelihood = -33955.893  
+Iteration 1:   log likelihood = -33620.252  
+Iteration 2:   log likelihood = -33619.443  
+Iteration 3:   log likelihood = -33619.443  
+
+Conditional fixed-effects Poisson regression    Number of obs     =     35,771
+Group variable: cell                            Number of groups  =      2,568
+
+                                                Obs per group:
+                                                              min =          2
+                                                              avg =       13.9
+                                                              max =         14
+
+                                                Wald chi2(14)     =     665.62
+Log likelihood  = -33619.443                    Prob > chi2       =     0.0000
+
+-----------------------------------------------------------------------------------
+         nb_acled |      Coef.   Std. Err.      z    P>|z|     [95% Conf. Interval]
+------------------+----------------------------------------------------------------
+main_lprice_hist0 |   .2892691   .0537369     5.38   0.000     .1839466    .3945916
+           yeard1 |  -.3547018   .0339806   -10.44   0.000    -.4213025    -.288101
+           yeard2 |  -.1337631   .0320387    -4.18   0.000    -.1965579   -.0709683
+           yeard4 |   .0670461   .0306309     2.19   0.029     .0070107    .1270816
+           yeard5 |  -.0700875   .0316541    -2.21   0.027    -.1321284   -.0080466
+           yeard6 |   .1071331   .0303458     3.53   0.000     .0476564    .1666099
+           yeard7 |  -.2646854   .0333235    -7.94   0.000    -.3299984   -.1993725
+           yeard8 |  -.2226721    .032898    -6.77   0.000    -.2871509   -.1581932
+           yeard9 |  -.2868164   .0330767    -8.67   0.000    -.3516455   -.2219873
+          yeard10 |  -.3105011   .0336288    -9.23   0.000    -.3764123   -.2445898
+          yeard11 |  -.2906838   .0335741    -8.66   0.000    -.3564877   -.2248798
+          yeard12 |   .0208922    .031057     0.67   0.501    -.0399785    .0817629
+          yeard13 |    .007953   .0308633     0.26   0.797    -.0525379    .0684439
+          yeard14 |   .0410538   .0308631     1.33   0.183    -.0194368    .1015444
+-----------------------------------------------------------------------------------
+Calculating Robust Standard Errors...
+-----------------------------------------------------------------------------------
+         nb_acled |      Coef.   Std. Err.      z    P>|z|     [95% Conf. Interval]
+------------------+----------------------------------------------------------------
+nb_acled          |
+main_lprice_hist0 |   .2892691   .1939297     1.49   0.136    -.0908262    .6693644
+           yeard1 |  -.3547018   .1490344    -2.38   0.017    -.6468038   -.0625997
+           yeard2 |  -.1337631   .1360574    -0.98   0.326    -.4004307    .1329045
+           yeard4 |   .0670461   .2184802     0.31   0.759    -.3611673    .4952595
+           yeard5 |  -.0700875   .1682661    -0.42   0.677    -.3998829     .259708
+           yeard6 |   .1071331   .3102538     0.35   0.730    -.5009531    .7152193
+           yeard7 |  -.2646854   .2732204    -0.97   0.333    -.8001875    .2708166
+           yeard8 |  -.2226721   .3095009    -0.72   0.472    -.8292827    .3839385
+           yeard9 |  -.2868164   .2553835    -1.12   0.261     -.787359    .2137261
+          yeard10 |  -.3105011   .2673463    -1.16   0.245    -.8344903    .2134881
+          yeard11 |  -.2906838   .2984904    -0.97   0.330    -.8757142    .2943467
+          yeard12 |   .0208922    .320848     0.07   0.948    -.6079584    .6497428
+          yeard13 |    .007953   .2658915     0.03   0.976    -.5131848    .5290909
+          yeard14 |   .0410538    .333556     0.12   0.902     -.612704    .6948116
+-----------------------------------------------------------------------------------
+Wald chi2(14) =    80.61                                Prob > chi2 =   0.0000
+(est6 stored)
+
+. /*column 7: log(x+1) - no cleaning */
+. eststo: my_reg2hdfespatial lnb_acled  main_lprice_hist0                                                                                                                 , timevar(it) panelvar(cell) lat(latitude) lon(longitude) distcutoff(500) lagcut
+> off(100000) 
+ 
+OLS REGRESSION
+ 
+SE CORRECTED FOR CROSS-SECTIONAL SPATIAL DEPENDANCE
+             AND PANEL-SPECIFIC SERIAL CORRELATION
+ 
+DEPENDANT VARIABLE: lnb_acled
+INDEPENDANT VARIABLES:  main_lprice_hist0
+ 
+SPATIAL CORRELATION KERNAL CUTOFF: 500 KM
+(NOTE: LINEAR BARTLETT WINDOW USED FOR SPATIAL KERNAL)
+SERIAL CORRELATION KERNAL CUTOFF: 100000 PERIODS
+-----------------------------------------------------------------------------------
+        lnb_acled |      Coef.   Std. Err.      t    P>|t|     [95% Conf. Interval]
+------------------+----------------------------------------------------------------
+main_lprice_hist0 |   .0701746   .0224729     3.12   0.002     .0261281    .1142211
+-----------------------------------------------------------------------------------
+D:\Travail\Dropbox\mining_conflict
+(est7 stored)
+
+. /*column 8: inverse hyperbolic sine - no cleaning */
+. eststo: my_reg2hdfespatial nb_acled_sine  main_lprice_hist0                                                                                                     , timevar(it) panelvar(cell) lat(latitude) lon(longitude) distcutoff(500) lagcutoff(1000
+> 00) 
+ 
+OLS REGRESSION
+ 
+SE CORRECTED FOR CROSS-SECTIONAL SPATIAL DEPENDANCE
+             AND PANEL-SPECIFIC SERIAL CORRELATION
+ 
+DEPENDANT VARIABLE: nb_acled_sine
+INDEPENDANT VARIABLES:  main_lprice_hist0
+ 
+SPATIAL CORRELATION KERNAL CUTOFF: 500 KM
+(NOTE: LINEAR BARTLETT WINDOW USED FOR SPATIAL KERNAL)
+SERIAL CORRELATION KERNAL CUTOFF: 100000 PERIODS
+-----------------------------------------------------------------------------------
+    nb_acled_sine |      Coef.   Std. Err.      t    P>|t|     [95% Conf. Interval]
+------------------+----------------------------------------------------------------
+main_lprice_hist0 |   .0894887   .0281723     3.18   0.001     .0342715    .1447059
+-----------------------------------------------------------------------------------
+D:\Travail\Dropbox\mining_conflict
+(est8 stored)
+
+. 
+. set linesize 250
+
+. esttab, mtitles drop() b(%5.3f) se(%5.3f) compress r2 starlevels(c 0.1 b 0.05 a 0.01)  se 
+
+--------------------------------------------------------------------------------------------------
+                 (1)        (2)        (3)        (4)        (5)        (6)        (7)        (8) 
+                est1       est2       est3       est4       est5       est6       est7       est8 
+--------------------------------------------------------------------------------------------------
+main                                                                                              
+main_lpr~0     0.245c     0.216a     0.217b     0.253      0.395b     0.289      0.070a     0.089a
+             (0.136)    (0.079)    (0.100)    (0.264)    (0.172)    (0.194)    (0.022)    (0.028) 
+
+yeard1                                         -0.575c    -0.269b    -0.355b                      
+                                              (0.302)    (0.126)    (0.149)                       
+
+yeard2                                         -0.364     -0.078     -0.134                       
+                                              (0.226)    (0.107)    (0.136)                       
+
+yeard4                                         -0.089      0.090      0.067                       
+                                              (0.319)    (0.211)    (0.218)                       
+
+yeard5                                         -0.224     -0.105     -0.070                       
+                                              (0.364)    (0.161)    (0.168)                       
+
+yeard6                                         -0.091      0.091      0.107                       
+                                              (0.439)    (0.296)    (0.310)                       
+
+yeard7                                         -0.288     -0.331     -0.265                       
+                                              (0.421)    (0.267)    (0.273)                       
+
+yeard8                                         -0.422     -0.168     -0.223                       
+                                              (0.435)    (0.285)    (0.310)                       
+
+yeard9                                         -0.606     -0.211     -0.287                       
+                                              (0.413)    (0.237)    (0.255)                       
+
+yeard10                                        -0.599     -0.247     -0.311                       
+                                              (0.414)    (0.262)    (0.267)                       
+
+yeard11                                        -0.483     -0.283     -0.291                       
+                                              (0.426)    (0.279)    (0.298)                       
+
+yeard12                                        -0.150     -0.004      0.021                       
+                                              (0.451)    (0.294)    (0.321)                       
+
+yeard13                                        -0.264      0.066      0.008                       
+                                              (0.434)    (0.257)    (0.266)                       
+
+yeard14                                        -0.057      0.121      0.041                       
+                                              (0.548)    (0.303)    (0.334)                       
+--------------------------------------------------------------------------------------------------
+N             143864     143361     143634      35980      35472      35771     143864     143864 
+R-sq           0.000      0.000      0.000                                       0.000      0.000 
+--------------------------------------------------------------------------------------------------
+Standard errors in parentheses
+c p<0.1, b p<0.05, a p<0.01
+
+. esttab, mtitles drop() b(%5.3f) se(%5.3f) r2  starlevels({$^c$} 0.1 {$^b$} 0.05 {$^a$} 0.01) se tex label  title(Table 11b) 
+
+\begin{table}[htbp]\centering
+\def\sym#1{\ifmmode^{#1}\else\(^{#1}\)\fi}
+\caption{Table 11b}
+\begin{tabular}{l*{8}{c}}
+\hline\hline
+                    &\multicolumn{1}{c}{(1)}&\multicolumn{1}{c}{(2)}&\multicolumn{1}{c}{(3)}&\multicolumn{1}{c}{(4)}&\multicolumn{1}{c}{(5)}&\multicolumn{1}{c}{(6)}&\multicolumn{1}{c}{(7)}&\multicolumn{1}{c}{(8)}\\
+                    &\multicolumn{1}{c}{est1}&\multicolumn{1}{c}{est2}&\multicolumn{1}{c}{est3}&\multicolumn{1}{c}{est4}&\multicolumn{1}{c}{est5}&\multicolumn{1}{c}{est6}&\multicolumn{1}{c}{est7}&\multicolumn{1}{c}{est8}\\
+\hline
+main                &                  &                  &                  &                  &                  &                  &                  &                  \\
+$\ln$ price $\times$ mines $>0$ (ever)&       0.245{$^c$}&       0.216{$^a$}&       0.217{$^b$}&       0.253      &       0.395{$^b$}&       0.289      &       0.070{$^a$}&       0.089{$^a$}\\
+                    &     (0.136)      &     (0.079)      &     (0.100)      &     (0.264)      &     (0.172)      &     (0.194)      &     (0.022)      &     (0.028)      \\
+[1em]
+year==  1997.0000   &                  &                  &                  &      -0.575{$^c$}&      -0.269{$^b$}&      -0.355{$^b$}&                  &                  \\
+                    &                  &                  &                  &     (0.302)      &     (0.126)      &     (0.149)      &                  &                  \\
+[1em]
+year==  1998.0000   &                  &                  &                  &      -0.364      &      -0.078      &      -0.134      &                  &                  \\
+                    &                  &                  &                  &     (0.226)      &     (0.107)      &     (0.136)      &                  &                  \\
+[1em]
+year==  2000.0000   &                  &                  &                  &      -0.089      &       0.090      &       0.067      &                  &                  \\
+                    &                  &                  &                  &     (0.319)      &     (0.211)      &     (0.218)      &                  &                  \\
+[1em]
+year==  2001.0000   &                  &                  &                  &      -0.224      &      -0.105      &      -0.070      &                  &                  \\
+                    &                  &                  &                  &     (0.364)      &     (0.161)      &     (0.168)      &                  &                  \\
+[1em]
+year==  2002.0000   &                  &                  &                  &      -0.091      &       0.091      &       0.107      &                  &                  \\
+                    &                  &                  &                  &     (0.439)      &     (0.296)      &     (0.310)      &                  &                  \\
+[1em]
+year==  2003.0000   &                  &                  &                  &      -0.288      &      -0.331      &      -0.265      &                  &                  \\
+                    &                  &                  &                  &     (0.421)      &     (0.267)      &     (0.273)      &                  &                  \\
+[1em]
+year==  2004.0000   &                  &                  &                  &      -0.422      &      -0.168      &      -0.223      &                  &                  \\
+                    &                  &                  &                  &     (0.435)      &     (0.285)      &     (0.310)      &                  &                  \\
+[1em]
+year==  2005.0000   &                  &                  &                  &      -0.606      &      -0.211      &      -0.287      &                  &                  \\
+                    &                  &                  &                  &     (0.413)      &     (0.237)      &     (0.255)      &                  &                  \\
+[1em]
+year==  2006.0000   &                  &                  &                  &      -0.599      &      -0.247      &      -0.311      &                  &                  \\
+                    &                  &                  &                  &     (0.414)      &     (0.262)      &     (0.267)      &                  &                  \\
+[1em]
+year==  2007.0000   &                  &                  &                  &      -0.483      &      -0.283      &      -0.291      &                  &                  \\
+                    &                  &                  &                  &     (0.426)      &     (0.279)      &     (0.298)      &                  &                  \\
+[1em]
+year==  2008.0000   &                  &                  &                  &      -0.150      &      -0.004      &       0.021      &                  &                  \\
+                    &                  &                  &                  &     (0.451)      &     (0.294)      &     (0.321)      &                  &                  \\
+[1em]
+year==  2009.0000   &                  &                  &                  &      -0.264      &       0.066      &       0.008      &                  &                  \\
+                    &                  &                  &                  &     (0.434)      &     (0.257)      &     (0.266)      &                  &                  \\
+[1em]
+year==  2010.0000   &                  &                  &                  &      -0.057      &       0.121      &       0.041      &                  &                  \\
+                    &                  &                  &                  &     (0.548)      &     (0.303)      &     (0.334)      &                  &                  \\
+\hline
+Observations        &      143864      &      143361      &      143634      &       35980      &       35472      &       35771      &      143864      &      143864      \\
+\(R^{2}\)           &       0.000      &       0.000      &       0.000      &                  &                  &                  &       0.000      &       0.000      \\
+\hline\hline
+\multicolumn{9}{l}{\footnotesize Standard errors in parentheses}\\
+\multicolumn{9}{l}{\footnotesize {$^c$} p<0.1, {$^b$} p<0.05, {$^a$} p<0.01}\\
+\end{tabular}
+\end{table}
+
+. eststo clear
+
+. 
+. ****************************************
+. /* WITH 1*1 degree cells (unreported) */
+. ****************************************
+. 
+. use "$Output_data\BCRT_baseline_1_1", clear
+
+. 
+. /* drop diamonds and tantalum for baseline */
+. drop if mainmineral == "diamond" | mainmineral == "tantalum"
+(462 observations deleted)
+
+. 
+. g nb_acled_pos = nb_acled if nb_acled>0
+(31,828 missing values generated)
+
+. tab nb_acled_pos
+
+nb_acled_po |
+          s |      Freq.     Percent        Cum.
+------------+-----------------------------------
+          1 |      2,373       42.31       42.31
+          2 |      1,042       18.58       60.90
+          3 |        515        9.18       70.08
+          4 |        341        6.08       76.16
+          5 |        239        4.26       80.42
+          6 |        180        3.21       83.63
+          7 |        139        2.48       86.11
+          8 |        108        1.93       88.03
+          9 |         78        1.39       89.43
+         10 |         60        1.07       90.50
+         11 |         47        0.84       91.33
+         12 |         47        0.84       92.17
+         13 |         45        0.80       92.97
+         14 |         34        0.61       93.58
+         15 |         21        0.37       93.96
+         16 |         21        0.37       94.33
+         17 |         17        0.30       94.63
+         18 |         23        0.41       95.04
+         19 |         20        0.36       95.40
+         20 |         17        0.30       95.70
+         21 |         15        0.27       95.97
+         22 |         10        0.18       96.15
+         23 |         12        0.21       96.36
+         24 |          8        0.14       96.50
+         25 |         11        0.20       96.70
+         26 |         11        0.20       96.90
+         27 |          6        0.11       97.00
+         28 |         19        0.34       97.34
+         29 |          7        0.12       97.47
+         30 |          7        0.12       97.59
+         31 |         10        0.18       97.77
+         32 |          5        0.09       97.86
+         33 |          2        0.04       97.90
+         34 |          6        0.11       98.00
+         35 |          2        0.04       98.04
+         36 |          8        0.14       98.18
+         37 |          2        0.04       98.22
+         38 |          3        0.05       98.27
+         39 |          4        0.07       98.34
+         40 |          4        0.07       98.41
+         41 |          3        0.05       98.47
+         42 |          3        0.05       98.52
+         43 |          1        0.02       98.54
+         44 |          2        0.04       98.57
+         45 |          2        0.04       98.61
+         46 |          2        0.04       98.64
+         47 |          1        0.02       98.66
+         48 |          4        0.07       98.73
+         49 |          2        0.04       98.77
+         50 |          2        0.04       98.81
+         52 |          3        0.05       98.86
+         54 |          3        0.05       98.91
+         55 |          1        0.02       98.93
+         56 |          1        0.02       98.95
+         57 |          5        0.09       99.04
+         58 |          2        0.04       99.07
+         59 |          1        0.02       99.09
+         61 |          1        0.02       99.11
+         62 |          1        0.02       99.13
+         63 |          1        0.02       99.14
+         64 |          3        0.05       99.20
+         65 |          1        0.02       99.22
+         66 |          3        0.05       99.27
+         67 |          1        0.02       99.29
+         69 |          1        0.02       99.30
+         70 |          1        0.02       99.32
+         71 |          1        0.02       99.34
+         72 |          2        0.04       99.38
+         75 |          2        0.04       99.41
+         77 |          1        0.02       99.43
+         78 |          2        0.04       99.47
+         80 |          1        0.02       99.48
+         84 |          2        0.04       99.52
+         85 |          1        0.02       99.54
+         87 |          1        0.02       99.55
+         89 |          1        0.02       99.57
+         90 |          1        0.02       99.59
+         92 |          1        0.02       99.61
+         93 |          1        0.02       99.63
+         95 |          1        0.02       99.64
+         96 |          1        0.02       99.66
+        102 |          1        0.02       99.68
+        106 |          1        0.02       99.70
+        108 |          1        0.02       99.71
+        111 |          1        0.02       99.73
+        113 |          2        0.04       99.77
+        120 |          1        0.02       99.79
+        134 |          1        0.02       99.80
+        143 |          1        0.02       99.82
+        145 |          1        0.02       99.84
+        153 |          1        0.02       99.86
+        164 |          1        0.02       99.88
+        168 |          1        0.02       99.89
+        183 |          1        0.02       99.91
+        212 |          1        0.02       99.93
+        264 |          1        0.02       99.95
+        293 |          1        0.02       99.96
+        334 |          1        0.02       99.98
+        709 |          1        0.02      100.00
+------------+-----------------------------------
+      Total |      5,608      100.00
+
+. egen p99_nb_acled  = pctile(nb_acled_pos), p(99)
+
+. egen p95_nb_acled  = pctile(nb_acled_pos), p(95)
+
+. egen p90_nb_acled  = pctile(nb_acled_pos), p(90)
+
+. egen mean_nb_acled = mean(nb_acled_pos)
+
+. egen sd_nb_acled   = sd(nb_acled_pos)
+
+. g cutoff_nb_acled  = mean_nb_acled+2*sd_nb_acled
+
+. 
+. tab year, gen(yeard)
+
+       Year |      Freq.     Percent        Cum.
+------------+-----------------------------------
+       1997 |      2,674        7.14        7.14
+       1998 |      2,674        7.14       14.29
+       1999 |      2,674        7.14       21.43
+       2000 |      2,674        7.14       28.57
+       2001 |      2,674        7.14       35.71
+       2002 |      2,674        7.14       42.86
+       2003 |      2,674        7.14       50.00
+       2004 |      2,674        7.14       57.14
+       2005 |      2,674        7.14       64.29
+       2006 |      2,674        7.14       71.43
+       2007 |      2,674        7.14       78.57
+       2008 |      2,674        7.14       85.71
+       2009 |      2,674        7.14       92.86
+       2010 |      2,674        7.14      100.00
+------------+-----------------------------------
+      Total |     37,436      100.00
+
+. 
+. /*condition for estimation with spatial lags of mines*/
+. 
+. g lnb_acled     = log(nb_acled+1)
+
+. g nb_acled_sine = log(nb_acled+(nb_acled^2+1)^(0.5))
+
+. 
+. /*column 1: untransformed number of events - baseline */
+. eststo: my_reg2hdfespatial nb_acled  main_lprice_mines                                  if sd_mines == 0                                                                , timevar(it) panelvar(cell) lat(latitude) lon(longitude) distcutoff(500) lagcut
+> off(100000) 
+ 
+OLS REGRESSION
+ 
+SE CORRECTED FOR CROSS-SECTIONAL SPATIAL DEPENDANCE
+             AND PANEL-SPECIFIC SERIAL CORRELATION
+ 
+DEPENDANT VARIABLE: nb_acled
+INDEPENDANT VARIABLES:  main_lprice_mines
+ 
+SPATIAL CORRELATION KERNAL CUTOFF: 500 KM
+(NOTE: LINEAR BARTLETT WINDOW USED FOR SPATIAL KERNAL)
+SERIAL CORRELATION KERNAL CUTOFF: 100000 PERIODS
+-----------------------------------------------------------------------------------
+         nb_acled |      Coef.   Std. Err.      t    P>|t|     [95% Conf. Interval]
+------------------+----------------------------------------------------------------
+main_lprice_mines |   .6542833   .2381199     2.75   0.006     .1875612    1.121005
+-----------------------------------------------------------------------------------
+D:\Travail\Dropbox\mining_conflict
+(est1 stored)
+
+. /*column 2: untransformed number of events - dropping top 5%*/
+. eststo: my_reg2hdfespatial nb_acled  main_lprice_mines                                  if sd_mines == 0        & nb_acled<p95_nb_acled         , timevar(it) panelvar(cell) lat(latitude) lon(longitude) distcutoff(500) lagcutoff(100000) 
+ 
+OLS REGRESSION
+ 
+SE CORRECTED FOR CROSS-SECTIONAL SPATIAL DEPENDANCE
+             AND PANEL-SPECIFIC SERIAL CORRELATION
+ 
+DEPENDANT VARIABLE: nb_acled
+INDEPENDANT VARIABLES:  main_lprice_mines
+ 
+SPATIAL CORRELATION KERNAL CUTOFF: 500 KM
+(NOTE: LINEAR BARTLETT WINDOW USED FOR SPATIAL KERNAL)
+SERIAL CORRELATION KERNAL CUTOFF: 100000 PERIODS
+-----------------------------------------------------------------------------------
+         nb_acled |      Coef.   Std. Err.      t    P>|t|     [95% Conf. Interval]
+------------------+----------------------------------------------------------------
+main_lprice_mines |   .5505999   .1994962     2.76   0.006     .1595813    .9416186
+-----------------------------------------------------------------------------------
+D:\Travail\Dropbox\mining_conflict
+(est2 stored)
+
+. /*column 3: nb events with mine open the entire period - dropping above mean + 2 sd */
+. eststo: my_reg2hdfespatial nb_acled  main_lprice_mines                                  if sd_mines == 0        & nb_acled<cutoff_nb_acled      , timevar(it) panelvar(cell) lat(latitude) lon(longitude) distcutoff(500) lagcutoff(100000) 
+ 
+OLS REGRESSION
+ 
+SE CORRECTED FOR CROSS-SECTIONAL SPATIAL DEPENDANCE
+             AND PANEL-SPECIFIC SERIAL CORRELATION
+ 
+DEPENDANT VARIABLE: nb_acled
+INDEPENDANT VARIABLES:  main_lprice_mines
+ 
+SPATIAL CORRELATION KERNAL CUTOFF: 500 KM
+(NOTE: LINEAR BARTLETT WINDOW USED FOR SPATIAL KERNAL)
+SERIAL CORRELATION KERNAL CUTOFF: 100000 PERIODS
+-----------------------------------------------------------------------------------
+         nb_acled |      Coef.   Std. Err.      t    P>|t|     [95% Conf. Interval]
+------------------+----------------------------------------------------------------
+main_lprice_mines |   .7482896   .2432723     3.08   0.002     .2714685    1.225111
+-----------------------------------------------------------------------------------
+D:\Travail\Dropbox\mining_conflict
+(est3 stored)
+
+. /*column 4: PPML, no cleaning */
+. eststo: xtpqml nb_acled  main_lprice_mines yeard*                                               if sd_mines == 0                                                                , i(cell) cluster(country_nb) 
+note: 1348 groups (18872 obs) dropped because of all zero outcomes
+note: yeard14 dropped because of collinearity
+
+Iteration 0:   log likelihood = -27010.729  
+Iteration 1:   log likelihood = -26455.564  
+Iteration 2:   log likelihood = -26448.944  
+Iteration 3:   log likelihood = -26448.943  
+
+Conditional fixed-effects Poisson regression    Number of obs     =     17,248
+Group variable: cell                            Number of groups  =      1,232
+
+                                                Obs per group:
+                                                              min =         14
+                                                              avg =       14.0
+                                                              max =         14
+
+                                                Wald chi2(14)     =    1129.15
+Log likelihood  = -26448.943                    Prob > chi2       =     0.0000
+
+-----------------------------------------------------------------------------------
+         nb_acled |      Coef.   Std. Err.      z    P>|z|     [95% Conf. Interval]
+------------------+----------------------------------------------------------------
+main_lprice_mines |   .2273886   .0442654     5.14   0.000       .14063    .3141471
+           yeard1 |  -.5760428   .0327898   -17.57   0.000    -.6403097   -.5117759
+           yeard2 |  -.4527432   .0316255   -14.32   0.000    -.5147279   -.3907584
+           yeard3 |   .0055983   .0278948     0.20   0.841    -.0490745    .0602711
+           yeard4 |  -.1655428   .0290905    -5.69   0.000    -.2225592   -.1085265
+           yeard5 |   -.308335   .0302788   -10.18   0.000    -.3676804   -.2489897
+           yeard6 |  -.1999607   .0293116    -6.82   0.000    -.2574104    -.142511
+           yeard7 |  -.2959742   .0300448    -9.85   0.000    -.3548609   -.2370874
+           yeard8 |  -.4256012   .0311418   -13.67   0.000     -.486638   -.3645644
+           yeard9 |  -.6343945   .0332072   -19.10   0.000    -.6994794   -.5693097
+          yeard10 |  -.5753691    .032409   -17.75   0.000    -.6388896   -.5118486
+          yeard11 |  -.5249959    .031824   -16.50   0.000    -.5873697    -.462622
+          yeard12 |  -.2165648   .0289845    -7.47   0.000    -.2733734   -.1597561
+          yeard13 |  -.3074302   .0297585   -10.33   0.000    -.3657557   -.2491047
+-----------------------------------------------------------------------------------
+Calculating Robust Standard Errors...
+-----------------------------------------------------------------------------------
+         nb_acled |      Coef.   Std. Err.      z    P>|z|     [95% Conf. Interval]
+------------------+----------------------------------------------------------------
+nb_acled          |
+main_lprice_mines |   .2273886   .2890855     0.79   0.432    -.3392086    .7939857
+           yeard1 |  -.5760428   .4923118    -1.17   0.242    -1.540956    .3888706
+           yeard2 |  -.4527432   .5005529    -0.90   0.366    -1.433809    .5283225
+           yeard3 |   .0055983   .5954973     0.01   0.992    -1.161555    1.172751
+           yeard4 |  -.1655428   .4580743    -0.36   0.718    -1.063352    .7322663
+           yeard5 |   -.308335   .4918309    -0.63   0.531    -1.272306    .6556359
+           yeard6 |  -.1999607    .467068    -0.43   0.669    -1.115397    .7154757
+           yeard7 |  -.2959742    .303153    -0.98   0.329    -.8901432    .2981948
+           yeard8 |  -.4256012   .2994927    -1.42   0.155    -1.012596    .1613937
+           yeard9 |  -.6343945   .4725322    -1.34   0.179    -1.560541    .2917515
+          yeard10 |  -.5753691   .3081419    -1.87   0.062    -1.179316    .0285779
+          yeard11 |  -.5249959   .3233281    -1.62   0.104    -1.158707    .1087155
+          yeard12 |  -.2165648   .3716104    -0.58   0.560    -.9449077    .5117781
+          yeard13 |  -.3074302   .2287605    -1.34   0.179    -.7557925    .1409321
+-----------------------------------------------------------------------------------
+Wald chi2(14) =   117.79                                Prob > chi2 =   0.0000
+(est4 stored)
+
+. /*column 5: PPML - dropping top 5%*/
+. eststo: xtpqml nb_acled  main_lprice_mines yeard*                                               if sd_mines == 0        & nb_acled<p95_nb_acled         , i(cell) cluster(country_nb) 
+note: 1 group (1 obs) dropped because of only one obs per group
+note: 1348 groups (18872 obs) dropped because of all zero outcomes
+note: yeard12 dropped because of collinearity
+
+Iteration 0:   log likelihood = -17434.937  
+Iteration 1:   log likelihood = -17252.924  
+Iteration 2:   log likelihood = -17251.719  
+Iteration 3:   log likelihood = -17251.719  
+
+Conditional fixed-effects Poisson regression    Number of obs     =     16,975
+Group variable: cell                            Number of groups  =      1,229
+
+                                                Obs per group:
+                                                              min =          3
+                                                              avg =       13.8
+                                                              max =         14
+
+                                                Wald chi2(14)     =     364.78
+Log likelihood  = -17251.719                    Prob > chi2       =     0.0000
+
+-----------------------------------------------------------------------------------
+         nb_acled |      Coef.   Std. Err.      z    P>|z|     [95% Conf. Interval]
+------------------+----------------------------------------------------------------
+main_lprice_mines |   .4385224   .0651845     6.73   0.000     .3107632    .5662815
+           yeard1 |  -.1667359   .0465981    -3.58   0.000    -.2580664   -.0754054
+           yeard2 |   .0153759   .0443323     0.35   0.729    -.0715139    .1022657
+           yeard3 |   .1224089   .0434065     2.82   0.005     .0373337    .2074841
+           yeard4 |   .1693518   .0431177     3.93   0.000     .0848425     .253861
+           yeard5 |   .0627032   .0441493     1.42   0.156    -.0238279    .1492343
+           yeard6 |   .0665905   .0444834     1.50   0.134    -.0205955    .1537764
+           yeard7 |  -.2706356   .0481479    -5.62   0.000    -.3650038   -.1762674
+           yeard8 |  -.0434476   .0449777    -0.97   0.334    -.1316023    .0447072
+           yeard9 |  -.1088443   .0454964    -2.39   0.017    -.1980157    -.019673
+          yeard10 |   -.113581   .0455797    -2.49   0.013    -.2029156   -.0242464
+          yeard11 |  -.2393227    .047115    -5.08   0.000    -.3316665    -.146979
+          yeard13 |   .1815783   .0423614     4.29   0.000     .0985515     .264605
+          yeard14 |   .2086081   .0419275     4.98   0.000     .1264316    .2907845
+-----------------------------------------------------------------------------------
+Calculating Robust Standard Errors...
+-----------------------------------------------------------------------------------
+         nb_acled |      Coef.   Std. Err.      z    P>|z|     [95% Conf. Interval]
+------------------+----------------------------------------------------------------
+nb_acled          |
+main_lprice_mines |   .4385224   .1543342     2.84   0.004     .1360329    .7410119
+           yeard1 |  -.1667359   .2260052    -0.74   0.461    -.6096981    .2762262
+           yeard2 |   .0153759   .2528118     0.06   0.952    -.4801262     .510878
+           yeard3 |   .1224089   .2774406     0.44   0.659    -.4213648    .6661826
+           yeard4 |   .1693518   .1726356     0.98   0.327    -.1690079    .5077114
+           yeard5 |   .0627032    .203627     0.31   0.758    -.3363984    .4618047
+           yeard6 |   .0665905   .1508148     0.44   0.659    -.2290012    .3621821
+           yeard7 |  -.2706356   .1423912    -1.90   0.057    -.5497172     .008446
+           yeard8 |  -.0434476   .1042235    -0.42   0.677    -.2477219    .1608267
+           yeard9 |  -.1088443   .1657796    -0.66   0.511    -.4337665    .2160778
+          yeard10 |   -.113581   .1192753    -0.95   0.341    -.3473563    .1201942
+          yeard11 |  -.2393227   .1259565    -1.90   0.057    -.4861929    .0075474
+          yeard13 |   .1815783   .1306348     1.39   0.165    -.0744613    .4376178
+          yeard14 |   .2086081   .1101147     1.89   0.058    -.0072127    .4244289
+-----------------------------------------------------------------------------------
+Wald chi2(14) =    83.95                                Prob > chi2 =   0.0000
+(est5 stored)
+
+. /*column 6: PPML - dropping above mean + 2 sd */
+. eststo: xtpqml nb_acled  main_lprice_mines yeard*                                               if sd_mines == 0        & nb_acled<cutoff_nb_acled      , i(cell) cluster(country_nb) 
+note: 1348 groups (18872 obs) dropped because of all zero outcomes
+note: yeard4 dropped because of collinearity
+
+Iteration 0:   log likelihood = -20708.164  
+Iteration 1:   log likelihood = -20500.322  
+Iteration 2:   log likelihood = -20499.824  
+Iteration 3:   log likelihood = -20499.824  
+
+Conditional fixed-effects Poisson regression    Number of obs     =     17,158
+Group variable: cell                            Number of groups  =      1,232
+
+                                                Obs per group:
+                                                              min =          2
+                                                              avg =       13.9
+                                                              max =         14
+
+                                                Wald chi2(14)     =     418.27
+Log likelihood  = -20499.824                    Prob > chi2       =     0.0000
+
+-----------------------------------------------------------------------------------
+         nb_acled |      Coef.   Std. Err.      z    P>|z|     [95% Conf. Interval]
+------------------+----------------------------------------------------------------
+main_lprice_mines |   .3844886   .0564368     6.81   0.000     .2738745    .4951027
+           yeard1 |  -.2726266   .0388407    -7.02   0.000    -.3487529   -.1965003
+           yeard2 |  -.2020772   .0384562    -5.25   0.000      -.27745   -.1267045
+           yeard3 |   .0004295   .0364595     0.01   0.991    -.0710299    .0718889
+           yeard5 |  -.1236205   .0375477    -3.29   0.001    -.1972127   -.0500283
+           yeard6 |   .0365581   .0362667     1.01   0.313    -.0345233    .1076394
+           yeard7 |  -.2809682   .0393128    -7.15   0.000    -.3580198   -.2039166
+           yeard8 |  -.2217518   .0386284    -5.74   0.000    -.2974622   -.1460415
+           yeard9 |  -.2885262   .0387458    -7.45   0.000    -.3644665   -.2125859
+          yeard10 |  -.2537528   .0389869    -6.51   0.000    -.3301657   -.1773399
+          yeard11 |  -.3260159   .0398159    -8.19   0.000    -.4040536   -.2479781
+          yeard12 |  -.0280739   .0368937    -0.76   0.447    -.1003843    .0442364
+          yeard13 |   .0269143   .0358848     0.75   0.453    -.0434186    .0972473
+          yeard14 |   .0458301   .0363029     1.26   0.207    -.0253222    .1169825
+-----------------------------------------------------------------------------------
+Calculating Robust Standard Errors...
+-----------------------------------------------------------------------------------
+         nb_acled |      Coef.   Std. Err.      z    P>|z|     [95% Conf. Interval]
+------------------+----------------------------------------------------------------
+nb_acled          |
+main_lprice_mines |   .3844886   .1975039     1.95   0.052    -.0026119    .7715892
+           yeard1 |  -.2726266   .1430377    -1.91   0.057    -.5529753    .0077222
+           yeard2 |  -.2020772   .1635183    -1.24   0.217    -.5225673    .1184128
+           yeard3 |   .0004295   .1891727     0.00   0.998    -.3703422    .3712012
+           yeard5 |  -.1236205   .0802041    -1.54   0.123    -.2808178    .0335767
+           yeard6 |   .0365581   .1599464     0.23   0.819    -.2769311    .3500472
+           yeard7 |  -.2809682   .1869001    -1.50   0.133    -.6472857    .0853493
+           yeard8 |  -.2217518   .2024203    -1.10   0.273    -.6184883    .1749846
+           yeard9 |  -.2885262   .1917294    -1.50   0.132    -.6643088    .0872565
+          yeard10 |  -.2537528   .2012864    -1.26   0.207    -.6482669    .1407613
+          yeard11 |  -.3260159   .2358563    -1.38   0.167    -.7882858    .1362541
+          yeard12 |  -.0280739   .1880235    -0.15   0.881    -.3965933    .3404454
+          yeard13 |   .0269143   .1907651     0.14   0.888    -.3469785    .4008071
+          yeard14 |   .0458301   .2352459     0.19   0.846    -.4152433    .5069036
+-----------------------------------------------------------------------------------
+Wald chi2(14) =    85.73                                Prob > chi2 =   0.0000
+(est6 stored)
+
+. /*column 7: log(x+1) - no cleaning */
+. eststo: my_reg2hdfespatial lnb_acled  main_lprice_mines                                 if sd_mines == 0                                                                , timevar(it) panelvar(cell) lat(latitude) lon(longitude) distcutoff(500) lagcut
+> off(100000) 
+ 
+OLS REGRESSION
+ 
+SE CORRECTED FOR CROSS-SECTIONAL SPATIAL DEPENDANCE
+             AND PANEL-SPECIFIC SERIAL CORRELATION
+ 
+DEPENDANT VARIABLE: lnb_acled
+INDEPENDANT VARIABLES:  main_lprice_mines
+ 
+SPATIAL CORRELATION KERNAL CUTOFF: 500 KM
+(NOTE: LINEAR BARTLETT WINDOW USED FOR SPATIAL KERNAL)
+SERIAL CORRELATION KERNAL CUTOFF: 100000 PERIODS
+-----------------------------------------------------------------------------------
+        lnb_acled |      Coef.   Std. Err.      t    P>|t|     [95% Conf. Interval]
+------------------+----------------------------------------------------------------
+main_lprice_mines |   .1655667   .0495575     3.34   0.001     .0684326    .2627007
+-----------------------------------------------------------------------------------
+D:\Travail\Dropbox\mining_conflict
+(est7 stored)
+
+. /*column 8: inverse hyperbolic sine - no cleaning */
+. eststo: my_reg2hdfespatial nb_acled_sine  main_lprice_mines                     if sd_mines == 0                                                                , timevar(it) panelvar(cell) lat(latitude) lon(longitude) distcutoff(500) lagcutoff(1000
+> 00) 
+ 
+OLS REGRESSION
+ 
+SE CORRECTED FOR CROSS-SECTIONAL SPATIAL DEPENDANCE
+             AND PANEL-SPECIFIC SERIAL CORRELATION
+ 
+DEPENDANT VARIABLE: nb_acled_sine
+INDEPENDANT VARIABLES:  main_lprice_mines
+ 
+SPATIAL CORRELATION KERNAL CUTOFF: 500 KM
+(NOTE: LINEAR BARTLETT WINDOW USED FOR SPATIAL KERNAL)
+SERIAL CORRELATION KERNAL CUTOFF: 100000 PERIODS
+-----------------------------------------------------------------------------------
+    nb_acled_sine |      Coef.   Std. Err.      t    P>|t|     [95% Conf. Interval]
+------------------+----------------------------------------------------------------
+main_lprice_mines |     .20746   .0624128     3.32   0.001      .085129     .329791
+-----------------------------------------------------------------------------------
+D:\Travail\Dropbox\mining_conflict
+(est8 stored)
+
+. 
+. set linesize 250
+
+. esttab, mtitles drop() b(%5.3f) se(%5.3f) compress r2 starlevels(c 0.1 b 0.05 a 0.01)  se 
+
+--------------------------------------------------------------------------------------------------
+                 (1)        (2)        (3)        (4)        (5)        (6)        (7)        (8) 
+                est1       est2       est3       est4       est5       est6       est7       est8 
+--------------------------------------------------------------------------------------------------
+main                                                                                              
+main_lpr~s     0.654a     0.551a     0.748a     0.227      0.439a     0.384c     0.166a     0.207a
+             (0.238)    (0.199)    (0.243)    (0.289)    (0.154)    (0.198)    (0.050)    (0.062) 
+
+yeard1                                         -0.576     -0.167     -0.273c                      
+                                              (0.492)    (0.226)    (0.143)                       
+
+yeard2                                         -0.453      0.015     -0.202                       
+                                              (0.501)    (0.253)    (0.164)                       
+
+yeard3                                          0.006      0.122      0.000                       
+                                              (0.595)    (0.277)    (0.189)                       
+
+yeard4                                         -0.166      0.169                                  
+                                              (0.458)    (0.173)                                  
+
+yeard5                                         -0.308      0.063     -0.124                       
+                                              (0.492)    (0.204)    (0.080)                       
+
+yeard6                                         -0.200      0.067      0.037                       
+                                              (0.467)    (0.151)    (0.160)                       
+
+yeard7                                         -0.296     -0.271c    -0.281                       
+                                              (0.303)    (0.142)    (0.187)                       
+
+yeard8                                         -0.426     -0.043     -0.222                       
+                                              (0.299)    (0.104)    (0.202)                       
+
+yeard9                                         -0.634     -0.109     -0.289                       
+                                              (0.473)    (0.166)    (0.192)                       
+
+yeard10                                        -0.575c    -0.114     -0.254                       
+                                              (0.308)    (0.119)    (0.201)                       
+
+yeard11                                        -0.525     -0.239c    -0.326                       
+                                              (0.323)    (0.126)    (0.236)                       
+
+yeard12                                        -0.217                -0.028                       
+                                              (0.372)               (0.188)                       
+
+yeard13                                        -0.307      0.182      0.027                       
+                                              (0.229)    (0.131)    (0.191)                       
+
+yeard14                                                    0.209c     0.046                       
+                                                         (0.110)    (0.235)                       
+--------------------------------------------------------------------------------------------------
+N              36120      35848      36030      17248      16975      17158      36120      36120 
+R-sq           0.000      0.001      0.001                                       0.001      0.001 
+--------------------------------------------------------------------------------------------------
+Standard errors in parentheses
+c p<0.1, b p<0.05, a p<0.01
+
+. esttab, mtitles drop() b(%5.3f) se(%5.3f) r2  starlevels({$^c$} 0.1 {$^b$} 0.05 {$^a$} 0.01) se tex label  title(Table 11c) 
+
+\begin{table}[htbp]\centering
+\def\sym#1{\ifmmode^{#1}\else\(^{#1}\)\fi}
+\caption{Table 11c}
+\begin{tabular}{l*{8}{c}}
+\hline\hline
+                    &\multicolumn{1}{c}{(1)}&\multicolumn{1}{c}{(2)}&\multicolumn{1}{c}{(3)}&\multicolumn{1}{c}{(4)}&\multicolumn{1}{c}{(5)}&\multicolumn{1}{c}{(6)}&\multicolumn{1}{c}{(7)}&\multicolumn{1}{c}{(8)}\\
+                    &\multicolumn{1}{c}{est1}&\multicolumn{1}{c}{est2}&\multicolumn{1}{c}{est3}&\multicolumn{1}{c}{est4}&\multicolumn{1}{c}{est5}&\multicolumn{1}{c}{est6}&\multicolumn{1}{c}{est7}&\multicolumn{1}{c}{est8}\\
+\hline
+main                &                  &                  &                  &                  &                  &                  &                  &                  \\
+$\ln$ price $\times$ mines $>0$&       0.654{$^a$}&       0.551{$^a$}&       0.748{$^a$}&       0.227      &       0.439{$^a$}&       0.384{$^c$}&       0.166{$^a$}&       0.207{$^a$}\\
+                    &     (0.238)      &     (0.199)      &     (0.243)      &     (0.289)      &     (0.154)      &     (0.198)      &     (0.050)      &     (0.062)      \\
+[1em]
+year==  1997.0000   &                  &                  &                  &      -0.576      &      -0.167      &      -0.273{$^c$}&                  &                  \\
+                    &                  &                  &                  &     (0.492)      &     (0.226)      &     (0.143)      &                  &                  \\
+[1em]
+year==  1998.0000   &                  &                  &                  &      -0.453      &       0.015      &      -0.202      &                  &                  \\
+                    &                  &                  &                  &     (0.501)      &     (0.253)      &     (0.164)      &                  &                  \\
+[1em]
+year==  1999.0000   &                  &                  &                  &       0.006      &       0.122      &       0.000      &                  &                  \\
+                    &                  &                  &                  &     (0.595)      &     (0.277)      &     (0.189)      &                  &                  \\
+[1em]
+year==  2000.0000   &                  &                  &                  &      -0.166      &       0.169      &                  &                  &                  \\
+                    &                  &                  &                  &     (0.458)      &     (0.173)      &                  &                  &                  \\
+[1em]
+year==  2001.0000   &                  &                  &                  &      -0.308      &       0.063      &      -0.124      &                  &                  \\
+                    &                  &                  &                  &     (0.492)      &     (0.204)      &     (0.080)      &                  &                  \\
+[1em]
+year==  2002.0000   &                  &                  &                  &      -0.200      &       0.067      &       0.037      &                  &                  \\
+                    &                  &                  &                  &     (0.467)      &     (0.151)      &     (0.160)      &                  &                  \\
+[1em]
+year==  2003.0000   &                  &                  &                  &      -0.296      &      -0.271{$^c$}&      -0.281      &                  &                  \\
+                    &                  &                  &                  &     (0.303)      &     (0.142)      &     (0.187)      &                  &                  \\
+[1em]
+year==  2004.0000   &                  &                  &                  &      -0.426      &      -0.043      &      -0.222      &                  &                  \\
+                    &                  &                  &                  &     (0.299)      &     (0.104)      &     (0.202)      &                  &                  \\
+[1em]
+year==  2005.0000   &                  &                  &                  &      -0.634      &      -0.109      &      -0.289      &                  &                  \\
+                    &                  &                  &                  &     (0.473)      &     (0.166)      &     (0.192)      &                  &                  \\
+[1em]
+year==  2006.0000   &                  &                  &                  &      -0.575{$^c$}&      -0.114      &      -0.254      &                  &                  \\
+                    &                  &                  &                  &     (0.308)      &     (0.119)      &     (0.201)      &                  &                  \\
+[1em]
+year==  2007.0000   &                  &                  &                  &      -0.525      &      -0.239{$^c$}&      -0.326      &                  &                  \\
+                    &                  &                  &                  &     (0.323)      &     (0.126)      &     (0.236)      &                  &                  \\
+[1em]
+year==  2008.0000   &                  &                  &                  &      -0.217      &                  &      -0.028      &                  &                  \\
+                    &                  &                  &                  &     (0.372)      &                  &     (0.188)      &                  &                  \\
+[1em]
+year==  2009.0000   &                  &                  &                  &      -0.307      &       0.182      &       0.027      &                  &                  \\
+                    &                  &                  &                  &     (0.229)      &     (0.131)      &     (0.191)      &                  &                  \\
+[1em]
+year==  2010.0000   &                  &                  &                  &                  &       0.209{$^c$}&       0.046      &                  &                  \\
+                    &                  &                  &                  &                  &     (0.110)      &     (0.235)      &                  &                  \\
+\hline
+Observations        &       36120      &       35848      &       36030      &       17248      &       16975      &       17158      &       36120      &       36120      \\
+\(R^{2}\)           &       0.000      &       0.001      &       0.001      &                  &                  &                  &       0.001      &       0.001      \\
+\hline\hline
+\multicolumn{9}{l}{\footnotesize Standard errors in parentheses}\\
+\multicolumn{9}{l}{\footnotesize {$^c$} p<0.1, {$^b$} p<0.05, {$^a$} p<0.01}\\
+\end{tabular}
+\end{table}
+
+. eststo clear
+
+. 
+. *****************************************************
+. /* WITH COLUMN 3 BASELINE (used in quantifications) */
+. *****************************************************
+. 
+. use "$Output_data\BCRT_baseline", clear
+
+. 
+. /* drop diamonds and tantalum for baseline */
+. drop if mainmineral == "diamond" | mainmineral == "tantalum"
+(588 observations deleted)
+
+. 
+. g nb_acled_pos = nb_acled if nb_acled>0
+(136,166 missing values generated)
+
+. tab nb_acled_pos
+
+nb_acled_po |
+          s |      Freq.     Percent        Cum.
+------------+-----------------------------------
+          1 |      3,570       44.98       44.98
+          2 |      1,493       18.81       63.80
+          3 |        733        9.24       73.03
+          4 |        440        5.54       78.58
+          5 |        299        3.77       82.35
+          6 |        237        2.99       85.33
+          7 |        180        2.27       87.60
+          8 |        133        1.68       89.28
+          9 |        103        1.30       90.57
+         10 |         81        1.02       91.60
+         11 |         68        0.86       92.45
+         12 |         64        0.81       93.26
+         13 |         56        0.71       93.96
+         14 |         39        0.49       94.46
+         15 |         26        0.33       94.78
+         16 |         23        0.29       95.07
+         17 |         23        0.29       95.36
+         18 |         30        0.38       95.74
+         19 |         25        0.32       96.06
+         20 |         23        0.29       96.35
+         21 |         20        0.25       96.60
+         22 |         16        0.20       96.80
+         23 |         17        0.21       97.01
+         24 |         10        0.13       97.14
+         25 |         14        0.18       97.32
+         26 |         14        0.18       97.49
+         27 |          8        0.10       97.59
+         28 |         20        0.25       97.85
+         29 |          8        0.10       97.95
+         30 |          9        0.11       98.06
+         31 |         11        0.14       98.20
+         32 |          6        0.08       98.27
+         33 |          2        0.03       98.30
+         34 |          7        0.09       98.39
+         35 |          6        0.08       98.46
+         36 |          8        0.10       98.56
+         37 |          3        0.04       98.60
+         38 |          4        0.05       98.65
+         39 |          5        0.06       98.71
+         40 |          4        0.05       98.77
+         41 |          3        0.04       98.80
+         42 |          5        0.06       98.87
+         43 |          4        0.05       98.92
+         44 |          2        0.03       98.94
+         45 |          2        0.03       98.97
+         46 |          2        0.03       98.99
+         47 |          1        0.01       99.00
+         48 |          5        0.06       99.07
+         49 |          2        0.03       99.09
+         50 |          3        0.04       99.13
+         52 |          3        0.04       99.17
+         54 |          3        0.04       99.21
+         55 |          1        0.01       99.22
+         56 |          1        0.01       99.23
+         57 |          5        0.06       99.29
+         58 |          2        0.03       99.32
+         59 |          1        0.01       99.33
+         61 |          2        0.03       99.36
+         62 |          1        0.01       99.37
+         63 |          1        0.01       99.38
+         64 |          3        0.04       99.42
+         65 |          1        0.01       99.43
+         66 |          3        0.04       99.47
+         67 |          1        0.01       99.48
+         69 |          1        0.01       99.50
+         70 |          1        0.01       99.51
+         71 |          1        0.01       99.52
+         72 |          2        0.03       99.55
+         75 |          2        0.03       99.57
+         77 |          1        0.01       99.58
+         78 |          2        0.03       99.61
+         80 |          1        0.01       99.62
+         82 |          1        0.01       99.63
+         84 |          2        0.03       99.66
+         85 |          1        0.01       99.67
+         87 |          1        0.01       99.68
+         89 |          1        0.01       99.70
+         90 |          1        0.01       99.71
+         92 |          1        0.01       99.72
+         93 |          1        0.01       99.74
+         95 |          1        0.01       99.75
+         96 |          1        0.01       99.76
+        102 |          1        0.01       99.77
+        106 |          1        0.01       99.79
+        108 |          1        0.01       99.80
+        111 |          1        0.01       99.81
+        113 |          2        0.03       99.84
+        120 |          1        0.01       99.85
+        134 |          1        0.01       99.86
+        143 |          1        0.01       99.87
+        145 |          1        0.01       99.89
+        153 |          1        0.01       99.90
+        164 |          1        0.01       99.91
+        168 |          1        0.01       99.92
+        183 |          1        0.01       99.94
+        212 |          1        0.01       99.95
+        264 |          1        0.01       99.96
+        293 |          1        0.01       99.97
+        334 |          1        0.01       99.99
+        709 |          1        0.01      100.00
+------------+-----------------------------------
+      Total |      7,936      100.00
+
+. egen p99_nb_acled  = pctile(nb_acled_pos), p(99)
+
+. egen p95_nb_acled  = pctile(nb_acled_pos), p(95)
+
+. egen p90_nb_acled  = pctile(nb_acled_pos), p(90)
+
+. egen mean_nb_acled = mean(nb_acled_pos)
+
+. egen sd_nb_acled   = sd(nb_acled_pos)
+
+. g cutoff_nb_acled  = mean_nb_acled+2*sd_nb_acled
+
+. 
+. /*condition for estimation with spatial lags of mines*/
+. global condition_around "(mainmineral != "diamond" & mainmineral_around != "diamond" & mainmineral != "tantalum" & mainmineral_around != "tantalum")"
+
+. 
+. g lnb_acled             = log(nb_acled+1)
+
+. g nb_acled_sine = log(nb_acled+(nb_acled^2+1)^(0.5))
+
+. 
+. g condition_around = (mainmineral != "diamond" & mainmineral_around != "diamond" & mainmineral != "tantalum" & mainmineral_around != "tantalum")
+
+. 
+. /*column 1: untransformed number of events - baseline */
+. eststo: my_reg2hdfespatial nb_acled  main_lprice_mines main_lprice_a            if sd_mines == 0  & sd_mines_a ==0  & $condition_around                                                                 , timevar(it) panelvar(cell) lat(latitude) lon(l
+> ongitude) distcutoff(500) lagcutoff(100000) 
+ 
+OLS REGRESSION
+ 
+SE CORRECTED FOR CROSS-SECTIONAL SPATIAL DEPENDANCE
+             AND PANEL-SPECIFIC SERIAL CORRELATION
+ 
+DEPENDANT VARIABLE: nb_acled
+INDEPENDANT VARIABLES:  main_lprice_mines main_lprice_a
+ 
+SPATIAL CORRELATION KERNAL CUTOFF: 500 KM
+(NOTE: LINEAR BARTLETT WINDOW USED FOR SPATIAL KERNAL)
+SERIAL CORRELATION KERNAL CUTOFF: 100000 PERIODS
+-----------------------------------------------------------------------------------
+         nb_acled |      Coef.   Std. Err.      t    P>|t|     [95% Conf. Interval]
+------------------+----------------------------------------------------------------
+main_lprice_mines |    .229593   .2931367     0.78   0.433    -.3449498    .8041358
+    main_lprice_a |   .1241221   .0509594     2.44   0.015     .0242426    .2240017
+-----------------------------------------------------------------------------------
+D:\Travail\Dropbox\mining_conflict
+(est1 stored)
+
+. /*column 2: untransformed number of events - dropping top 5%*/
+. eststo: my_reg2hdfespatial nb_acled   main_lprice_mines main_lprice_a           if sd_mines == 0  & sd_mines_a ==0  & $condition_around & nb_acled<p95_nb_acled                 , timevar(it) panelvar(cell) lat(latitude) lon(longitude) distcutoff(500
+> ) lagcutoff(100000) 
+ 
+OLS REGRESSION
+ 
+SE CORRECTED FOR CROSS-SECTIONAL SPATIAL DEPENDANCE
+             AND PANEL-SPECIFIC SERIAL CORRELATION
+ 
+DEPENDANT VARIABLE: nb_acled
+INDEPENDANT VARIABLES:  main_lprice_mines main_lprice_a
+ 
+SPATIAL CORRELATION KERNAL CUTOFF: 500 KM
+(NOTE: LINEAR BARTLETT WINDOW USED FOR SPATIAL KERNAL)
+SERIAL CORRELATION KERNAL CUTOFF: 100000 PERIODS
+-----------------------------------------------------------------------------------
+         nb_acled |      Coef.   Std. Err.      t    P>|t|     [95% Conf. Interval]
+------------------+----------------------------------------------------------------
+main_lprice_mines |   .2562765   .1197214     2.14   0.032     .0216246    .4909283
+    main_lprice_a |   .0769876   .0301104     2.56   0.011     .0179717    .1360034
+-----------------------------------------------------------------------------------
+D:\Travail\Dropbox\mining_conflict
+(est2 stored)
+
+. /*column 3: nb events with mine open the entire period - dropping above mean + 2 sd */
+. eststo: my_reg2hdfespatial nb_acled   main_lprice_mines main_lprice_a           if sd_mines == 0  & sd_mines_a ==0  & $condition_around &  nb_acled<cutoff_nb_acled     , timevar(it) panelvar(cell) lat(latitude) lon(longitude) distcutoff(500) lagcut
+> off(100000) 
+ 
+OLS REGRESSION
+ 
+SE CORRECTED FOR CROSS-SECTIONAL SPATIAL DEPENDANCE
+             AND PANEL-SPECIFIC SERIAL CORRELATION
+ 
+DEPENDANT VARIABLE: nb_acled
+INDEPENDANT VARIABLES:  main_lprice_mines main_lprice_a
+ 
+SPATIAL CORRELATION KERNAL CUTOFF: 500 KM
+(NOTE: LINEAR BARTLETT WINDOW USED FOR SPATIAL KERNAL)
+SERIAL CORRELATION KERNAL CUTOFF: 100000 PERIODS
+-----------------------------------------------------------------------------------
+         nb_acled |      Coef.   Std. Err.      t    P>|t|     [95% Conf. Interval]
+------------------+----------------------------------------------------------------
+main_lprice_mines |   .2428019   .1879047     1.29   0.196     -.125488    .6110918
+    main_lprice_a |   .1148429   .0429103     2.68   0.007     .0307395    .1989464
+-----------------------------------------------------------------------------------
+D:\Travail\Dropbox\mining_conflict
+(est3 stored)
+
+. /*column 4: PPML, no cleaning */
+. eststo: xtpqml nb_acled   main_lprice_mines main_lprice_a yeard*                        if sd_mines == 0  & sd_mines_a ==0  & $condition_around                                                                 , i(cell) cluster(country_nb) 
+note: 6928 groups (96992 obs) dropped because of all zero outcomes
+note: yeard3 dropped because of collinearity
+
+Iteration 0:   log likelihood = -36184.451  
+Iteration 1:   log likelihood = -35548.013  
+Iteration 2:   log likelihood = -35542.342  
+Iteration 3:   log likelihood = -35542.342  
+
+Conditional fixed-effects Poisson regression    Number of obs     =     30,982
+Group variable: cell                            Number of groups  =      2,213
+
+                                                Obs per group:
+                                                              min =         14
+                                                              avg =       14.0
+                                                              max =         14
+
+                                                Wald chi2(15)     =    1276.68
+Log likelihood  = -35542.342                    Prob > chi2       =     0.0000
+
+-----------------------------------------------------------------------------------
+         nb_acled |      Coef.   Std. Err.      z    P>|z|     [95% Conf. Interval]
+------------------+----------------------------------------------------------------
+main_lprice_mines |  -.1861582   .0574992    -3.24   0.001    -.2988545    -.073462
+    main_lprice_a |   .3580159   .0368133     9.73   0.000     .2858632    .4301686
+           yeard1 |  -.5826865   .0308241   -18.90   0.000    -.6431007   -.5222723
+           yeard2 |  -.4435006   .0295363   -15.02   0.000    -.5013908   -.3856105
+           yeard4 |  -.1848436   .0274027    -6.75   0.000    -.2385519   -.1311353
+           yeard5 |  -.2563418   .0279426    -9.17   0.000    -.3111082   -.2015753
+           yeard6 |  -.0939628   .0267183    -3.52   0.000    -.1463297   -.0415959
+           yeard7 |  -.2660214   .0279825    -9.51   0.000    -.3208661   -.2111766
+           yeard8 |   -.368622   .0288103   -12.79   0.000    -.4250891   -.3121549
+           yeard9 |   -.571593   .0306368   -18.66   0.000      -.63164   -.5115461
+          yeard10 |  -.5342372    .030307   -17.63   0.000    -.5936378   -.4748366
+          yeard11 |  -.4357532   .0294653   -14.79   0.000    -.4935041   -.3780023
+          yeard12 |  -.1372407   .0272966    -5.03   0.000     -.190741   -.0837404
+          yeard13 |   -.221354   .0279047    -7.93   0.000    -.2760462   -.1666618
+          yeard14 |  -.0279729   .0269015    -1.04   0.298    -.0806989    .0247531
+-----------------------------------------------------------------------------------
+Calculating Robust Standard Errors...
+-----------------------------------------------------------------------------------
+         nb_acled |      Coef.   Std. Err.      z    P>|z|     [95% Conf. Interval]
+------------------+----------------------------------------------------------------
+nb_acled          |
+main_lprice_mines |  -.1861582   .1453619    -1.28   0.200    -.4710622    .0987458
+    main_lprice_a |   .3580159   .3508325     1.02   0.308    -.3296032    1.045635
+           yeard1 |  -.5826865   .3532698    -1.65   0.099    -1.275083    .1097097
+           yeard2 |  -.4435006   .2359071    -1.88   0.060    -.9058701    .0188688
+           yeard4 |  -.1848436   .3846312    -0.48   0.631    -.9387068    .5690197
+           yeard5 |  -.2563418   .4210274    -0.61   0.543     -1.08154    .5688567
+           yeard6 |  -.0939628   .4800747    -0.20   0.845    -1.034892    .8469664
+           yeard7 |  -.2660214   .4676077    -0.57   0.569    -1.182516     .650473
+           yeard8 |   -.368622    .483352    -0.76   0.446    -1.315975    .5787305
+           yeard9 |   -.571593     .45659    -1.25   0.211    -1.466493    .3233068
+          yeard10 |  -.5342372   .4699162    -1.14   0.256    -1.455256    .3867817
+          yeard11 |  -.4357532   .4834202    -0.90   0.367    -1.383239     .511733
+          yeard12 |  -.1372407   .5033355    -0.27   0.785     -1.12376    .8492788
+          yeard13 |   -.221354   .5035452    -0.44   0.660    -1.208284    .7655765
+          yeard14 |  -.0279729   .6432177    -0.04   0.965    -1.288656    1.232711
+-----------------------------------------------------------------------------------
+Wald chi2(15) =   191.83                                Prob > chi2 =   0.0000
+(est4 stored)
+
+. /*column 5: PPML - dropping top 5%*/
+. eststo: xtpqml nb_acled   main_lprice_mines main_lprice_a yeard*                        if sd_mines == 0  & sd_mines_a ==0  & $condition_around & nb_acled<p95_nb_acled                 , i(cell) cluster(country_nb) 
+note: 6931 groups (97031 obs) dropped because of all zero outcomes
+note: yeard12 dropped because of collinearity
+
+Iteration 0:   log likelihood = -24530.189  
+Iteration 1:   log likelihood = -24276.972  
+Iteration 2:   log likelihood = -24274.923  
+Iteration 3:   log likelihood = -24274.923  
+
+Conditional fixed-effects Poisson regression    Number of obs     =     30,587
+Group variable: cell                            Number of groups  =      2,207
+
+                                                Obs per group:
+                                                              min =          3
+                                                              avg =       13.9
+                                                              max =         14
+
+                                                Wald chi2(15)     =     512.70
+Log likelihood  = -24274.923                    Prob > chi2       =     0.0000
+
+-----------------------------------------------------------------------------------
+         nb_acled |      Coef.   Std. Err.      z    P>|z|     [95% Conf. Interval]
+------------------+----------------------------------------------------------------
+main_lprice_mines |     .13624   .0905821     1.50   0.133    -.0412977    .3137776
+    main_lprice_a |   .3580276   .0473683     7.56   0.000     .2651874    .4508679
+           yeard1 |  -.2708022   .0419781    -6.45   0.000    -.3530778   -.1885267
+           yeard2 |  -.0952759   .0400608    -2.38   0.017    -.1737936   -.0167582
+           yeard3 |   .0130969   .0391683     0.33   0.738    -.0636715    .0898653
+           yeard4 |   .0742761   .0385802     1.93   0.054    -.0013397    .1498919
+           yeard5 |  -.1203845   .0408154    -2.95   0.003    -.2003813   -.0403877
+           yeard6 |    .074466   .0388561     1.92   0.055    -.0016906    .1506225
+           yeard7 |  -.3767848   .0433275    -8.70   0.000    -.4617053   -.2918644
+           yeard8 |  -.1453673    .040441    -3.59   0.000    -.2246302   -.0661044
+           yeard9 |  -.1961483   .0407634    -4.81   0.000     -.276043   -.1162536
+          yeard10 |  -.1861673   .0402578    -4.62   0.000    -.2650711   -.1072635
+          yeard11 |  -.2386311   .0408408    -5.84   0.000    -.3186775   -.1585846
+          yeard13 |   .1160811   .0372275     3.12   0.002     .0431166    .1890456
+          yeard14 |   .1080606   .0370563     2.92   0.004     .0354317    .1806896
+-----------------------------------------------------------------------------------
+Calculating Robust Standard Errors...
+-----------------------------------------------------------------------------------
+         nb_acled |      Coef.   Std. Err.      z    P>|z|     [95% Conf. Interval]
+------------------+----------------------------------------------------------------
+nb_acled          |
+main_lprice_mines |     .13624   .1152554     1.18   0.237    -.0896565    .3621364
+    main_lprice_a |   .3580276   .2256889     1.59   0.113    -.0843146    .8003698
+           yeard1 |  -.2708022   .2664344    -1.02   0.309    -.7930042    .2513997
+           yeard2 |  -.0952759   .2771334    -0.34   0.731    -.6384473    .4478955
+           yeard3 |   .0130969   .3162066     0.04   0.967    -.6066567    .6328505
+           yeard4 |   .0742761   .2110641     0.35   0.725    -.3394019    .4879542
+           yeard5 |  -.1203845   .2282707    -0.53   0.598    -.5677868    .3270178
+           yeard6 |    .074466   .1722701     0.43   0.666    -.2631772    .4121091
+           yeard7 |  -.3767848   .1652721    -2.28   0.023    -.7007122   -.0528575
+           yeard8 |  -.1453673   .1547586    -0.94   0.348    -.4486886     .157954
+           yeard9 |  -.1961483   .1979069    -0.99   0.322    -.5840387    .1917421
+          yeard10 |  -.1861673    .125864    -1.48   0.139    -.4328563    .0605217
+          yeard11 |  -.2386311   .1113366    -2.14   0.032    -.4568468   -.0204153
+          yeard13 |   .1160811   .1503397     0.77   0.440    -.1785793    .4107416
+          yeard14 |   .1080606   .1401516     0.77   0.441    -.1666314    .3827526
+-----------------------------------------------------------------------------------
+Wald chi2(15) =   308.67                                Prob > chi2 =   0.0000
+(est5 stored)
+
+. /*column 6: PPML - dropping above mean + 2 sd */
+. eststo: xtpqml nb_acled   main_lprice_mines main_lprice_a yeard*                        if sd_mines == 0  & sd_mines_a ==0  & $condition_around & nb_acled<cutoff_nb_acled              , i(cell) cluster(country_nb) 
+note: 6929 groups (97005 obs) dropped because of all zero outcomes
+note: yeard12 dropped because of collinearity
+
+Iteration 0:   log likelihood = -28843.593  
+Iteration 1:   log likelihood = -28537.491  
+Iteration 2:   log likelihood = -28535.966  
+Iteration 3:   log likelihood = -28535.966  
+
+Conditional fixed-effects Poisson regression    Number of obs     =     30,848
+Group variable: cell                            Number of groups  =      2,212
+
+                                                Obs per group:
+                                                              min =          2
+                                                              avg =       13.9
+                                                              max =         14
+
+                                                Wald chi2(15)     =     618.98
+Log likelihood  = -28535.966                    Prob > chi2       =     0.0000
+
+-----------------------------------------------------------------------------------
+         nb_acled |      Coef.   Std. Err.      z    P>|z|     [95% Conf. Interval]
+------------------+----------------------------------------------------------------
+main_lprice_mines |  -.0221161   .0760191    -0.29   0.771    -.1711109    .1268786
+    main_lprice_a |   .3698685   .0420211     8.80   0.000     .2875086    .4522284
+           yeard1 |  -.3753295   .0367976   -10.20   0.000    -.4474515   -.3032075
+           yeard2 |   -.198916   .0351366    -5.66   0.000    -.2677824   -.1300496
+           yeard3 |  -.0411123   .0338598    -1.21   0.225    -.1074763    .0252516
+           yeard4 |   -.017344   .0336766    -0.52   0.607    -.0833489    .0486609
+           yeard5 |  -.1502337   .0348238    -4.31   0.000    -.2184872   -.0819803
+           yeard6 |   .0680347   .0329286     2.07   0.039     .0034959    .1325734
+           yeard7 |  -.3258764   .0363387    -8.97   0.000    -.3970989   -.2546539
+           yeard8 |  -.2063915    .035001    -5.90   0.000    -.2749923   -.1377908
+           yeard9 |  -.2805535   .0351343    -7.99   0.000    -.3494155   -.2116916
+          yeard10 |   -.269611   .0350723    -7.69   0.000    -.3383514   -.2008705
+          yeard11 |  -.2815176   .0352059    -8.00   0.000    -.3505198   -.2125154
+          yeard13 |   .0197897   .0322316     0.61   0.539    -.0433831    .0829626
+          yeard14 |   .0166113   .0323719     0.51   0.608    -.0468364     .080059
+-----------------------------------------------------------------------------------
+Calculating Robust Standard Errors...
+-----------------------------------------------------------------------------------
+         nb_acled |      Coef.   Std. Err.      z    P>|z|     [95% Conf. Interval]
+------------------+----------------------------------------------------------------
+nb_acled          |
+main_lprice_mines |  -.0221161   .1688572    -0.13   0.896    -.3530702    .3088379
+    main_lprice_a |   .3698685   .2627224     1.41   0.159     -.145058     .884795
+           yeard1 |  -.3753295   .2604596    -1.44   0.150    -.8858209    .1351618
+           yeard2 |   -.198916   .3086213    -0.64   0.519    -.8038027    .4059707
+           yeard3 |  -.0411123   .3468055    -0.12   0.906    -.7208387     .638614
+           yeard4 |   -.017344    .203387    -0.09   0.932    -.4159752    .3812872
+           yeard5 |  -.1502337   .2247515    -0.67   0.504    -.5907387    .2902712
+           yeard6 |   .0680347    .183114     0.37   0.710    -.2908621    .4269314
+           yeard7 |  -.3258764   .2314194    -1.41   0.159    -.7794501    .1276973
+           yeard8 |  -.2063915   .1854013    -1.11   0.266    -.5697714    .1569884
+           yeard9 |  -.2805535   .2165252    -1.30   0.195    -.7049351     .143828
+          yeard10 |   -.269611   .1663899    -1.62   0.105    -.5957291    .0565072
+          yeard11 |  -.2815176   .1362275    -2.07   0.039    -.5485186   -.0145167
+          yeard13 |   .0197897    .180595     0.11   0.913    -.3341699    .3737494
+          yeard14 |   .0166113   .1927972     0.09   0.931    -.3612643    .3944868
+-----------------------------------------------------------------------------------
+Wald chi2(15) =   196.57                                Prob > chi2 =   0.0000
+(est6 stored)
+
+. /*column 7: log(x+1) - no cleaning */
+. eststo: my_reg2hdfespatial lnb_acled   main_lprice_mines main_lprice_a          if sd_mines == 0  & sd_mines_a ==0  & $condition_around                                                                 , timevar(it) panelvar(cell) lat(latitude) lon(l
+> ongitude) distcutoff(500) lagcutoff(100000) 
+ 
+OLS REGRESSION
+ 
+SE CORRECTED FOR CROSS-SECTIONAL SPATIAL DEPENDANCE
+             AND PANEL-SPECIFIC SERIAL CORRELATION
+ 
+DEPENDANT VARIABLE: lnb_acled
+INDEPENDANT VARIABLES:  main_lprice_mines main_lprice_a
+ 
+SPATIAL CORRELATION KERNAL CUTOFF: 500 KM
+(NOTE: LINEAR BARTLETT WINDOW USED FOR SPATIAL KERNAL)
+SERIAL CORRELATION KERNAL CUTOFF: 100000 PERIODS
+-----------------------------------------------------------------------------------
+        lnb_acled |      Coef.   Std. Err.      t    P>|t|     [95% Conf. Interval]
+------------------+----------------------------------------------------------------
+main_lprice_mines |   .0833059   .0362956     2.30   0.022     .0121672    .1544446
+    main_lprice_a |   .0304993   .0104291     2.92   0.003     .0100584    .0509402
+-----------------------------------------------------------------------------------
+D:\Travail\Dropbox\mining_conflict
+(est7 stored)
+
+. /*column 8: inverse hyperbolic sine - no cleaning */
+. eststo: my_reg2hdfespatial nb_acled_sine   main_lprice_mines main_lprice_a      if sd_mines == 0  & sd_mines_a ==0  & $condition_around                                                                 , timevar(it) panelvar(cell) lat(latitude) lon(l
+> ongitude) distcutoff(500) lagcutoff(100000) 
+ 
+OLS REGRESSION
+ 
+SE CORRECTED FOR CROSS-SECTIONAL SPATIAL DEPENDANCE
+             AND PANEL-SPECIFIC SERIAL CORRELATION
+ 
+DEPENDANT VARIABLE: nb_acled_sine
+INDEPENDANT VARIABLES:  main_lprice_mines main_lprice_a
+ 
+SPATIAL CORRELATION KERNAL CUTOFF: 500 KM
+(NOTE: LINEAR BARTLETT WINDOW USED FOR SPATIAL KERNAL)
+SERIAL CORRELATION KERNAL CUTOFF: 100000 PERIODS
+-----------------------------------------------------------------------------------
+    nb_acled_sine |      Coef.   Std. Err.      t    P>|t|     [95% Conf. Interval]
+------------------+----------------------------------------------------------------
+main_lprice_mines |   .1077033   .0451949     2.38   0.017      .019122    .1962846
+    main_lprice_a |   .0379549   .0131125     2.89   0.004     .0122546    .0636553
+-----------------------------------------------------------------------------------
+D:\Travail\Dropbox\mining_conflict
+(est8 stored)
+
+. 
+. set linesize 250
+
+. esttab, mtitles drop() b(%5.3f) se(%5.3f) compress r2 starlevels(c 0.1 b 0.05 a 0.01)  se 
+
+--------------------------------------------------------------------------------------------------
+                 (1)        (2)        (3)        (4)        (5)        (6)        (7)        (8) 
+                est1       est2       est3       est4       est5       est6       est7       est8 
+--------------------------------------------------------------------------------------------------
+main                                                                                              
+main_lpr~s     0.230      0.256b     0.243     -0.186      0.136     -0.022      0.083b     0.108b
+             (0.293)    (0.120)    (0.188)    (0.145)    (0.115)    (0.169)    (0.036)    (0.045) 
+
+main_lpr~a     0.124b     0.077b     0.115a     0.358      0.358      0.370      0.030a     0.038a
+             (0.051)    (0.030)    (0.043)    (0.351)    (0.226)    (0.263)    (0.010)    (0.013) 
+
+yeard1                                         -0.583c    -0.271     -0.375                       
+                                              (0.353)    (0.266)    (0.260)                       
+
+yeard2                                         -0.444c    -0.095     -0.199                       
+                                              (0.236)    (0.277)    (0.309)                       
+
+yeard4                                         -0.185      0.074     -0.017                       
+                                              (0.385)    (0.211)    (0.203)                       
+
+yeard5                                         -0.256     -0.120     -0.150                       
+                                              (0.421)    (0.228)    (0.225)                       
+
+yeard6                                         -0.094      0.074      0.068                       
+                                              (0.480)    (0.172)    (0.183)                       
+
+yeard7                                         -0.266     -0.377b    -0.326                       
+                                              (0.468)    (0.165)    (0.231)                       
+
+yeard8                                         -0.369     -0.145     -0.206                       
+                                              (0.483)    (0.155)    (0.185)                       
+
+yeard9                                         -0.572     -0.196     -0.281                       
+                                              (0.457)    (0.198)    (0.217)                       
+
+yeard10                                        -0.534     -0.186     -0.270                       
+                                              (0.470)    (0.126)    (0.166)                       
+
+yeard11                                        -0.436     -0.239b    -0.282b                      
+                                              (0.483)    (0.111)    (0.136)                       
+
+yeard12                                        -0.137                                             
+                                              (0.503)                                             
+
+yeard13                                        -0.221      0.116      0.020                       
+                                              (0.504)    (0.150)    (0.181)                       
+
+yeard14                                        -0.028      0.108      0.017                       
+                                              (0.643)    (0.140)    (0.193)                       
+
+yeard3                                                     0.013     -0.041                       
+                                                         (0.316)    (0.347)                       
+--------------------------------------------------------------------------------------------------
+N             127974     127618     127853      30982      30587      30848     127974     127974 
+R-sq           0.000      0.000      0.000                                       0.001      0.001 
+--------------------------------------------------------------------------------------------------
+Standard errors in parentheses
+c p<0.1, b p<0.05, a p<0.01
+
+. esttab, mtitles drop() b(%5.3f) se(%5.3f) r2  starlevels({$^c$} 0.1 {$^b$} 0.05 {$^a$} 0.01) se tex label  title(Table 11d) 
+
+\begin{table}[htbp]\centering
+\def\sym#1{\ifmmode^{#1}\else\(^{#1}\)\fi}
+\caption{Table 11d}
+\begin{tabular}{l*{8}{c}}
+\hline\hline
+                    &\multicolumn{1}{c}{(1)}&\multicolumn{1}{c}{(2)}&\multicolumn{1}{c}{(3)}&\multicolumn{1}{c}{(4)}&\multicolumn{1}{c}{(5)}&\multicolumn{1}{c}{(6)}&\multicolumn{1}{c}{(7)}&\multicolumn{1}{c}{(8)}\\
+                    &\multicolumn{1}{c}{est1}&\multicolumn{1}{c}{est2}&\multicolumn{1}{c}{est3}&\multicolumn{1}{c}{est4}&\multicolumn{1}{c}{est5}&\multicolumn{1}{c}{est6}&\multicolumn{1}{c}{est7}&\multicolumn{1}{c}{est8}\\
+\hline
+main                &                  &                  &                  &                  &                  &                  &                  &                  \\
+$\ln$ price $\times$ mines $>0$&       0.230      &       0.256{$^b$}&       0.243      &      -0.186      &       0.136      &      -0.022      &       0.083{$^b$}&       0.108{$^b$}\\
+                    &     (0.293)      &     (0.120)      &     (0.188)      &     (0.145)      &     (0.115)      &     (0.169)      &     (0.036)      &     (0.045)      \\
+[1em]
+$\ln$ price $\times$ mines $>0$ (neighbouring cells)&       0.124{$^b$}&       0.077{$^b$}&       0.115{$^a$}&       0.358      &       0.358      &       0.370      &       0.030{$^a$}&       0.038{$^a$}\\
+                    &     (0.051)      &     (0.030)      &     (0.043)      &     (0.351)      &     (0.226)      &     (0.263)      &     (0.010)      &     (0.013)      \\
+[1em]
+year==  1997.0000   &                  &                  &                  &      -0.583{$^c$}&      -0.271      &      -0.375      &                  &                  \\
+                    &                  &                  &                  &     (0.353)      &     (0.266)      &     (0.260)      &                  &                  \\
+[1em]
+year==  1998.0000   &                  &                  &                  &      -0.444{$^c$}&      -0.095      &      -0.199      &                  &                  \\
+                    &                  &                  &                  &     (0.236)      &     (0.277)      &     (0.309)      &                  &                  \\
+[1em]
+year==  2000.0000   &                  &                  &                  &      -0.185      &       0.074      &      -0.017      &                  &                  \\
+                    &                  &                  &                  &     (0.385)      &     (0.211)      &     (0.203)      &                  &                  \\
+[1em]
+year==  2001.0000   &                  &                  &                  &      -0.256      &      -0.120      &      -0.150      &                  &                  \\
+                    &                  &                  &                  &     (0.421)      &     (0.228)      &     (0.225)      &                  &                  \\
+[1em]
+year==  2002.0000   &                  &                  &                  &      -0.094      &       0.074      &       0.068      &                  &                  \\
+                    &                  &                  &                  &     (0.480)      &     (0.172)      &     (0.183)      &                  &                  \\
+[1em]
+year==  2003.0000   &                  &                  &                  &      -0.266      &      -0.377{$^b$}&      -0.326      &                  &                  \\
+                    &                  &                  &                  &     (0.468)      &     (0.165)      &     (0.231)      &                  &                  \\
+[1em]
+year==  2004.0000   &                  &                  &                  &      -0.369      &      -0.145      &      -0.206      &                  &                  \\
+                    &                  &                  &                  &     (0.483)      &     (0.155)      &     (0.185)      &                  &                  \\
+[1em]
+year==  2005.0000   &                  &                  &                  &      -0.572      &      -0.196      &      -0.281      &                  &                  \\
+                    &                  &                  &                  &     (0.457)      &     (0.198)      &     (0.217)      &                  &                  \\
+[1em]
+year==  2006.0000   &                  &                  &                  &      -0.534      &      -0.186      &      -0.270      &                  &                  \\
+                    &                  &                  &                  &     (0.470)      &     (0.126)      &     (0.166)      &                  &                  \\
+[1em]
+year==  2007.0000   &                  &                  &                  &      -0.436      &      -0.239{$^b$}&      -0.282{$^b$}&                  &                  \\
+                    &                  &                  &                  &     (0.483)      &     (0.111)      &     (0.136)      &                  &                  \\
+[1em]
+year==  2008.0000   &                  &                  &                  &      -0.137      &                  &                  &                  &                  \\
+                    &                  &                  &                  &     (0.503)      &                  &                  &                  &                  \\
+[1em]
+year==  2009.0000   &                  &                  &                  &      -0.221      &       0.116      &       0.020      &                  &                  \\
+                    &                  &                  &                  &     (0.504)      &     (0.150)      &     (0.181)      &                  &                  \\
+[1em]
+year==  2010.0000   &                  &                  &                  &      -0.028      &       0.108      &       0.017      &                  &                  \\
+                    &                  &                  &                  &     (0.643)      &     (0.140)      &     (0.193)      &                  &                  \\
+[1em]
+year==  1999.0000   &                  &                  &                  &                  &       0.013      &      -0.041      &                  &                  \\
+                    &                  &                  &                  &                  &     (0.316)      &     (0.347)      &                  &                  \\
+\hline
+Observations        &      127974      &      127618      &      127853      &       30982      &       30587      &       30848      &      127974      &      127974      \\
+\(R^{2}\)           &       0.000      &       0.000      &       0.000      &                  &                  &                  &       0.001      &       0.001      \\
+\hline\hline
+\multicolumn{9}{l}{\footnotesize Standard errors in parentheses}\\
+\multicolumn{9}{l}{\footnotesize {$^c$} p<0.1, {$^b$} p<0.05, {$^a$} p<0.01}\\
+\end{tabular}
+\end{table}
+
+. eststo clear
+
+. 
+. log close
+      name:  <unnamed>
+       log:  D:\Travail\Dropbox\mining_conflict\Data_Code_BCRT_AER\results\Table_11.log
+  log type:  text
+ closed on:  13 Dec 2016, 13:35:06
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------

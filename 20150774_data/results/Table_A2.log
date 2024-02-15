@@ -1,0 +1,80 @@
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+      name:  <unnamed>
+       log:  D:\Travail\Dropbox\mining_conflict\Data_Code_BCRT_AER\results\Table_A2.log
+  log type:  text
+ opened on:  14 Dec 2016, 09:57:37
+
+. 
+. use "$Output_data\BCRT_baseline", clear
+
+. collapse (sum) nb_mines_a nb_acled (mean) mines_a acled, by(iso_1 year)
+
+. collapse (mean) nb_mines_a nb_acled (mean) mines_a acled, by(iso_1)
+
+. sum nb_mines_a nb_acled, d
+
+                      (mean) nb_mines_a
+-------------------------------------------------------------
+      Percentiles      Smallest
+ 1%            0              0
+ 5%            0              0
+10%            0              0       Obs                  52
+25%            0              0       Sum of Wgt.          52
+
+50%     1.035714                      Mean           9.543956
+                        Largest       Std. Dev.       38.7984
+75%     4.821429       19.57143
+90%     14.92857       19.78571       Variance       1505.316
+95%     19.78571           54.5       Skewness         6.4825
+99%     276.6429       276.6429       Kurtosis        44.9436
+
+                       (mean) nb_acled
+-------------------------------------------------------------
+      Percentiles      Smallest
+ 1%            0              0
+ 5%            0              0
+10%     .7142857              0       Obs                  52
+25%     4.821429              0       Sum of Wgt.          52
+
+50%     17.57143                      Mean           50.58516
+                        Largest       Std. Dev.      72.77394
+75%     66.78571       210.6429
+90%     145.0714       256.7857       Variance       5296.047
+95%     256.7857       267.9286       Skewness        1.86542
+99%     277.6429       277.6429       Kurtosis       5.609014
+
+. distinct iso_1 if nb_mines_a == 0
+
+       |        Observations
+       |      total   distinct
+-------+----------------------
+ iso_1 |         20         20
+
+. distinct iso_1 if nb_mines_a >0
+
+       |        Observations
+       |      total   distinct
+-------+----------------------
+ iso_1 |         32         32
+
+. distinct iso_1 if nb_acled == 0
+
+       |        Observations
+       |      total   distinct
+-------+----------------------
+ iso_1 |          4          4
+
+. distinct iso_1 if nb_acled >0
+
+       |        Observations
+       |      total   distinct
+-------+----------------------
+ iso_1 |         48         48
+
+. 
+. log close
+      name:  <unnamed>
+       log:  D:\Travail\Dropbox\mining_conflict\Data_Code_BCRT_AER\results\Table_A2.log
+  log type:  text
+ closed on:  14 Dec 2016, 09:57:37
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------

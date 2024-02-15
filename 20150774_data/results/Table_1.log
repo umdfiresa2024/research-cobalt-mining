@@ -1,0 +1,179 @@
+-----------------------------------------------------------------------------------------------------------------
+      name:  <unnamed>
+       log:  D:\Travail\Dropbox\mining_conflict\Data_Code_BCRT_AER\results\Table_1.log
+  log type:  text
+ opened on:  13 Dec 2016, 10:35:24
+
+. 
+. * ------------------------------------------------------------------------------------ *
+.                                                 *  Table 1 - Descriptive statistics *
+. * ------------------------------------------------------------------------------------ *
+. 
+. /* GID level */
+. foreach var in acled acled_mine1 acled_mine0 acled_battle acled_violent acled_riot nb_acled nb_acled_pos mines_
+> a mine_with_around_d1 mine_with_around nb_mines_a nb_mines_pos two_more two_more_cond{
+  2. use "$Output_data\BCRT_baseline", clear
+  3. *
+. g mine_with_around    = max(mines_a,mines_around)
+  4. g mine_with_around_d1 = max(mines_a,mines_around_d1)
+  5. *
+. g nb_acled_violent              = nb_event8
+  6. g acled_violent                 = (nb_acled_violent>0)
+  7. *
+. g nb_acled_battle               = nb_event1+nb_event2+nb_event3
+  8. g acled_battle                  = (nb_acled_battle>0)
+  9. *
+. g nb_acled_riot         = nb_event7
+ 10. g acled_riot            = (nb_acled_riot>0)
+ 11. 
+. g acled_mine1                   = acled if mines_a>0
+ 12. g acled_mine0                   = acled if mines_a==0
+ 13. g nb_acled_pos                  = nb_acled if acled>0
+ 14. g nb_mines_pos                  = nb_mines_a if mines_a>0
+ 15. g two_more                      = (nb_mines_a>1 & nb_mines_a!=.)
+ 16. g two_more_cond                 = (nb_mines_a>1 & nb_mines_a!=.)
+ 17. replace two_more_cond = . if mines_a == 0
+ 18. 
+. collapse (count) N = `var' (mean) mean = `var' (median) median = `var' (sd) sd = `var' (p25) p25 = `var' (p75) 
+> p75 = `var'
+ 19. 
+. g name = "`var'" 
+ 20. save "$Results\stats_`var'", replace
+ 21. }
+(141,892 missing values generated)
+(2,798 missing values generated)
+(136,710 missing values generated)
+(141,988 missing values generated)
+(141,892 real changes made, 141,892 to missing)
+(note: file Data_Code_BCRT_AER\results\stats_acled.dta not found)
+file Data_Code_BCRT_AER\results\stats_acled.dta saved
+(141,892 missing values generated)
+(2,798 missing values generated)
+(136,710 missing values generated)
+(141,988 missing values generated)
+(141,892 real changes made, 141,892 to missing)
+(note: file Data_Code_BCRT_AER\results\stats_acled_mine1.dta not found)
+file Data_Code_BCRT_AER\results\stats_acled_mine1.dta saved
+(141,892 missing values generated)
+(2,798 missing values generated)
+(136,710 missing values generated)
+(141,988 missing values generated)
+(141,892 real changes made, 141,892 to missing)
+(note: file Data_Code_BCRT_AER\results\stats_acled_mine0.dta not found)
+file Data_Code_BCRT_AER\results\stats_acled_mine0.dta saved
+(141,892 missing values generated)
+(2,798 missing values generated)
+(136,710 missing values generated)
+(141,988 missing values generated)
+(141,892 real changes made, 141,892 to missing)
+(note: file Data_Code_BCRT_AER\results\stats_acled_battle.dta not found)
+file Data_Code_BCRT_AER\results\stats_acled_battle.dta saved
+(141,892 missing values generated)
+(2,798 missing values generated)
+(136,710 missing values generated)
+(141,988 missing values generated)
+(141,892 real changes made, 141,892 to missing)
+(note: file Data_Code_BCRT_AER\results\stats_acled_violent.dta not found)
+file Data_Code_BCRT_AER\results\stats_acled_violent.dta saved
+(141,892 missing values generated)
+(2,798 missing values generated)
+(136,710 missing values generated)
+(141,988 missing values generated)
+(141,892 real changes made, 141,892 to missing)
+(note: file Data_Code_BCRT_AER\results\stats_acled_riot.dta not found)
+file Data_Code_BCRT_AER\results\stats_acled_riot.dta saved
+(141,892 missing values generated)
+(2,798 missing values generated)
+(136,710 missing values generated)
+(141,988 missing values generated)
+(141,892 real changes made, 141,892 to missing)
+(note: file Data_Code_BCRT_AER\results\stats_nb_acled.dta not found)
+file Data_Code_BCRT_AER\results\stats_nb_acled.dta saved
+(141,892 missing values generated)
+(2,798 missing values generated)
+(136,710 missing values generated)
+(141,988 missing values generated)
+(141,892 real changes made, 141,892 to missing)
+(note: file Data_Code_BCRT_AER\results\stats_nb_acled_pos.dta not found)
+file Data_Code_BCRT_AER\results\stats_nb_acled_pos.dta saved
+(141,892 missing values generated)
+(2,798 missing values generated)
+(136,710 missing values generated)
+(141,988 missing values generated)
+(141,892 real changes made, 141,892 to missing)
+(note: file Data_Code_BCRT_AER\results\stats_mines_a.dta not found)
+file Data_Code_BCRT_AER\results\stats_mines_a.dta saved
+(141,892 missing values generated)
+(2,798 missing values generated)
+(136,710 missing values generated)
+(141,988 missing values generated)
+(141,892 real changes made, 141,892 to missing)
+(note: file Data_Code_BCRT_AER\results\stats_mine_with_around_d1.dta not found)
+file Data_Code_BCRT_AER\results\stats_mine_with_around_d1.dta saved
+(141,892 missing values generated)
+(2,798 missing values generated)
+(136,710 missing values generated)
+(141,988 missing values generated)
+(141,892 real changes made, 141,892 to missing)
+(note: file Data_Code_BCRT_AER\results\stats_mine_with_around.dta not found)
+file Data_Code_BCRT_AER\results\stats_mine_with_around.dta saved
+(141,892 missing values generated)
+(2,798 missing values generated)
+(136,710 missing values generated)
+(141,988 missing values generated)
+(141,892 real changes made, 141,892 to missing)
+(note: file Data_Code_BCRT_AER\results\stats_nb_mines_a.dta not found)
+file Data_Code_BCRT_AER\results\stats_nb_mines_a.dta saved
+(141,892 missing values generated)
+(2,798 missing values generated)
+(136,710 missing values generated)
+(141,988 missing values generated)
+(141,892 real changes made, 141,892 to missing)
+(note: file Data_Code_BCRT_AER\results\stats_nb_mines_pos.dta not found)
+file Data_Code_BCRT_AER\results\stats_nb_mines_pos.dta saved
+(141,892 missing values generated)
+(2,798 missing values generated)
+(136,710 missing values generated)
+(141,988 missing values generated)
+(141,892 real changes made, 141,892 to missing)
+(note: file Data_Code_BCRT_AER\results\stats_two_more.dta not found)
+file Data_Code_BCRT_AER\results\stats_two_more.dta saved
+(141,892 missing values generated)
+(2,798 missing values generated)
+(136,710 missing values generated)
+(141,988 missing values generated)
+(141,892 real changes made, 141,892 to missing)
+(note: file Data_Code_BCRT_AER\results\stats_two_more_cond.dta not found)
+file Data_Code_BCRT_AER\results\stats_two_more_cond.dta saved
+
+. 
+. use "$Results\stats_acled", clear
+
+. foreach var in acled_mine1 acled_mine0 acled_battle acled_violent acled_riot nb_acled nb_acled_pos mines_a mine
+> _with_around_d1 mine_with_around nb_mines_a nb_mines_pos two_more two_more_cond{
+  2. append using "$Results\stats_`var'"
+  3. }
+(note: variable name was str5, now str11 to accommodate using data's values)
+(note: variable name was str11, now str12 to accommodate using data's values)
+(note: variable name was str12, now str13 to accommodate using data's values)
+(note: variable name was str13, now str19 to accommodate using data's values)
+
+. *
+. order name N mean sd p25 median p75
+
+. save "$Results\Table_1", replace
+file Data_Code_BCRT_AER\results\Table_1.dta saved
+
+. *
+. foreach var in acled acled_mine1 acled_mine0 acled_battle acled_violent acled_riot nb_acled nb_acled_pos mines_
+> a mine_with_around_d1 mine_with_around nb_mines_a nb_mines_pos two_more two_more_cond{
+  2. erase "$Results\stats_`var'.dta"
+  3. }
+
+. 
+. log close
+      name:  <unnamed>
+       log:  D:\Travail\Dropbox\mining_conflict\Data_Code_BCRT_AER\results\Table_1.log
+  log type:  text
+ closed on:  13 Dec 2016, 10:35:36
+-----------------------------------------------------------------------------------------------------------------

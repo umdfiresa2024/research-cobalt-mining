@@ -1,0 +1,391 @@
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+      name:  <unnamed>
+       log:  D:\Travail\Dropbox\mining_conflict\Data_Code_BCRT_AER\results\Table_A23.log
+  log type:  text
+ opened on:  14 Dec 2016, 12:21:56
+
+. 
+. use "$Output_data\BCRT_baseline", clear
+
+. 
+. * Control for overall corruption
+. egen median_wbgi_cce_init               = pctile(wbgi_cce_init), p(50)
+
+. g low_wbgi_cce_init                     = (wbgi_cce_init<median_wbgi_cce_init & wbgi_cce_init!=.)
+
+. replace low_wbgi_cce_init               =. if wbgi_cce_init ==.
+(10,738 real changes made, 10,738 to missing)
+
+. 
+. /* drop diamonds and tantalum for baseline */
+. drop if mainmineral == "diamond" | mainmineral == "tantalum"
+(588 observations deleted)
+
+. 
+. g triple_dum_diff_q                     = main_lprice_mines*dum_diff_q
+(7,426 missing values generated)
+
+. g triple2_dum_diff_q                    = main_lprice_hist0*dum_diff_q
+(7,336 missing values generated)
+
+. 
+. g triple_diff_q                                 = main_lprice_mines*diff_q
+(7,426 missing values generated)
+
+. g triple2_diff_q                                = main_lprice_hist0*diff_q
+(7,336 missing values generated)
+
+. 
+. g triple_wbgi_cce_init                  = main_lprice_mines*wbgi_cce_init
+(11,058 missing values generated)
+
+. g triple2_wbgi_cce_init                 = main_lprice_hist0*wbgi_cce_init
+(10,962 missing values generated)
+
+. 
+. * With continuous variable
+. eststo: reghdfe acled  main_lprice_mines triple_diff*                                           if sd_mines == 0                , vce(cluster country_nb) absorb(cell it)
+(dropped 14 singleton observations)
+(converged in 3 iterations)
+
+HDFE Linear regression                            Number of obs   =    135,268
+Absorbing 2 HDFE groups                           F(   2,     46) =      80.87
+Statistics robust to heteroskedasticity           Prob > F        =     0.0000
+                                                  R-squared       =     0.4227
+                                                  Adj R-squared   =     0.3751
+                                                  Within R-sq.    =     0.0003
+Number of clusters (country_nb) =         47      Root MSE        =     0.1817
+
+                                 (Std. Err. adjusted for 47 clusters in country_nb)
+-----------------------------------------------------------------------------------
+                  |               Robust
+            acled |      Coef.   Std. Err.      t    P>|t|     [95% Conf. Interval]
+------------------+----------------------------------------------------------------
+main_lprice_mines |   .0739134   .0246471     3.00   0.004     .0243013    .1235256
+    triple_diff_q |  -.0008603   .0004392    -1.96   0.056    -.0017443    .0000236
+-----------------------------------------------------------------------------------
+
+Absorbed degrees of freedom:
+--------------------------------------------------------------------+
+      Absorbed FE |  Num. Coefs.  =   Categories  -   Redundant     | 
+------------------+-------------------------------------------------|
+             cell |            0            9662           9662 *   | 
+               it |            0             658            658 *   | 
+--------------------------------------------------------------------+
+* = fixed effect nested within cluster; treated as redundant for DoF computation
+(est1 stored)
+
+. eststo: reghdfe acled  main_lprice_hist0 triple2_diff*                                                                                          , vce(cluster country_nb) absorb(cell it)
+(dropped 14 singleton observations)
+(converged in 3 iterations)
+
+HDFE Linear regression                            Number of obs   =    136,752
+Absorbing 2 HDFE groups                           F(   2,     46) =      98.21
+Statistics robust to heteroskedasticity           Prob > F        =     0.0000
+                                                  R-squared       =     0.4231
+                                                  Adj R-squared   =     0.3755
+                                                  Within R-sq.    =     0.0002
+Number of clusters (country_nb) =         47      Root MSE        =     0.1829
+
+                                 (Std. Err. adjusted for 47 clusters in country_nb)
+-----------------------------------------------------------------------------------
+                  |               Robust
+            acled |      Coef.   Std. Err.      t    P>|t|     [95% Conf. Interval]
+------------------+----------------------------------------------------------------
+main_lprice_hist0 |   .0492092   .0121102     4.06   0.000     .0248327    .0735857
+   triple2_diff_q |  -.0013044   .0002117    -6.16   0.000    -.0017306   -.0008782
+-----------------------------------------------------------------------------------
+
+Absorbed degrees of freedom:
+--------------------------------------------------------------------+
+      Absorbed FE |  Num. Coefs.  =   Categories  -   Redundant     | 
+------------------+-------------------------------------------------|
+             cell |            0            9768           9768 *   | 
+               it |            0             658            658 *   | 
+--------------------------------------------------------------------+
+* = fixed effect nested within cluster; treated as redundant for DoF computation
+(est2 stored)
+
+. 
+. eststo: reghdfe acled  main_lprice_mines triple_diff*   triple_wb*                      if sd_mines == 0                , vce(cluster country_nb) absorb(cell it)
+(dropped 14 singleton observations)
+(converged in 3 iterations)
+
+HDFE Linear regression                            Number of obs   =    124,614
+Absorbing 2 HDFE groups                           F(   3,     44) =     130.20
+Statistics robust to heteroskedasticity           Prob > F        =     0.0000
+                                                  R-squared       =     0.4282
+                                                  Adj R-squared   =     0.3808
+                                                  Within R-sq.    =     0.0003
+Number of clusters (country_nb) =         45      Root MSE        =     0.1782
+
+                                    (Std. Err. adjusted for 45 clusters in country_nb)
+--------------------------------------------------------------------------------------
+                     |               Robust
+               acled |      Coef.   Std. Err.      t    P>|t|     [95% Conf. Interval]
+---------------------+----------------------------------------------------------------
+   main_lprice_mines |   .0767374   .0210122     3.65   0.001     .0343902    .1190846
+       triple_diff_q |   -.001327   .0005554    -2.39   0.021    -.0024463   -.0002076
+triple_wbgi_cce_init |  -.0481251    .027464    -1.75   0.087    -.1034751    .0072249
+--------------------------------------------------------------------------------------
+
+Absorbed degrees of freedom:
+-----------------------------------------------------------------------+
+         Absorbed FE |  Num. Coefs.  =   Categories  -   Redundant     | 
+---------------------+-------------------------------------------------|
+                cell |            0            8901           8901 *   | 
+                  it |            0             630            630 *   | 
+-----------------------------------------------------------------------+
+* = fixed effect nested within cluster; treated as redundant for DoF computation
+(est3 stored)
+
+. eststo: reghdfe acled  main_lprice_hist0 triple2_diff*  triple2_wb*                                                             , vce(cluster country_nb) absorb(cell it)
+(dropped 14 singleton observations)
+(converged in 3 iterations)
+
+HDFE Linear regression                            Number of obs   =    126,028
+Absorbing 2 HDFE groups                           F(   3,     44) =     124.28
+Statistics robust to heteroskedasticity           Prob > F        =     0.0000
+                                                  R-squared       =     0.4283
+                                                  Adj R-squared   =     0.3810
+                                                  Within R-sq.    =     0.0003
+Number of clusters (country_nb) =         45      Root MSE        =     0.1794
+
+                                     (Std. Err. adjusted for 45 clusters in country_nb)
+---------------------------------------------------------------------------------------
+                      |               Robust
+                acled |      Coef.   Std. Err.      t    P>|t|     [95% Conf. Interval]
+----------------------+----------------------------------------------------------------
+    main_lprice_hist0 |   .0493396   .0123139     4.01   0.000     .0245226    .0741566
+       triple2_diff_q |  -.0014464   .0003189    -4.54   0.000     -.002089   -.0008037
+triple2_wbgi_cce_init |  -.0167365   .0148342    -1.13   0.265    -.0466328    .0131599
+---------------------------------------------------------------------------------------
+
+Absorbed degrees of freedom:
+------------------------------------------------------------------------+
+          Absorbed FE |  Num. Coefs.  =   Categories  -   Redundant     | 
+----------------------+-------------------------------------------------|
+                 cell |            0            9002           9002 *   | 
+                   it |            0             630            630 *   | 
+------------------------------------------------------------------------+
+* = fixed effect nested within cluster; treated as redundant for DoF computation
+(est4 stored)
+
+. 
+. * With dummy
+. eststo: reghdfe acled  main_lprice_mines triple_dum*                                            if sd_mines == 0                , vce(cluster country_nb) absorb(cell it)
+(dropped 14 singleton observations)
+(converged in 3 iterations)
+
+HDFE Linear regression                            Number of obs   =    135,268
+Absorbing 2 HDFE groups                           F(   2,     46) =       4.96
+Statistics robust to heteroskedasticity           Prob > F        =     0.0112
+                                                  R-squared       =     0.4228
+                                                  Adj R-squared   =     0.3751
+                                                  Within R-sq.    =     0.0003
+Number of clusters (country_nb) =         47      Root MSE        =     0.1817
+
+                                 (Std. Err. adjusted for 47 clusters in country_nb)
+-----------------------------------------------------------------------------------
+                  |               Robust
+            acled |      Coef.   Std. Err.      t    P>|t|     [95% Conf. Interval]
+------------------+----------------------------------------------------------------
+main_lprice_mines |    .006135   .0180621     0.34   0.736    -.0302222    .0424921
+triple_dum_diff_q |   .0723278   .0308835     2.34   0.024     .0101625    .1344931
+-----------------------------------------------------------------------------------
+
+Absorbed degrees of freedom:
+--------------------------------------------------------------------+
+      Absorbed FE |  Num. Coefs.  =   Categories  -   Redundant     | 
+------------------+-------------------------------------------------|
+             cell |            0            9662           9662 *   | 
+               it |            0             658            658 *   | 
+--------------------------------------------------------------------+
+* = fixed effect nested within cluster; treated as redundant for DoF computation
+(est5 stored)
+
+. eststo: reghdfe acled  main_lprice_hist0 triple2_dum*                                                                                           , vce(cluster country_nb) absorb(cell it)
+(dropped 14 singleton observations)
+(converged in 3 iterations)
+
+HDFE Linear regression                            Number of obs   =    136,752
+Absorbing 2 HDFE groups                           F(   2,     46) =      15.42
+Statistics robust to heteroskedasticity           Prob > F        =     0.0000
+                                                  R-squared       =     0.4232
+                                                  Adj R-squared   =     0.3755
+                                                  Within R-sq.    =     0.0003
+Number of clusters (country_nb) =         47      Root MSE        =     0.1829
+
+                                  (Std. Err. adjusted for 47 clusters in country_nb)
+------------------------------------------------------------------------------------
+                   |               Robust
+             acled |      Coef.   Std. Err.      t    P>|t|     [95% Conf. Interval]
+-------------------+----------------------------------------------------------------
+ main_lprice_hist0 |  -.0162326   .0045309    -3.58   0.001    -.0253529   -.0071123
+triple2_dum_diff_q |   .0680119   .0130163     5.23   0.000     .0418115    .0942123
+------------------------------------------------------------------------------------
+
+Absorbed degrees of freedom:
+---------------------------------------------------------------------+
+       Absorbed FE |  Num. Coefs.  =   Categories  -   Redundant     | 
+-------------------+-------------------------------------------------|
+              cell |            0            9768           9768 *   | 
+                it |            0             658            658 *   | 
+---------------------------------------------------------------------+
+* = fixed effect nested within cluster; treated as redundant for DoF computation
+(est6 stored)
+
+. 
+. eststo: reghdfe acled  main_lprice_mines triple_dum*    triple_wb*                      if sd_mines == 0                , vce(cluster country_nb) absorb(cell it)
+(dropped 14 singleton observations)
+(converged in 3 iterations)
+
+HDFE Linear regression                            Number of obs   =    124,614
+Absorbing 2 HDFE groups                           F(   3,     44) =       5.85
+Statistics robust to heteroskedasticity           Prob > F        =     0.0019
+                                                  R-squared       =     0.4282
+                                                  Adj R-squared   =     0.3808
+                                                  Within R-sq.    =     0.0003
+Number of clusters (country_nb) =         45      Root MSE        =     0.1782
+
+                                    (Std. Err. adjusted for 45 clusters in country_nb)
+--------------------------------------------------------------------------------------
+                     |               Robust
+               acled |      Coef.   Std. Err.      t    P>|t|     [95% Conf. Interval]
+---------------------+----------------------------------------------------------------
+   main_lprice_mines |  -.0019925   .0075822    -0.26   0.794    -.0172733    .0132884
+   triple_dum_diff_q |   .0834413   .0245159     3.40   0.001     .0340328    .1328498
+triple_wbgi_cce_init |  -.0448777   .0254052    -1.77   0.084    -.0960786    .0063231
+--------------------------------------------------------------------------------------
+
+Absorbed degrees of freedom:
+-----------------------------------------------------------------------+
+         Absorbed FE |  Num. Coefs.  =   Categories  -   Redundant     | 
+---------------------+-------------------------------------------------|
+                cell |            0            8901           8901 *   | 
+                  it |            0             630            630 *   | 
+-----------------------------------------------------------------------+
+* = fixed effect nested within cluster; treated as redundant for DoF computation
+(est7 stored)
+
+. eststo: reghdfe acled  main_lprice_hist0 triple2_dum*   triple2_wb*                                                             , vce(cluster country_nb) absorb(cell it)
+(dropped 14 singleton observations)
+(converged in 3 iterations)
+
+HDFE Linear regression                            Number of obs   =    126,028
+Absorbing 2 HDFE groups                           F(   3,     44) =      11.18
+Statistics robust to heteroskedasticity           Prob > F        =     0.0000
+                                                  R-squared       =     0.4283
+                                                  Adj R-squared   =     0.3810
+                                                  Within R-sq.    =     0.0003
+Number of clusters (country_nb) =         45      Root MSE        =     0.1794
+
+                                     (Std. Err. adjusted for 45 clusters in country_nb)
+---------------------------------------------------------------------------------------
+                      |               Robust
+                acled |      Coef.   Std. Err.      t    P>|t|     [95% Conf. Interval]
+----------------------+----------------------------------------------------------------
+    main_lprice_hist0 |  -.0170533   .0084719    -2.01   0.050    -.0341273    .0000208
+   triple2_dum_diff_q |   .0690846   .0152342     4.53   0.000      .038382    .0997872
+triple2_wbgi_cce_init |  -.0135277    .013748    -0.98   0.331    -.0412349    .0141795
+---------------------------------------------------------------------------------------
+
+Absorbed degrees of freedom:
+------------------------------------------------------------------------+
+          Absorbed FE |  Num. Coefs.  =   Categories  -   Redundant     | 
+----------------------+-------------------------------------------------|
+                 cell |            0            9002           9002 *   | 
+                   it |            0             630            630 *   | 
+------------------------------------------------------------------------+
+* = fixed effect nested within cluster; treated as redundant for DoF computation
+(est8 stored)
+
+. 
+. set linesize 250
+
+. esttab, mtitles drop() b(%5.3f) se(%5.3f) compress r2 starlevels(c 0.1 b 0.05 a 0.01)  se 
+
+--------------------------------------------------------------------------------------------------
+                 (1)        (2)        (3)        (4)        (5)        (6)        (7)        (8) 
+                est1       est2       est3       est4       est5       est6       est7       est8 
+--------------------------------------------------------------------------------------------------
+main_lpr~s     0.074a                0.077a                0.006                -0.002            
+             (0.025)               (0.021)               (0.018)               (0.008)            
+
+t~e_diff_q    -0.001c               -0.001b                                                       
+             (0.000)               (0.001)                                                        
+
+main_lpr~0                0.049a                0.049a               -0.016a               -0.017c
+                        (0.012)               (0.012)               (0.005)               (0.008) 
+
+t~2_diff_q               -0.001a               -0.001a                                            
+                        (0.000)               (0.000)                                             
+
+triple_w~t                          -0.048c                                     -0.045c           
+                                   (0.027)                                     (0.025)            
+
+triple2_~t                                     -0.017                                      -0.014 
+                                              (0.015)                                     (0.014) 
+
+triple_du~                                                 0.072b                0.083a           
+                                                         (0.031)               (0.025)            
+
+triple2_..                                                            0.068a                0.069a
+                                                                    (0.013)               (0.015) 
+--------------------------------------------------------------------------------------------------
+N             135268     136752     124614     126028     135268     136752     124614     126028 
+R-sq           0.423      0.423      0.428      0.428      0.423      0.423      0.428      0.428 
+--------------------------------------------------------------------------------------------------
+Standard errors in parentheses
+c p<0.1, b p<0.05, a p<0.01
+
+. esttab, mtitles drop() b(%5.3f) se(%5.3f) r2  starlevels({$^c$} 0.1 {$^b$} 0.05 {$^a$} 0.01) se tex label  title() 
+
+{
+\def\sym#1{\ifmmode^{#1}\else\(^{#1}\)\fi}
+\begin{tabular}{l*{8}{c}}
+\hline\hline
+                    &\multicolumn{1}{c}{(1)}&\multicolumn{1}{c}{(2)}&\multicolumn{1}{c}{(3)}&\multicolumn{1}{c}{(4)}&\multicolumn{1}{c}{(5)}&\multicolumn{1}{c}{(6)}&\multicolumn{1}{c}{(7)}&\multicolumn{1}{c}{(8)}\\
+                    &\multicolumn{1}{c}{est1}&\multicolumn{1}{c}{est2}&\multicolumn{1}{c}{est3}&\multicolumn{1}{c}{est4}&\multicolumn{1}{c}{est5}&\multicolumn{1}{c}{est6}&\multicolumn{1}{c}{est7}&\multicolumn{1}{c}{est8}\\
+\hline
+$\ln$ price $\times$ mines $>0$&       0.074{$^a$}&                  &       0.077{$^a$}&                  &       0.006      &                  &      -0.002      &                  \\
+                    &     (0.025)      &                  &     (0.021)      &                  &     (0.018)      &                  &     (0.008)      &                  \\
+[1em]
+triple\_diff\_q       &      -0.001{$^c$}&                  &      -0.001{$^b$}&                  &                  &                  &                  &                  \\
+                    &     (0.000)      &                  &     (0.001)      &                  &                  &                  &                  &                  \\
+[1em]
+$\ln$ price $\times$ mines $>0$ (ever)&                  &       0.049{$^a$}&                  &       0.049{$^a$}&                  &      -0.016{$^a$}&                  &      -0.017{$^c$}\\
+                    &                  &     (0.012)      &                  &     (0.012)      &                  &     (0.005)      &                  &     (0.008)      \\
+[1em]
+triple2\_diff\_q      &                  &      -0.001{$^a$}&                  &      -0.001{$^a$}&                  &                  &                  &                  \\
+                    &                  &     (0.000)      &                  &     (0.000)      &                  &                  &                  &                  \\
+[1em]
+triple\_wbgi\_cce\_init&                  &                  &      -0.048{$^c$}&                  &                  &                  &      -0.045{$^c$}&                  \\
+                    &                  &                  &     (0.027)      &                  &                  &                  &     (0.025)      &                  \\
+[1em]
+triple2\_wbgi\_cce\_init&                  &                  &                  &      -0.017      &                  &                  &                  &      -0.014      \\
+                    &                  &                  &                  &     (0.015)      &                  &                  &                  &     (0.014)      \\
+[1em]
+triple\_dum\_diff\_q   &                  &                  &                  &                  &       0.072{$^b$}&                  &       0.083{$^a$}&                  \\
+                    &                  &                  &                  &                  &     (0.031)      &                  &     (0.025)      &                  \\
+[1em]
+triple2\_dum\_diff\_q  &                  &                  &                  &                  &                  &       0.068{$^a$}&                  &       0.069{$^a$}\\
+                    &                  &                  &                  &                  &                  &     (0.013)      &                  &     (0.015)      \\
+\hline
+Observations        &      135268      &      136752      &      124614      &      126028      &      135268      &      136752      &      124614      &      126028      \\
+\(R^{2}\)           &       0.423      &       0.423      &       0.428      &       0.428      &       0.423      &       0.423      &       0.428      &       0.428      \\
+\hline\hline
+\multicolumn{9}{l}{\footnotesize Standard errors in parentheses}\\
+\multicolumn{9}{l}{\footnotesize {$^c$} p<0.1, {$^b$} p<0.05, {$^a$} p<0.01}\\
+\end{tabular}
+}
+
+. eststo clear
+
+. 
+. log close  
+      name:  <unnamed>
+       log:  D:\Travail\Dropbox\mining_conflict\Data_Code_BCRT_AER\results\Table_A23.log
+  log type:  text
+ closed on:  14 Dec 2016, 12:22:06
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------

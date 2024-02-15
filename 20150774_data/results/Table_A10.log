@@ -1,0 +1,503 @@
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+      name:  <unnamed>
+       log:  D:\Travail\Dropbox\mining_conflict\Data_Code_BCRT_AER\results\Table_A10.log
+  log type:  text
+ opened on:  14 Dec 2016, 10:53:29
+
+. 
+. use "$Output_data\BCRT_baseline", clear
+
+. 
+. /* drop diamonds and tantalum for baseline */
+. drop if mainmineral == "diamond" | mainmineral == "tantalum"
+(588 observations deleted)
+
+. 
+. /* mining areas: from the first time a mine was observed onwards */
+. sort cell year
+
+. bys  cell: gen cum_mines        = sum(mines)
+
+. g mining_area                           = cum_mines>0 
+
+. replace mining_area             = . if cum_mines ==0 & max_mine>0
+(489 real changes made, 489 to missing)
+
+. 
+. /* mining areas: mine is observed in 1997 */
+. g temp1                                         = (year == 1997 & mines == 1)
+
+. bys gid: egen mining_area2      = max(temp1)
+
+. drop temp1
+
+. 
+. /* interactions */
+. g main_lprice_hist1             = main_lprice*mining_area
+(489 missing values generated)
+
+. g main_lprice_hist2             = main_lprice*mining_area2
+
+. g main_lprice_hist3             = main_lprice*mining_area_prior5
+
+. g main_lprice_hist4             = main_lprice*mining_area_priorall
+
+. 
+. keep if main_lprice_mines != .
+(334 observations deleted)
+
+. 
+. *******************************************
+. * First instrument: mine open before 1997 *
+. *******************************************
+. 
+. /* equivalent of col 2, baseline table*/
+. 
+. //first stage 
+. reghdfe main_lprice_mines main_lprice_hist4     if sd_mines==0                                  , vce(cluster country_nb) absorb(cell it)  
+(dropped 14 singleton observations)
+(converged in 3 iterations)
+
+HDFE Linear regression                            Number of obs   =    142,282
+Absorbing 2 HDFE groups                           F(   1,     50) =   1.71e+07
+Statistics robust to heteroskedasticity           Prob > F        =     0.0000
+                                                  R-squared       =     0.9999
+                                                  Adj R-squared   =     0.9999
+                                                  Within R-sq.    =     0.9501
+Number of clusters (country_nb) =         51      Root MSE        =     0.0091
+
+                                 (Std. Err. adjusted for 51 clusters in country_nb)
+-----------------------------------------------------------------------------------
+                  |               Robust
+main_lprice_mines |      Coef.   Std. Err.      t    P>|t|     [95% Conf. Interval]
+------------------+----------------------------------------------------------------
+main_lprice_hist4 |   .9996439   .0002419  4131.76   0.000     .9991579     1.00013
+-----------------------------------------------------------------------------------
+
+Absorbed degrees of freedom:
+--------------------------------------------------------------------+
+      Absorbed FE |  Num. Coefs.  =   Categories  -   Redundant     | 
+------------------+-------------------------------------------------|
+             cell |            0           10163          10163 *   | 
+               it |            0             714            714 *   | 
+--------------------------------------------------------------------+
+* = fixed effect nested within cluster; treated as redundant for DoF computation
+
+. //second stage
+. eststo: reghdfe acled  (main_lprice_mines = main_lprice_hist4) if sd_mines==0   , vce(cluster country_nb) absorb(cell it) 
+(dropped 14 singleton observations)
+(converged in 3 iterations)
+
+HDFE IV (2SLS) estimation
+-------------------------
+
+Estimates efficient for homoskedasticity only
+Statistics robust to heteroskedasticity and clustering on country_nb
+
+Number of clusters (country_nb) =     51              Number of obs =   142282
+                                                      F(  1,    50) =    10.47
+                                                      Prob > F      =   0.0022
+Total (centered) SS     =  4191.723799                Centered R2   =   0.4231
+Total (uncentered) SS   =  4191.723799                Uncentered R2 =        .
+Residual SS             =  4190.600204                Root MSE      =    .1786
+
+-----------------------------------------------------------------------------------
+                  |               Robust
+            acled |      Coef.   Std. Err.      t    P>|t|     [95% Conf. Interval]
+------------------+----------------------------------------------------------------
+main_lprice_mines |   .0740588   .0228911     3.24   0.002     .0280806     .120037
+-----------------------------------------------------------------------------------
+Underidentification test (Kleibergen-Paap rk LM statistic):              9.113
+                                                   Chi-sq(1) P-val =    0.0025
+------------------------------------------------------------------------------
+Weak identification test (Cragg-Donald Wald F statistic):              2.7e+06
+                         (Kleibergen-Paap rk Wald F statistic):        1.7e+07
+Stock-Yogo weak ID test critical values: 10% maximal IV size             16.38
+                                         15% maximal IV size              8.96
+                                         20% maximal IV size              6.66
+                                         25% maximal IV size              5.53
+Source: Stock-Yogo (2005).  Reproduced by permission.
+NB: Critical values are for Cragg-Donald F statistic and i.i.d. errors.
+------------------------------------------------------------------------------
+Hansen J statistic (overidentification test of all instruments):         0.000
+                                                 (equation exactly identified)
+------------------------------------------------------------------------------
+Instrumented:         main_lprice_mines
+Excluded instruments: main_lprice_hist4
+------------------------------------------------------------------------------
+
+Absorbed degrees of freedom:
+--------------------------------------------------------------------+
+      Absorbed FE |  Num. Coefs.  =   Categories  -   Redundant     | 
+------------------+-------------------------------------------------|
+             cell |            0           10163          10163 *   | 
+               it |            0             714            714 *   | 
+--------------------------------------------------------------------+
+* = fixed effect nested within cluster; treated as redundant for DoF computation
+(est1 stored)
+
+. 
+. /* equivalent of col 4, baseline table*/
+. 
+. //first stage
+. reghdfe main_lprice_hist0 main_lprice_hist4, vce(cluster country_nb) absorb(cell it) 
+(dropped 14 singleton observations)
+(converged in 5 iterations)
+
+HDFE Linear regression                            Number of obs   =    143,754
+Absorbing 2 HDFE groups                           F(   1,     50) =   23463.07
+Statistics robust to heteroskedasticity           Prob > F        =     0.0000
+                                                  R-squared       =     0.9996
+                                                  Adj R-squared   =     0.9995
+                                                  Within R-sq.    =     0.6467
+Number of clusters (country_nb) =         51      Root MSE        =     0.0352
+
+                                 (Std. Err. adjusted for 51 clusters in country_nb)
+-----------------------------------------------------------------------------------
+                  |               Robust
+main_lprice_hist0 |      Coef.   Std. Err.      t    P>|t|     [95% Conf. Interval]
+------------------+----------------------------------------------------------------
+main_lprice_hist4 |   .9810232   .0064045   153.18   0.000     .9681593     .993887
+-----------------------------------------------------------------------------------
+
+Absorbed degrees of freedom:
+--------------------------------------------------------------------+
+      Absorbed FE |  Num. Coefs.  =   Categories  -   Redundant     | 
+------------------+-------------------------------------------------|
+             cell |            0           10275          10275 *   | 
+               it |            0             714            714 *   | 
+--------------------------------------------------------------------+
+* = fixed effect nested within cluster; treated as redundant for DoF computation
+
+. //second stage
+. eststo: reghdfe acled  (main_lprice_hist0 = main_lprice_hist4), vce(cluster country_nb) absorb(cell it) 
+(dropped 14 singleton observations)
+(converged in 6 iterations)
+
+HDFE IV (2SLS) estimation
+-------------------------
+
+Estimates efficient for homoskedasticity only
+Statistics robust to heteroskedasticity and clustering on country_nb
+
+Number of clusters (country_nb) =     51              Number of obs =   143754
+                                                      F(  1,    50) =     6.94
+                                                      Prob > F      =   0.0112
+Total (centered) SS     =  4287.301528                Centered R2   =   0.4237
+Total (uncentered) SS   =  4287.301528                Uncentered R2 =        .
+Residual SS             =  4286.458384                Root MSE      =    .1797
+
+-----------------------------------------------------------------------------------
+                  |               Robust
+            acled |      Coef.   Std. Err.      t    P>|t|     [95% Conf. Interval]
+------------------+----------------------------------------------------------------
+main_lprice_hist0 |   .0509271   .0193382     2.63   0.011     .0120852     .089769
+-----------------------------------------------------------------------------------
+Underidentification test (Kleibergen-Paap rk LM statistic):             10.322
+                                                   Chi-sq(1) P-val =    0.0013
+------------------------------------------------------------------------------
+Weak identification test (Cragg-Donald Wald F statistic):              2.6e+05
+                         (Kleibergen-Paap rk Wald F statistic):        2.3e+04
+Stock-Yogo weak ID test critical values: 10% maximal IV size             16.38
+                                         15% maximal IV size              8.96
+                                         20% maximal IV size              6.66
+                                         25% maximal IV size              5.53
+Source: Stock-Yogo (2005).  Reproduced by permission.
+NB: Critical values are for Cragg-Donald F statistic and i.i.d. errors.
+------------------------------------------------------------------------------
+Hansen J statistic (overidentification test of all instruments):         0.000
+                                                 (equation exactly identified)
+------------------------------------------------------------------------------
+Instrumented:         main_lprice_hist0
+Excluded instruments: main_lprice_hist4
+------------------------------------------------------------------------------
+
+Absorbed degrees of freedom:
+--------------------------------------------------------------------+
+      Absorbed FE |  Num. Coefs.  =   Categories  -   Redundant     | 
+------------------+-------------------------------------------------|
+             cell |            0           10275          10275 *   | 
+               it |            0             714            714 *   | 
+--------------------------------------------------------------------+
+* = fixed effect nested within cluster; treated as redundant for DoF computation
+(est2 stored)
+
+. 
+. /* equivalent of col 6, baseline table*/
+. 
+. // demeaning
+. preserve
+
+. use "$Output_data\BCRT_neighbour", clear
+
+. g main_lprice_hist4 = main_lprice*mining_area_priorall
+
+. g control                       = mining_area_priorall*m_main_lprice
+
+. reghdfe acled   main_lprice  (mines main_lprice_mines m_lprice_mines= main_lprice_hist4 mining_area_priorall control)  if sd_mines == 0, vce(cluster country_nb) absorb(couple year) 
+(converged in 3 iterations)
+
+HDFE IV (2SLS) estimation
+-------------------------
+
+Estimates efficient for homoskedasticity only
+Statistics robust to heteroskedasticity and clustering on country_nb
+
+Number of clusters (country_nb) =     31              Number of obs =    17360
+                                                      F(  4,    30) =     1.95
+                                                      Prob > F      =   0.1280
+Total (centered) SS     =  1299.697448                Centered R2   =   0.1852
+Total (uncentered) SS   =  1299.697448                Uncentered R2 =        .
+Residual SS             =  1293.822897                Root MSE      =    .2746
+
+-----------------------------------------------------------------------------------
+                  |               Robust
+            acled |      Coef.   Std. Err.      t    P>|t|     [95% Conf. Interval]
+------------------+----------------------------------------------------------------
+            mines |   .0456466   .0636191     0.72   0.479    -.0842809    .1755741
+main_lprice_mines |   .1046199   .0755977     1.38   0.177    -.0497711     .259011
+   m_lprice_mines |   -.102912   .0719499    -1.43   0.163    -.2498533    .0440294
+      main_lprice |   .0286799   .0138468     2.07   0.047     .0004009    .0569589
+-----------------------------------------------------------------------------------
+Underidentification test (Kleibergen-Paap rk LM statistic):              7.502
+                                                   Chi-sq(1) P-val =    0.0062
+------------------------------------------------------------------------------
+Weak identification test (Cragg-Donald Wald F statistic):             5571.336
+                         (Kleibergen-Paap rk Wald F statistic):          3.635
+Stock-Yogo weak ID test critical values:                       <not available>
+------------------------------------------------------------------------------
+Hansen J statistic (overidentification test of all instruments):         0.000
+                                                 (equation exactly identified)
+------------------------------------------------------------------------------
+Instrumented:         mines main_lprice_mines m_lprice_mines
+Included instruments: main_lprice
+Excluded instruments: main_lprice_hist4 mining_area_priorall control
+------------------------------------------------------------------------------
+
+Absorbed degrees of freedom:
+--------------------------------------------------------------------+
+      Absorbed FE |  Num. Coefs.  =   Categories  -   Redundant     | 
+------------------+-------------------------------------------------|
+           couple |          188             188              0     | 
+             year |           13              14              1     | 
+--------------------------------------------------------------------+
+
+. keep if e(sample)
+(1,568 observations deleted)
+
+. foreach var in acled main_lprice mines main_lprice_mines m_lprice_mines main_lprice_hist4 mining_area_priorall control{
+  2.         bys year: egen mean_`var'_it   = mean(`var')
+  3. }
+
+. foreach var in acled main_lprice mines main_lprice_mines m_lprice_mines main_lprice_hist4 mining_area_priorall control{
+  2.         g `var'_dm = `var'-mean_`var'_it
+  3. }
+
+. foreach var in acled main_lprice mines main_lprice_mines m_lprice_mines main_lprice_hist4 mining_area_priorall control{
+  2.         bys couple: egen mean_`var'_cell = mean(`var'_dm)
+  3. }
+
+. 
+. foreach var in acled main_lprice mines main_lprice_mines m_lprice_mines main_lprice_hist4 mining_area_priorall control{
+  2.         g `var'_ddm = `var'-mean_`var'_cell-mean_`var'_it
+  3. }
+
+. //first stage
+. my_spatial_2sls main_lprice_mines_ddm main_lprice_ddm main_lprice_hist4_ddm mining_area_priorall_ddm control_ddm, latitude(latitude) longitude(longitude) id(couple) time(year) lag(100000) dist(500) lagdist(0)
+------------------------------------------------------------------------------------------
+   main_lprice_mines_ddm |      Coef.   Std. Err.      z    P>|z|     [95% Conf. Interval]
+-------------------------+----------------------------------------------------------------
+         main_lprice_ddm |   .0041032   .0369476     0.11   0.912    -.0683127    .0765192
+   main_lprice_hist4_ddm |   .9389762   .4537162     2.07   0.038     .0497089    1.828244
+mining_area_priorall_ddm |   .7294966   .4989665     1.46   0.144    -.2484599    1.707453
+             control_ddm |  -.0977592   .4652088    -0.21   0.834    -1.009552    .8140333
+                   _cons |   4.91e-09          .        .       .            .           .
+------------------------------------------------------------------------------------------
+
+. //second stage
+. eststo: my_spatial_2sls acled_ddm main_lprice_ddm, end(mines_ddm main_lprice_mines_ddm m_lprice_mines_ddm) iv(main_lprice_hist4_ddm mining_area_priorall_ddm control_ddm) latitude(latitude) longitude(longitude) id(couple) time(year) lag(100000) dist
+> (500) lagdist(0)
+---------------------------------------------------------------------------------------
+            acled_ddm |      Coef.   Std. Err.      z    P>|z|     [95% Conf. Interval]
+----------------------+----------------------------------------------------------------
+            mines_ddm |   .0456466   .0671751     0.68   0.497    -.0860141    .1773073
+main_lprice_mines_ddm |   .1046199   .0614512     1.70   0.089    -.0158222    .2250621
+   m_lprice_mines_ddm |   -.102912   .0619203    -1.66   0.097    -.2242736    .0184496
+      main_lprice_ddm |   .0286799   .0200215     1.43   0.152    -.0105616    .0679214
+                _cons |  -1.14e-10   .0046194    -0.00   1.000     -.009054     .009054
+---------------------------------------------------------------------------------------
+(est3 stored)
+
+. restore
+
+. 
+. ******************************************************************
+. * Second instrument: main_lprice instrumenting for mine opening  *
+. ******************************************************************
+. 
+. //first stage
+. reghdfe mines main_lprice, vce(cluster country_nb) absorb(cell it) 
+(dropped 14 singleton observations)
+(converged in 5 iterations)
+
+HDFE Linear regression                            Number of obs   =    143,754
+Absorbing 2 HDFE groups                           F(   1,     50) =       4.61
+Statistics robust to heteroskedasticity           Prob > F        =     0.0367
+                                                  R-squared       =     0.8998
+                                                  Adj R-squared   =     0.8915
+                                                  Within R-sq.    =     0.0265
+Number of clusters (country_nb) =         51      Root MSE        =     0.0379
+
+                            (Std. Err. adjusted for 51 clusters in country_nb)
+------------------------------------------------------------------------------
+             |               Robust
+       mines |      Coef.   Std. Err.      t    P>|t|     [95% Conf. Interval]
+-------------+----------------------------------------------------------------
+ main_lprice |   .1055406   .0491748     2.15   0.037     .0067701    .2043111
+------------------------------------------------------------------------------
+
+Absorbed degrees of freedom:
+---------------------------------------------------------------+
+ Absorbed FE |  Num. Coefs.  =   Categories  -   Redundant     | 
+-------------+-------------------------------------------------|
+        cell |            0           10275          10275 *   | 
+          it |            0             714            714 *   | 
+---------------------------------------------------------------+
+* = fixed effect nested within cluster; treated as redundant for DoF computation
+
+. //second stage
+. eststo: reghdfe acled  (mines = main_lprice), vce(cluster country_nb) absorb(cell it) 
+(dropped 14 singleton observations)
+(converged in 6 iterations)
+
+HDFE IV (2SLS) estimation
+-------------------------
+
+Estimates efficient for homoskedasticity only
+Statistics robust to heteroskedasticity and clustering on country_nb
+
+Number of clusters (country_nb) =     51              Number of obs =   143754
+                                                      F(  1,    50) =     2.60
+                                                      Prob > F      =   0.1135
+Total (centered) SS     =  4287.301528                Centered R2   =   0.4201
+Total (uncentered) SS   =  4287.301528                Uncentered R2 =        .
+Residual SS             =  4313.332128                Root MSE      =    .1802
+
+------------------------------------------------------------------------------
+             |               Robust
+       acled |      Coef.   Std. Err.      t    P>|t|     [95% Conf. Interval]
+-------------+----------------------------------------------------------------
+       mines |   .4094723   .2541603     1.61   0.113    -.1010237    .9199682
+------------------------------------------------------------------------------
+Underidentification test (Kleibergen-Paap rk LM statistic):              6.645
+                                                   Chi-sq(1) P-val =    0.0099
+------------------------------------------------------------------------------
+Weak identification test (Cragg-Donald Wald F statistic):             3912.358
+                         (Kleibergen-Paap rk Wald F statistic):          4.606
+Stock-Yogo weak ID test critical values: 10% maximal IV size             16.38
+                                         15% maximal IV size              8.96
+                                         20% maximal IV size              6.66
+                                         25% maximal IV size              5.53
+Source: Stock-Yogo (2005).  Reproduced by permission.
+NB: Critical values are for Cragg-Donald F statistic and i.i.d. errors.
+------------------------------------------------------------------------------
+Hansen J statistic (overidentification test of all instruments):         0.000
+                                                 (equation exactly identified)
+------------------------------------------------------------------------------
+Instrumented:         mines
+Excluded instruments: main_lprice
+------------------------------------------------------------------------------
+
+Absorbed degrees of freedom:
+---------------------------------------------------------------+
+ Absorbed FE |  Num. Coefs.  =   Categories  -   Redundant     | 
+-------------+-------------------------------------------------|
+        cell |            0           10275          10275 *   | 
+          it |            0             714            714 *   | 
+---------------------------------------------------------------+
+* = fixed effect nested within cluster; treated as redundant for DoF computation
+(est4 stored)
+
+. 
+. set linesize 250
+
+. esttab, mtitles drop(m_lprice_mines_ddm) b(%5.3f) se(%5.3f) compress r2 starlevels(c 0.1 b 0.05 a 0.01)  se 
+
+------------------------------------------------------
+                 (1)        (2)        (3)        (4) 
+                est1       est2       est3       est4 
+------------------------------------------------------
+main_lpr~s     0.074a                                 
+             (0.023)                                  
+
+main_lpr~0                0.051b                      
+                        (0.019)                       
+
+mines_ddm                            0.046            
+                                   (0.067)            
+
+main_lpr~m                           0.105c           
+                                   (0.061)            
+
+main_lpr~m                           0.029            
+                                   (0.020)            
+
+mines                                           0.409 
+                                              (0.254) 
+
+_cons                               -0.000            
+                                   (0.005)            
+------------------------------------------------------
+N             142282     143754      17360     143754 
+R-sq           0.423      0.424                 0.420 
+------------------------------------------------------
+Standard errors in parentheses
+c p<0.1, b p<0.05, a p<0.01
+
+. esttab, mtitles drop(m_lprice_mines_ddm) b(%5.3f) se(%5.3f) r2  starlevels({$^c$} 0.1 {$^b$} 0.05 {$^a$} 0.01) se tex label  title() 
+
+{
+\def\sym#1{\ifmmode^{#1}\else\(^{#1}\)\fi}
+\begin{tabular}{l*{4}{c}}
+\hline\hline
+                    &\multicolumn{1}{c}{(1)}&\multicolumn{1}{c}{(2)}&\multicolumn{1}{c}{(3)}&\multicolumn{1}{c}{(4)}\\
+                    &\multicolumn{1}{c}{est1}&\multicolumn{1}{c}{est2}&\multicolumn{1}{c}{est3}&\multicolumn{1}{c}{est4}\\
+\hline
+$\ln$ price $\times$ mines $>0$&       0.074{$^a$}&                  &                  &                  \\
+                    &     (0.023)      &                  &                  &                  \\
+[1em]
+$\ln$ price $\times$ mines $>0$ (ever)&                  &       0.051{$^b$}&                  &                  \\
+                    &                  &     (0.019)      &                  &                  \\
+[1em]
+mines\_ddm           &                  &                  &       0.046      &                  \\
+                    &                  &                  &     (0.067)      &                  \\
+[1em]
+main\_lprice\_mines\_ddm&                  &                  &       0.105{$^c$}&                  \\
+                    &                  &                  &     (0.061)      &                  \\
+[1em]
+main\_lprice\_ddm     &                  &                  &       0.029      &                  \\
+                    &                  &                  &     (0.020)      &                  \\
+[1em]
+mine $>0$           &                  &                  &                  &       0.409      \\
+                    &                  &                  &                  &     (0.254)      \\
+[1em]
+Constant            &                  &                  &      -0.000      &                  \\
+                    &                  &                  &     (0.005)      &                  \\
+\hline
+Observations        &      142282      &      143754      &       17360      &      143754      \\
+\(R^{2}\)           &       0.423      &       0.424      &                  &       0.420      \\
+\hline\hline
+\multicolumn{5}{l}{\footnotesize Standard errors in parentheses}\\
+\multicolumn{5}{l}{\footnotesize {$^c$} p<0.1, {$^b$} p<0.05, {$^a$} p<0.01}\\
+\end{tabular}
+}
+
+. eststo clear
+
+. 
+. log close
+      name:  <unnamed>
+       log:  D:\Travail\Dropbox\mining_conflict\Data_Code_BCRT_AER\results\Table_A10.log
+  log type:  text
+ closed on:  14 Dec 2016, 11:32:00
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------

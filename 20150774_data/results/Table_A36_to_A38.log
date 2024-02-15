@@ -1,0 +1,1893 @@
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+      name:  <unnamed>
+       log:  D:\Travail\Dropbox\mining_conflict\Data_Code_BCRT_AER\results\Table_A36_to_A38.log
+  log type:  text
+ opened on:  13 Dec 2016, 13:03:55
+
+. 
+. ***********************
+. //Table A36: statistics
+. ***********************
+. 
+. foreach var in gov_company for_company other_company major_company col_company for_company2 full_gov full_for full_other full_for2 full_col{
+  2. 
+.         use "$Output_data\BCRT_baseline", clear
+  3. 
+.         drop if mainmineral == "diamond" | mainmineral == "tantalum" 
+  4. 
+.         drop for_company col_company gov_company other_company major_company
+  5.                 foreach var2 in for_company col_company gov_company other_company major_company{
+  6.                 rename `var2'_s `var2'
+  7.         }
+  8.         sum for_company col_company gov_company other_company major_company, d
+  9.         
+.         gen for_company2=for_company-col_company /*foreign and colonizer*/
+ 10.         
+.         g tot_share = gov_company + for_company+other_company
+ 11.         keep if tot_share == 1
+ 12. 
+.         g full_gov   = (gov_company==1)
+ 13.         g full_for   = (for_company==1)
+ 14.         g full_other = (other_company==1)
+ 15.         g full_for2   = (for_company2==1)
+ 16.         g full_col = (col_company==1)
+ 17.         *
+.         collapse (count) N = `var' (mean) mean = `var' (median) median = `var' (sd) sd = `var'
+ 18.         g name = "`var'" 
+ 19.         save "$Results\stats_`var'", replace
+ 20. }
+(588 observations deleted)
+
+             Presence of foreign company (share)
+-------------------------------------------------------------
+      Percentiles      Smallest
+ 1%            0              0
+ 5%            0              0
+10%            0              0       Obs               2,450
+25%            0              0       Sum of Wgt.       2,450
+
+50%            1                      Mean           .5744338
+                        Largest       Std. Dev.      .4672496
+75%            1              1
+90%            1              1       Variance       .2183222
+95%            1              1       Skewness      -.2917212
+99%            1              1       Kurtosis        1.19511
+
+       Presence of foreign company, colonizer country
+                           (share)
+-------------------------------------------------------------
+      Percentiles      Smallest
+ 1%            0              0
+ 5%            0              0
+10%            0              0       Obs               2,730
+25%            0              0       Sum of Wgt.       2,730
+
+50%            0                      Mean           .1172805
+                        Largest       Std. Dev.      .2974773
+75%            0              1
+90%           .5              1       Variance       .0884927
+95%            1              1       Skewness         2.4266
+99%            1              1       Kurtosis       7.259676
+
+        Presence of government owned company (share)
+-------------------------------------------------------------
+      Percentiles      Smallest
+ 1%            0              0
+ 5%            0              0
+10%            0              0       Obs               2,730
+25%            0              0       Sum of Wgt.       2,730
+
+50%            0                      Mean           .1107948
+                        Largest       Std. Dev.      .3031463
+75%            0              1
+90%          .75              1       Variance       .0918977
+95%            1              1       Skewness       2.491908
+99%            1              1       Kurtosis       7.366127
+
+        Presence of domestic private company (share)
+-------------------------------------------------------------
+      Percentiles      Smallest
+ 1%            0              0
+ 5%            0              0
+10%            0              0       Obs               2,730
+25%            0              0       Sum of Wgt.       2,730
+
+50%            0                      Mean           .2577465
+                        Largest       Std. Dev.       .405152
+75%           .5              1
+90%            1              1       Variance       .1641481
+95%            1              1       Skewness       1.075512
+99%            1              1       Kurtosis       2.341255
+
+              Presence of large company (share)
+-------------------------------------------------------------
+      Percentiles      Smallest
+ 1%            0              0
+ 5%            0              0
+10%            0              0       Obs               2,730
+25%            0              0       Sum of Wgt.       2,730
+
+50%            0                      Mean           .3795523
+                        Largest       Std. Dev.      .4566411
+75%            1              1
+90%            1              1       Variance       .2085211
+95%            1              1       Skewness       .4948149
+99%            1              1       Kurtosis       1.367977
+(141,652 missing values generated)
+(141,652 missing values generated)
+(141,792 observations deleted)
+(note: file Data_Code_BCRT_AER\results\stats_gov_company.dta not found)
+file Data_Code_BCRT_AER\results\stats_gov_company.dta saved
+(588 observations deleted)
+
+             Presence of foreign company (share)
+-------------------------------------------------------------
+      Percentiles      Smallest
+ 1%            0              0
+ 5%            0              0
+10%            0              0       Obs               2,450
+25%            0              0       Sum of Wgt.       2,450
+
+50%            1                      Mean           .5744338
+                        Largest       Std. Dev.      .4672496
+75%            1              1
+90%            1              1       Variance       .2183222
+95%            1              1       Skewness      -.2917212
+99%            1              1       Kurtosis        1.19511
+
+       Presence of foreign company, colonizer country
+                           (share)
+-------------------------------------------------------------
+      Percentiles      Smallest
+ 1%            0              0
+ 5%            0              0
+10%            0              0       Obs               2,730
+25%            0              0       Sum of Wgt.       2,730
+
+50%            0                      Mean           .1172805
+                        Largest       Std. Dev.      .2974773
+75%            0              1
+90%           .5              1       Variance       .0884927
+95%            1              1       Skewness         2.4266
+99%            1              1       Kurtosis       7.259676
+
+        Presence of government owned company (share)
+-------------------------------------------------------------
+      Percentiles      Smallest
+ 1%            0              0
+ 5%            0              0
+10%            0              0       Obs               2,730
+25%            0              0       Sum of Wgt.       2,730
+
+50%            0                      Mean           .1107948
+                        Largest       Std. Dev.      .3031463
+75%            0              1
+90%          .75              1       Variance       .0918977
+95%            1              1       Skewness       2.491908
+99%            1              1       Kurtosis       7.366127
+
+        Presence of domestic private company (share)
+-------------------------------------------------------------
+      Percentiles      Smallest
+ 1%            0              0
+ 5%            0              0
+10%            0              0       Obs               2,730
+25%            0              0       Sum of Wgt.       2,730
+
+50%            0                      Mean           .2577465
+                        Largest       Std. Dev.       .405152
+75%           .5              1
+90%            1              1       Variance       .1641481
+95%            1              1       Skewness       1.075512
+99%            1              1       Kurtosis       2.341255
+
+              Presence of large company (share)
+-------------------------------------------------------------
+      Percentiles      Smallest
+ 1%            0              0
+ 5%            0              0
+10%            0              0       Obs               2,730
+25%            0              0       Sum of Wgt.       2,730
+
+50%            0                      Mean           .3795523
+                        Largest       Std. Dev.      .4566411
+75%            1              1
+90%            1              1       Variance       .2085211
+95%            1              1       Skewness       .4948149
+99%            1              1       Kurtosis       1.367977
+(141,652 missing values generated)
+(141,652 missing values generated)
+(141,792 observations deleted)
+(note: file Data_Code_BCRT_AER\results\stats_for_company.dta not found)
+file Data_Code_BCRT_AER\results\stats_for_company.dta saved
+(588 observations deleted)
+
+             Presence of foreign company (share)
+-------------------------------------------------------------
+      Percentiles      Smallest
+ 1%            0              0
+ 5%            0              0
+10%            0              0       Obs               2,450
+25%            0              0       Sum of Wgt.       2,450
+
+50%            1                      Mean           .5744338
+                        Largest       Std. Dev.      .4672496
+75%            1              1
+90%            1              1       Variance       .2183222
+95%            1              1       Skewness      -.2917212
+99%            1              1       Kurtosis        1.19511
+
+       Presence of foreign company, colonizer country
+                           (share)
+-------------------------------------------------------------
+      Percentiles      Smallest
+ 1%            0              0
+ 5%            0              0
+10%            0              0       Obs               2,730
+25%            0              0       Sum of Wgt.       2,730
+
+50%            0                      Mean           .1172805
+                        Largest       Std. Dev.      .2974773
+75%            0              1
+90%           .5              1       Variance       .0884927
+95%            1              1       Skewness         2.4266
+99%            1              1       Kurtosis       7.259676
+
+        Presence of government owned company (share)
+-------------------------------------------------------------
+      Percentiles      Smallest
+ 1%            0              0
+ 5%            0              0
+10%            0              0       Obs               2,730
+25%            0              0       Sum of Wgt.       2,730
+
+50%            0                      Mean           .1107948
+                        Largest       Std. Dev.      .3031463
+75%            0              1
+90%          .75              1       Variance       .0918977
+95%            1              1       Skewness       2.491908
+99%            1              1       Kurtosis       7.366127
+
+        Presence of domestic private company (share)
+-------------------------------------------------------------
+      Percentiles      Smallest
+ 1%            0              0
+ 5%            0              0
+10%            0              0       Obs               2,730
+25%            0              0       Sum of Wgt.       2,730
+
+50%            0                      Mean           .2577465
+                        Largest       Std. Dev.       .405152
+75%           .5              1
+90%            1              1       Variance       .1641481
+95%            1              1       Skewness       1.075512
+99%            1              1       Kurtosis       2.341255
+
+              Presence of large company (share)
+-------------------------------------------------------------
+      Percentiles      Smallest
+ 1%            0              0
+ 5%            0              0
+10%            0              0       Obs               2,730
+25%            0              0       Sum of Wgt.       2,730
+
+50%            0                      Mean           .3795523
+                        Largest       Std. Dev.      .4566411
+75%            1              1
+90%            1              1       Variance       .2085211
+95%            1              1       Skewness       .4948149
+99%            1              1       Kurtosis       1.367977
+(141,652 missing values generated)
+(141,652 missing values generated)
+(141,792 observations deleted)
+(note: file Data_Code_BCRT_AER\results\stats_other_company.dta not found)
+file Data_Code_BCRT_AER\results\stats_other_company.dta saved
+(588 observations deleted)
+
+             Presence of foreign company (share)
+-------------------------------------------------------------
+      Percentiles      Smallest
+ 1%            0              0
+ 5%            0              0
+10%            0              0       Obs               2,450
+25%            0              0       Sum of Wgt.       2,450
+
+50%            1                      Mean           .5744338
+                        Largest       Std. Dev.      .4672496
+75%            1              1
+90%            1              1       Variance       .2183222
+95%            1              1       Skewness      -.2917212
+99%            1              1       Kurtosis        1.19511
+
+       Presence of foreign company, colonizer country
+                           (share)
+-------------------------------------------------------------
+      Percentiles      Smallest
+ 1%            0              0
+ 5%            0              0
+10%            0              0       Obs               2,730
+25%            0              0       Sum of Wgt.       2,730
+
+50%            0                      Mean           .1172805
+                        Largest       Std. Dev.      .2974773
+75%            0              1
+90%           .5              1       Variance       .0884927
+95%            1              1       Skewness         2.4266
+99%            1              1       Kurtosis       7.259676
+
+        Presence of government owned company (share)
+-------------------------------------------------------------
+      Percentiles      Smallest
+ 1%            0              0
+ 5%            0              0
+10%            0              0       Obs               2,730
+25%            0              0       Sum of Wgt.       2,730
+
+50%            0                      Mean           .1107948
+                        Largest       Std. Dev.      .3031463
+75%            0              1
+90%          .75              1       Variance       .0918977
+95%            1              1       Skewness       2.491908
+99%            1              1       Kurtosis       7.366127
+
+        Presence of domestic private company (share)
+-------------------------------------------------------------
+      Percentiles      Smallest
+ 1%            0              0
+ 5%            0              0
+10%            0              0       Obs               2,730
+25%            0              0       Sum of Wgt.       2,730
+
+50%            0                      Mean           .2577465
+                        Largest       Std. Dev.       .405152
+75%           .5              1
+90%            1              1       Variance       .1641481
+95%            1              1       Skewness       1.075512
+99%            1              1       Kurtosis       2.341255
+
+              Presence of large company (share)
+-------------------------------------------------------------
+      Percentiles      Smallest
+ 1%            0              0
+ 5%            0              0
+10%            0              0       Obs               2,730
+25%            0              0       Sum of Wgt.       2,730
+
+50%            0                      Mean           .3795523
+                        Largest       Std. Dev.      .4566411
+75%            1              1
+90%            1              1       Variance       .2085211
+95%            1              1       Skewness       .4948149
+99%            1              1       Kurtosis       1.367977
+(141,652 missing values generated)
+(141,652 missing values generated)
+(141,792 observations deleted)
+(note: file Data_Code_BCRT_AER\results\stats_major_company.dta not found)
+file Data_Code_BCRT_AER\results\stats_major_company.dta saved
+(588 observations deleted)
+
+             Presence of foreign company (share)
+-------------------------------------------------------------
+      Percentiles      Smallest
+ 1%            0              0
+ 5%            0              0
+10%            0              0       Obs               2,450
+25%            0              0       Sum of Wgt.       2,450
+
+50%            1                      Mean           .5744338
+                        Largest       Std. Dev.      .4672496
+75%            1              1
+90%            1              1       Variance       .2183222
+95%            1              1       Skewness      -.2917212
+99%            1              1       Kurtosis        1.19511
+
+       Presence of foreign company, colonizer country
+                           (share)
+-------------------------------------------------------------
+      Percentiles      Smallest
+ 1%            0              0
+ 5%            0              0
+10%            0              0       Obs               2,730
+25%            0              0       Sum of Wgt.       2,730
+
+50%            0                      Mean           .1172805
+                        Largest       Std. Dev.      .2974773
+75%            0              1
+90%           .5              1       Variance       .0884927
+95%            1              1       Skewness         2.4266
+99%            1              1       Kurtosis       7.259676
+
+        Presence of government owned company (share)
+-------------------------------------------------------------
+      Percentiles      Smallest
+ 1%            0              0
+ 5%            0              0
+10%            0              0       Obs               2,730
+25%            0              0       Sum of Wgt.       2,730
+
+50%            0                      Mean           .1107948
+                        Largest       Std. Dev.      .3031463
+75%            0              1
+90%          .75              1       Variance       .0918977
+95%            1              1       Skewness       2.491908
+99%            1              1       Kurtosis       7.366127
+
+        Presence of domestic private company (share)
+-------------------------------------------------------------
+      Percentiles      Smallest
+ 1%            0              0
+ 5%            0              0
+10%            0              0       Obs               2,730
+25%            0              0       Sum of Wgt.       2,730
+
+50%            0                      Mean           .2577465
+                        Largest       Std. Dev.       .405152
+75%           .5              1
+90%            1              1       Variance       .1641481
+95%            1              1       Skewness       1.075512
+99%            1              1       Kurtosis       2.341255
+
+              Presence of large company (share)
+-------------------------------------------------------------
+      Percentiles      Smallest
+ 1%            0              0
+ 5%            0              0
+10%            0              0       Obs               2,730
+25%            0              0       Sum of Wgt.       2,730
+
+50%            0                      Mean           .3795523
+                        Largest       Std. Dev.      .4566411
+75%            1              1
+90%            1              1       Variance       .2085211
+95%            1              1       Skewness       .4948149
+99%            1              1       Kurtosis       1.367977
+(141,652 missing values generated)
+(141,652 missing values generated)
+(141,792 observations deleted)
+(note: file Data_Code_BCRT_AER\results\stats_col_company.dta not found)
+file Data_Code_BCRT_AER\results\stats_col_company.dta saved
+(588 observations deleted)
+
+             Presence of foreign company (share)
+-------------------------------------------------------------
+      Percentiles      Smallest
+ 1%            0              0
+ 5%            0              0
+10%            0              0       Obs               2,450
+25%            0              0       Sum of Wgt.       2,450
+
+50%            1                      Mean           .5744338
+                        Largest       Std. Dev.      .4672496
+75%            1              1
+90%            1              1       Variance       .2183222
+95%            1              1       Skewness      -.2917212
+99%            1              1       Kurtosis        1.19511
+
+       Presence of foreign company, colonizer country
+                           (share)
+-------------------------------------------------------------
+      Percentiles      Smallest
+ 1%            0              0
+ 5%            0              0
+10%            0              0       Obs               2,730
+25%            0              0       Sum of Wgt.       2,730
+
+50%            0                      Mean           .1172805
+                        Largest       Std. Dev.      .2974773
+75%            0              1
+90%           .5              1       Variance       .0884927
+95%            1              1       Skewness         2.4266
+99%            1              1       Kurtosis       7.259676
+
+        Presence of government owned company (share)
+-------------------------------------------------------------
+      Percentiles      Smallest
+ 1%            0              0
+ 5%            0              0
+10%            0              0       Obs               2,730
+25%            0              0       Sum of Wgt.       2,730
+
+50%            0                      Mean           .1107948
+                        Largest       Std. Dev.      .3031463
+75%            0              1
+90%          .75              1       Variance       .0918977
+95%            1              1       Skewness       2.491908
+99%            1              1       Kurtosis       7.366127
+
+        Presence of domestic private company (share)
+-------------------------------------------------------------
+      Percentiles      Smallest
+ 1%            0              0
+ 5%            0              0
+10%            0              0       Obs               2,730
+25%            0              0       Sum of Wgt.       2,730
+
+50%            0                      Mean           .2577465
+                        Largest       Std. Dev.       .405152
+75%           .5              1
+90%            1              1       Variance       .1641481
+95%            1              1       Skewness       1.075512
+99%            1              1       Kurtosis       2.341255
+
+              Presence of large company (share)
+-------------------------------------------------------------
+      Percentiles      Smallest
+ 1%            0              0
+ 5%            0              0
+10%            0              0       Obs               2,730
+25%            0              0       Sum of Wgt.       2,730
+
+50%            0                      Mean           .3795523
+                        Largest       Std. Dev.      .4566411
+75%            1              1
+90%            1              1       Variance       .2085211
+95%            1              1       Skewness       .4948149
+99%            1              1       Kurtosis       1.367977
+(141,652 missing values generated)
+(141,652 missing values generated)
+(141,792 observations deleted)
+(note: file Data_Code_BCRT_AER\results\stats_for_company2.dta not found)
+file Data_Code_BCRT_AER\results\stats_for_company2.dta saved
+(588 observations deleted)
+
+             Presence of foreign company (share)
+-------------------------------------------------------------
+      Percentiles      Smallest
+ 1%            0              0
+ 5%            0              0
+10%            0              0       Obs               2,450
+25%            0              0       Sum of Wgt.       2,450
+
+50%            1                      Mean           .5744338
+                        Largest       Std. Dev.      .4672496
+75%            1              1
+90%            1              1       Variance       .2183222
+95%            1              1       Skewness      -.2917212
+99%            1              1       Kurtosis        1.19511
+
+       Presence of foreign company, colonizer country
+                           (share)
+-------------------------------------------------------------
+      Percentiles      Smallest
+ 1%            0              0
+ 5%            0              0
+10%            0              0       Obs               2,730
+25%            0              0       Sum of Wgt.       2,730
+
+50%            0                      Mean           .1172805
+                        Largest       Std. Dev.      .2974773
+75%            0              1
+90%           .5              1       Variance       .0884927
+95%            1              1       Skewness         2.4266
+99%            1              1       Kurtosis       7.259676
+
+        Presence of government owned company (share)
+-------------------------------------------------------------
+      Percentiles      Smallest
+ 1%            0              0
+ 5%            0              0
+10%            0              0       Obs               2,730
+25%            0              0       Sum of Wgt.       2,730
+
+50%            0                      Mean           .1107948
+                        Largest       Std. Dev.      .3031463
+75%            0              1
+90%          .75              1       Variance       .0918977
+95%            1              1       Skewness       2.491908
+99%            1              1       Kurtosis       7.366127
+
+        Presence of domestic private company (share)
+-------------------------------------------------------------
+      Percentiles      Smallest
+ 1%            0              0
+ 5%            0              0
+10%            0              0       Obs               2,730
+25%            0              0       Sum of Wgt.       2,730
+
+50%            0                      Mean           .2577465
+                        Largest       Std. Dev.       .405152
+75%           .5              1
+90%            1              1       Variance       .1641481
+95%            1              1       Skewness       1.075512
+99%            1              1       Kurtosis       2.341255
+
+              Presence of large company (share)
+-------------------------------------------------------------
+      Percentiles      Smallest
+ 1%            0              0
+ 5%            0              0
+10%            0              0       Obs               2,730
+25%            0              0       Sum of Wgt.       2,730
+
+50%            0                      Mean           .3795523
+                        Largest       Std. Dev.      .4566411
+75%            1              1
+90%            1              1       Variance       .2085211
+95%            1              1       Skewness       .4948149
+99%            1              1       Kurtosis       1.367977
+(141,652 missing values generated)
+(141,652 missing values generated)
+(141,792 observations deleted)
+(note: file Data_Code_BCRT_AER\results\stats_full_gov.dta not found)
+file Data_Code_BCRT_AER\results\stats_full_gov.dta saved
+(588 observations deleted)
+
+             Presence of foreign company (share)
+-------------------------------------------------------------
+      Percentiles      Smallest
+ 1%            0              0
+ 5%            0              0
+10%            0              0       Obs               2,450
+25%            0              0       Sum of Wgt.       2,450
+
+50%            1                      Mean           .5744338
+                        Largest       Std. Dev.      .4672496
+75%            1              1
+90%            1              1       Variance       .2183222
+95%            1              1       Skewness      -.2917212
+99%            1              1       Kurtosis        1.19511
+
+       Presence of foreign company, colonizer country
+                           (share)
+-------------------------------------------------------------
+      Percentiles      Smallest
+ 1%            0              0
+ 5%            0              0
+10%            0              0       Obs               2,730
+25%            0              0       Sum of Wgt.       2,730
+
+50%            0                      Mean           .1172805
+                        Largest       Std. Dev.      .2974773
+75%            0              1
+90%           .5              1       Variance       .0884927
+95%            1              1       Skewness         2.4266
+99%            1              1       Kurtosis       7.259676
+
+        Presence of government owned company (share)
+-------------------------------------------------------------
+      Percentiles      Smallest
+ 1%            0              0
+ 5%            0              0
+10%            0              0       Obs               2,730
+25%            0              0       Sum of Wgt.       2,730
+
+50%            0                      Mean           .1107948
+                        Largest       Std. Dev.      .3031463
+75%            0              1
+90%          .75              1       Variance       .0918977
+95%            1              1       Skewness       2.491908
+99%            1              1       Kurtosis       7.366127
+
+        Presence of domestic private company (share)
+-------------------------------------------------------------
+      Percentiles      Smallest
+ 1%            0              0
+ 5%            0              0
+10%            0              0       Obs               2,730
+25%            0              0       Sum of Wgt.       2,730
+
+50%            0                      Mean           .2577465
+                        Largest       Std. Dev.       .405152
+75%           .5              1
+90%            1              1       Variance       .1641481
+95%            1              1       Skewness       1.075512
+99%            1              1       Kurtosis       2.341255
+
+              Presence of large company (share)
+-------------------------------------------------------------
+      Percentiles      Smallest
+ 1%            0              0
+ 5%            0              0
+10%            0              0       Obs               2,730
+25%            0              0       Sum of Wgt.       2,730
+
+50%            0                      Mean           .3795523
+                        Largest       Std. Dev.      .4566411
+75%            1              1
+90%            1              1       Variance       .2085211
+95%            1              1       Skewness       .4948149
+99%            1              1       Kurtosis       1.367977
+(141,652 missing values generated)
+(141,652 missing values generated)
+(141,792 observations deleted)
+(note: file Data_Code_BCRT_AER\results\stats_full_for.dta not found)
+file Data_Code_BCRT_AER\results\stats_full_for.dta saved
+(588 observations deleted)
+
+             Presence of foreign company (share)
+-------------------------------------------------------------
+      Percentiles      Smallest
+ 1%            0              0
+ 5%            0              0
+10%            0              0       Obs               2,450
+25%            0              0       Sum of Wgt.       2,450
+
+50%            1                      Mean           .5744338
+                        Largest       Std. Dev.      .4672496
+75%            1              1
+90%            1              1       Variance       .2183222
+95%            1              1       Skewness      -.2917212
+99%            1              1       Kurtosis        1.19511
+
+       Presence of foreign company, colonizer country
+                           (share)
+-------------------------------------------------------------
+      Percentiles      Smallest
+ 1%            0              0
+ 5%            0              0
+10%            0              0       Obs               2,730
+25%            0              0       Sum of Wgt.       2,730
+
+50%            0                      Mean           .1172805
+                        Largest       Std. Dev.      .2974773
+75%            0              1
+90%           .5              1       Variance       .0884927
+95%            1              1       Skewness         2.4266
+99%            1              1       Kurtosis       7.259676
+
+        Presence of government owned company (share)
+-------------------------------------------------------------
+      Percentiles      Smallest
+ 1%            0              0
+ 5%            0              0
+10%            0              0       Obs               2,730
+25%            0              0       Sum of Wgt.       2,730
+
+50%            0                      Mean           .1107948
+                        Largest       Std. Dev.      .3031463
+75%            0              1
+90%          .75              1       Variance       .0918977
+95%            1              1       Skewness       2.491908
+99%            1              1       Kurtosis       7.366127
+
+        Presence of domestic private company (share)
+-------------------------------------------------------------
+      Percentiles      Smallest
+ 1%            0              0
+ 5%            0              0
+10%            0              0       Obs               2,730
+25%            0              0       Sum of Wgt.       2,730
+
+50%            0                      Mean           .2577465
+                        Largest       Std. Dev.       .405152
+75%           .5              1
+90%            1              1       Variance       .1641481
+95%            1              1       Skewness       1.075512
+99%            1              1       Kurtosis       2.341255
+
+              Presence of large company (share)
+-------------------------------------------------------------
+      Percentiles      Smallest
+ 1%            0              0
+ 5%            0              0
+10%            0              0       Obs               2,730
+25%            0              0       Sum of Wgt.       2,730
+
+50%            0                      Mean           .3795523
+                        Largest       Std. Dev.      .4566411
+75%            1              1
+90%            1              1       Variance       .2085211
+95%            1              1       Skewness       .4948149
+99%            1              1       Kurtosis       1.367977
+(141,652 missing values generated)
+(141,652 missing values generated)
+(141,792 observations deleted)
+(note: file Data_Code_BCRT_AER\results\stats_full_other.dta not found)
+file Data_Code_BCRT_AER\results\stats_full_other.dta saved
+(588 observations deleted)
+
+             Presence of foreign company (share)
+-------------------------------------------------------------
+      Percentiles      Smallest
+ 1%            0              0
+ 5%            0              0
+10%            0              0       Obs               2,450
+25%            0              0       Sum of Wgt.       2,450
+
+50%            1                      Mean           .5744338
+                        Largest       Std. Dev.      .4672496
+75%            1              1
+90%            1              1       Variance       .2183222
+95%            1              1       Skewness      -.2917212
+99%            1              1       Kurtosis        1.19511
+
+       Presence of foreign company, colonizer country
+                           (share)
+-------------------------------------------------------------
+      Percentiles      Smallest
+ 1%            0              0
+ 5%            0              0
+10%            0              0       Obs               2,730
+25%            0              0       Sum of Wgt.       2,730
+
+50%            0                      Mean           .1172805
+                        Largest       Std. Dev.      .2974773
+75%            0              1
+90%           .5              1       Variance       .0884927
+95%            1              1       Skewness         2.4266
+99%            1              1       Kurtosis       7.259676
+
+        Presence of government owned company (share)
+-------------------------------------------------------------
+      Percentiles      Smallest
+ 1%            0              0
+ 5%            0              0
+10%            0              0       Obs               2,730
+25%            0              0       Sum of Wgt.       2,730
+
+50%            0                      Mean           .1107948
+                        Largest       Std. Dev.      .3031463
+75%            0              1
+90%          .75              1       Variance       .0918977
+95%            1              1       Skewness       2.491908
+99%            1              1       Kurtosis       7.366127
+
+        Presence of domestic private company (share)
+-------------------------------------------------------------
+      Percentiles      Smallest
+ 1%            0              0
+ 5%            0              0
+10%            0              0       Obs               2,730
+25%            0              0       Sum of Wgt.       2,730
+
+50%            0                      Mean           .2577465
+                        Largest       Std. Dev.       .405152
+75%           .5              1
+90%            1              1       Variance       .1641481
+95%            1              1       Skewness       1.075512
+99%            1              1       Kurtosis       2.341255
+
+              Presence of large company (share)
+-------------------------------------------------------------
+      Percentiles      Smallest
+ 1%            0              0
+ 5%            0              0
+10%            0              0       Obs               2,730
+25%            0              0       Sum of Wgt.       2,730
+
+50%            0                      Mean           .3795523
+                        Largest       Std. Dev.      .4566411
+75%            1              1
+90%            1              1       Variance       .2085211
+95%            1              1       Skewness       .4948149
+99%            1              1       Kurtosis       1.367977
+(141,652 missing values generated)
+(141,652 missing values generated)
+(141,792 observations deleted)
+(note: file Data_Code_BCRT_AER\results\stats_full_for2.dta not found)
+file Data_Code_BCRT_AER\results\stats_full_for2.dta saved
+(588 observations deleted)
+
+             Presence of foreign company (share)
+-------------------------------------------------------------
+      Percentiles      Smallest
+ 1%            0              0
+ 5%            0              0
+10%            0              0       Obs               2,450
+25%            0              0       Sum of Wgt.       2,450
+
+50%            1                      Mean           .5744338
+                        Largest       Std. Dev.      .4672496
+75%            1              1
+90%            1              1       Variance       .2183222
+95%            1              1       Skewness      -.2917212
+99%            1              1       Kurtosis        1.19511
+
+       Presence of foreign company, colonizer country
+                           (share)
+-------------------------------------------------------------
+      Percentiles      Smallest
+ 1%            0              0
+ 5%            0              0
+10%            0              0       Obs               2,730
+25%            0              0       Sum of Wgt.       2,730
+
+50%            0                      Mean           .1172805
+                        Largest       Std. Dev.      .2974773
+75%            0              1
+90%           .5              1       Variance       .0884927
+95%            1              1       Skewness         2.4266
+99%            1              1       Kurtosis       7.259676
+
+        Presence of government owned company (share)
+-------------------------------------------------------------
+      Percentiles      Smallest
+ 1%            0              0
+ 5%            0              0
+10%            0              0       Obs               2,730
+25%            0              0       Sum of Wgt.       2,730
+
+50%            0                      Mean           .1107948
+                        Largest       Std. Dev.      .3031463
+75%            0              1
+90%          .75              1       Variance       .0918977
+95%            1              1       Skewness       2.491908
+99%            1              1       Kurtosis       7.366127
+
+        Presence of domestic private company (share)
+-------------------------------------------------------------
+      Percentiles      Smallest
+ 1%            0              0
+ 5%            0              0
+10%            0              0       Obs               2,730
+25%            0              0       Sum of Wgt.       2,730
+
+50%            0                      Mean           .2577465
+                        Largest       Std. Dev.       .405152
+75%           .5              1
+90%            1              1       Variance       .1641481
+95%            1              1       Skewness       1.075512
+99%            1              1       Kurtosis       2.341255
+
+              Presence of large company (share)
+-------------------------------------------------------------
+      Percentiles      Smallest
+ 1%            0              0
+ 5%            0              0
+10%            0              0       Obs               2,730
+25%            0              0       Sum of Wgt.       2,730
+
+50%            0                      Mean           .3795523
+                        Largest       Std. Dev.      .4566411
+75%            1              1
+90%            1              1       Variance       .2085211
+95%            1              1       Skewness       .4948149
+99%            1              1       Kurtosis       1.367977
+(141,652 missing values generated)
+(141,652 missing values generated)
+(141,792 observations deleted)
+(note: file Data_Code_BCRT_AER\results\stats_full_col.dta not found)
+file Data_Code_BCRT_AER\results\stats_full_col.dta saved
+
+. 
+. use "$Results\stats_gov_company", clear
+
+. foreach var in for_company other_company major_company col_company for_company2 full_gov full_for full_other full_for2 full_col{
+  2. append using "$Results\stats_`var'"
+  3. }
+(note: variable name was str11, now str13 to accommodate using data's values)
+
+. *
+. order name N mean sd median
+
+. save "$Results\Table_A36", replace
+(note: file Data_Code_BCRT_AER\results\Table_A36.dta not found)
+file Data_Code_BCRT_AER\results\Table_A36.dta saved
+
+. *
+. foreach var in gov_company for_company other_company major_company col_company for_company2 full_gov full_for full_other full_for2 full_col{
+  2. erase "$Results\stats_`var'.dta"
+  3. }
+
+. 
+. 
+. *************************************
+. //Table A37: other types of companies
+. *************************************
+. 
+. use "$Output_data\BCRT_baseline", clear
+
+. 
+. ** Corruption: country level **
+. 
+. foreach var in    major_company{ 
+  2.         replace `var' = 0 if mines == 0 
+  3.         g triple_`var'   = main_lprice_mines*`var'
+  4. }
+(141,604 real changes made)
+(408 missing values generated)
+
+. 
+. foreach var in    wbgi_cce_init { 
+  2.         g triple_`var'   = main_lprice_mines*`var'
+  3. }
+(11,072 missing values generated)
+
+. 
+. *** ICMM: firm level ***
+. 
+. bys gid: egen max_icmm   = max(share_icmm)
+(141484 missing values generated)
+
+. replace icmm                     = max_icmm
+variable icmm was byte now float
+(224 real changes made)
+
+. 
+. foreach var in  icmm{
+  2.  replace `var'          = 0 if mines == 0
+  3.  g triple_`var'         = main_lprice_mines*`var'
+  4.  }
+(141,513 real changes made)
+(408 missing values generated)
+
+.  
+.  ** Tracability: GLR initiative + Kimberley ** 
+. cap drop diams
+
+. g diams                 = (mainmineral == "diamond")
+
+. 
+. g kimberley     = (mainmineral  == "diamond" & year>2000) 
+
+. g glr_init      = ((mainmineral == "diamond" | mainmineral == "gold" | mainmineral == "tin" | mainmineral == "tungsten" | mainmineral == "manganese") & (year>=2006) & (iso_1 =="AGO" | iso_1 =="BDI" | iso_1 =="CAF" | iso_1 =="COD" | iso_1 =="COG" | 
+> iso_1 =="KEN" | iso_1 =="UGA" | iso_1 =="RWA" | iso_1 =="SDN" | iso_1 =="TZA" | iso_1 =="ZMB"))
+
+. 
+. g   traceability = (kimberley == 1 | glr_init == 1)
+
+. tab traceability
+
+traceabilit |
+          y |      Freq.     Percent        Cum.
+------------+-----------------------------------
+          0 |    144,235       99.69       99.69
+          1 |        455        0.31      100.00
+------------+-----------------------------------
+      Total |    144,690      100.00
+
+. *
+. foreach var in   glr_init{ 
+  2.         g triple_`var' = main_lprice_mines*`var'
+  3. }
+(334 missing values generated)
+
+. 
+. drop for_company col_company gov_company other_company major_company
+
+. 
+. foreach var in for_company col_company gov_company other_company major_company{
+  2.         rename `var'_s `var'
+  3. }
+
+. sum for_company col_company gov_company other_company major_company, d
+
+             Presence of foreign company (share)
+-------------------------------------------------------------
+      Percentiles      Smallest
+ 1%            0              0
+ 5%            0              0
+10%            0              0       Obs               2,478
+25%            0              0       Sum of Wgt.       2,478
+
+50%            1                      Mean           .5792424
+                        Largest       Std. Dev.      .4667745
+75%            1              1
+90%            1              1       Variance       .2178784
+95%            1              1       Skewness      -.3116492
+99%            1              1       Kurtosis       1.206436
+
+       Presence of foreign company, colonizer country
+                           (share)
+-------------------------------------------------------------
+      Percentiles      Smallest
+ 1%            0              0
+ 5%            0              0
+10%            0              0       Obs               3,318
+25%            0              0       Sum of Wgt.       3,318
+
+50%            0                      Mean           .0964966
+                        Largest       Std. Dev.      .2735177
+75%            0              1
+90%     .3333333              1       Variance       .0748119
+95%            1              1       Skewness       2.782768
+99%            1              1       Kurtosis       9.173682
+
+        Presence of government owned company (share)
+-------------------------------------------------------------
+      Percentiles      Smallest
+ 1%            0              0
+ 5%            0              0
+10%            0              0       Obs               3,318
+25%            0              0       Sum of Wgt.       3,318
+
+50%            0                      Mean           .0911602
+                        Largest       Std. Dev.      .2782041
+75%            0              1
+90%     .3333333              1       Variance       .0773975
+95%            1              1       Skewness       2.853332
+99%            1              1       Kurtosis       9.323435
+
+        Presence of domestic private company (share)
+-------------------------------------------------------------
+      Percentiles      Smallest
+ 1%            0              0
+ 5%            0              0
+10%            0              0       Obs               3,318
+25%            0              0       Sum of Wgt.       3,318
+
+50%            0                      Mean           .2120699
+                        Largest       Std. Dev.      .3804463
+75%     .3333333              1
+90%            1              1       Variance       .1447394
+95%            1              1       Skewness       1.375481
+99%            1              1       Kurtosis       3.088589
+
+              Presence of large company (share)
+-------------------------------------------------------------
+      Percentiles      Smallest
+ 1%            0              0
+ 5%            0              0
+10%            0              0       Obs               3,318
+25%            0              0       Sum of Wgt.       3,318
+
+50%            0                      Mean           .3122898
+                        Largest       Std. Dev.      .4388263
+75%            1              1
+90%            1              1       Variance       .1925685
+95%            1              1       Skewness       .8074927
+99%            1              1       Kurtosis       1.772423
+
+. 
+. g noncol_company = for_company - col_company /* non colonizer countries' foreign companies share*/
+(142,212 missing values generated)
+
+. 
+. * create mutually exclusive dummies *
+. replace for_company     = 1 if for_company > gov_company & for_company > other_company & for_company!=. & gov_company!=. & other_company!=.
+(70 real changes made)
+
+. replace gov_company     = 1 if gov_company > for_company & gov_company > other_company & for_company!=. & gov_company!=. & other_company!=.
+(28 real changes made)
+
+. 
+. replace for_company     = 0 if for_company > 0 & for_company < 1 
+(224 real changes made)
+
+. replace other_company   = 0 if other_company > 0 & other_company < 1 
+(350 real changes made)
+
+. replace gov_company     = 0 if gov_company > 0 & gov_company < 1 
+(70 real changes made)
+
+. 
+. tab gov_company 
+
+Presence of |
+ government |
+      owned |
+    company |
+    (share) |      Freq.     Percent        Cum.
+------------+-----------------------------------
+          0 |      3,024       91.14       91.14
+          1 |        294        8.86      100.00
+------------+-----------------------------------
+      Total |      3,318      100.00
+
+. tab other_company 
+
+Presence of |
+   domestic |
+    private |
+    company |
+    (share) |      Freq.     Percent        Cum.
+------------+-----------------------------------
+          0 |      2,814       84.81       84.81
+          1 |        504       15.19      100.00
+------------+-----------------------------------
+      Total |      3,318      100.00
+
+. 
+. g tot_share                     = gov_company + for_company+other_company
+(142,212 missing values generated)
+
+. keep if tot_share == .  | tot_share == 1
+(308 observations deleted)
+
+. 
+. * create mutually exclusive dummies for foreign firms*
+. replace col_company             = 1  if noncol_company < col_company &  for_company == 1 & for_company!=. & col_company!=. & noncol_company!=.
+(28 real changes made)
+
+. replace col_company     = 0 if  col_company > 0 &  col_company< 1
+(84 real changes made)
+
+. 
+. g for_company2 = .
+(144,382 missing values generated)
+
+. replace for_company2    = 1 if noncol_company > col_company &  for_company == 1 & for_company!=. & col_company!=. & noncol_company!=.
+(1,092 real changes made)
+
+. replace for_company2    = 0 if (noncol_company < col_company &  for_company == 1 & for_company!=. & col_company!=. & noncol_company!=.) | for_company == 0
+(1,078 real changes made)
+
+. 
+. g tot_foreign_company   = for_company2 + col_company
+(142,212 missing values generated)
+
+. tab tot_foreign if for_company == 1 /*check mutually exclusive*/
+
+tot_foreign |
+   _company |      Freq.     Percent        Cum.
+------------+-----------------------------------
+          1 |      1,372      100.00      100.00
+------------+-----------------------------------
+      Total |      1,372      100.00
+
+. drop tot_*
+
+. 
+. ** EITI (UPDATED DATA - MAY 2016) ** 
+. 
+. foreach letter in a p c c_bis{
+  2.         g triple_EITI`letter'   = main_lprice_mines*EITI`letter'
+  3. }
+(319 missing values generated)
+(319 missing values generated)
+(319 missing values generated)
+(319 missing values generated)
+
+. label var EITIa                                         "EITI commitment (1st stage)"
+
+. label var EITIp                                         "EITI candidature (2nd stage)"
+
+. label var EITIc_bis                                     "EITI submission compliance (3st stage)"
+
+. label var EITIc                                         "EITI compliance (3st stage)"
+
+. label var icmm                                          "International Council on Mining and Metals" 
+
+. label var triple_icmm                           "$\ln$ price $\times$ mines $>0$ $\times$ ICMM"
+
+. label var triple_wbgi_cce_init          "$\ln$ price $\times$ mines $>0$ $\times$ Corruption (TI)"
+
+. label var triple_major_company          "$\ln$ price $\times$ mines $>0$ $\times$ Major Company"
+
+. label var triple_glr_init                       "$\ln$ price $\times$ mines $>0$ $\times$ GLR initiative"
+
+. label var triple_EITIa                          "$\ln$ price $\times$ mines $>0$ $\times$ EITIa"
+
+. label var triple_EITIp                          "$\ln$ price $\times$ mines $>0$ $\times$ EITIp"
+
+. label var triple_EITIc                          "$\ln$ price $\times$ mines $>0$ $\times$ EITIc"
+
+. label var triple_EITIc_bis                      "$\ln$ price $\times$ mines $>0$ $\times$ EITIc_bis"
+
+. 
+. ** Keep foreign owned firms only ** 
+. keep if other_company ==1  | gov_company == 1 | mines == 0
+(1,534 observations deleted)
+
+. 
+. g nb_acled_battle       = nb_event1+nb_event2+nb_event3
+
+. g acled_battle          = (nb_acled_battle>0)
+
+. 
+. drop if mainmineral == "diamond" | mainmineral == "tantalum"
+(78 observations deleted)
+
+. 
+. /* Corruption */
+. eststo: reghdfe acled                                   main_lprice_mines triple_major_company  triple_wbgi_cce_init    if sd_mines == 0, vce(cluster country_nb) absorb(cell it) 
+(dropped 14 singleton observations)
+(converged in 3 iterations)
+
+HDFE Linear regression                            Number of obs   =    130,998
+Absorbing 2 HDFE groups                           F(   3,     48) =       2.65
+Statistics robust to heteroskedasticity           Prob > F        =     0.0595
+                                                  R-squared       =     0.4237
+                                                  Adj R-squared   =     0.3759
+                                                  Within R-sq.    =     0.0000
+Number of clusters (country_nb) =         49      Root MSE        =     0.1743
+
+                                    (Std. Err. adjusted for 49 clusters in country_nb)
+--------------------------------------------------------------------------------------
+                     |               Robust
+               acled |      Coef.   Std. Err.      t    P>|t|     [95% Conf. Interval]
+---------------------+----------------------------------------------------------------
+   main_lprice_mines |   .0252611   .0346556     0.73   0.470    -.0444188    .0949409
+triple_major_company |   .0261246   .0297269     0.88   0.384    -.0336454    .0858946
+triple_wbgi_cce_init |  -.0231136   .0272016    -0.85   0.400     -.077806    .0315789
+--------------------------------------------------------------------------------------
+
+Absorbed degrees of freedom:
+-----------------------------------------------------------------------+
+         Absorbed FE |  Num. Coefs.  =   Categories  -   Redundant     | 
+---------------------+-------------------------------------------------|
+                cell |            0            9357           9357 *   | 
+                  it |            0             686            686 *   | 
+-----------------------------------------------------------------------+
+* = fixed effect nested within cluster; treated as redundant for DoF computation
+(est1 stored)
+
+. eststo: reghdfe acled_battle                            main_lprice_mines triple_major_company  triple_wbgi_cce_init    if sd_mines == 0, vce(cluster country_nb) absorb(cell it) 
+(dropped 14 singleton observations)
+(converged in 3 iterations)
+
+HDFE Linear regression                            Number of obs   =    130,998
+Absorbing 2 HDFE groups                           F(   3,     48) =       1.04
+Statistics robust to heteroskedasticity           Prob > F        =     0.3828
+                                                  R-squared       =     0.3245
+                                                  Adj R-squared   =     0.2684
+                                                  Within R-sq.    =     0.0000
+Number of clusters (country_nb) =         49      Root MSE        =     0.1368
+
+                                    (Std. Err. adjusted for 49 clusters in country_nb)
+--------------------------------------------------------------------------------------
+                     |               Robust
+        acled_battle |      Coef.   Std. Err.      t    P>|t|     [95% Conf. Interval]
+---------------------+----------------------------------------------------------------
+   main_lprice_mines |  -.0086758   .0054414    -1.59   0.117    -.0196166    .0022649
+triple_major_company |  -.0047492   .0056838    -0.84   0.408    -.0161773     .006679
+triple_wbgi_cce_init |   .0213105   .0129995     1.64   0.108    -.0048269    .0474478
+--------------------------------------------------------------------------------------
+
+Absorbed degrees of freedom:
+-----------------------------------------------------------------------+
+         Absorbed FE |  Num. Coefs.  =   Categories  -   Redundant     | 
+---------------------+-------------------------------------------------|
+                cell |            0            9357           9357 *   | 
+                  it |            0             686            686 *   | 
+-----------------------------------------------------------------------+
+* = fixed effect nested within cluster; treated as redundant for DoF computation
+(est2 stored)
+
+. 
+. /* ICMM */
+. eststo: my_reg2hdfespatial acled                main_lprice_mines triple_major_company  triple_icmm                     if sd_mines == 0, timevar(it) panelvar(cell) lat(latitude) lon(longitude) distcutoff(500) lagcutoff(100000) 
+ 
+OLS REGRESSION
+ 
+SE CORRECTED FOR CROSS-SECTIONAL SPATIAL DEPENDANCE
+             AND PANEL-SPECIFIC SERIAL CORRELATION
+ 
+DEPENDANT VARIABLE: acled
+INDEPENDANT VARIABLES:  main_lprice_mines triple_major_company triple_icmm
+ 
+SPATIAL CORRELATION KERNAL CUTOFF: 500 KM
+(NOTE: LINEAR BARTLETT WINDOW USED FOR SPATIAL KERNAL)
+SERIAL CORRELATION KERNAL CUTOFF: 100000 PERIODS
+--------------------------------------------------------------------------------------
+               acled |      Coef.   Std. Err.      t    P>|t|     [95% Conf. Interval]
+---------------------+----------------------------------------------------------------
+   main_lprice_mines |   .0439198   .0360057     1.22   0.223    -.0266507    .1144903
+triple_major_company |  -.0200358   .0531852    -0.38   0.706    -.1242779    .0842062
+         triple_icmm |   .0249508   .0685408     0.36   0.716    -.1093877    .1592894
+--------------------------------------------------------------------------------------
+D:\Travail\Dropbox\mining_conflict
+(est3 stored)
+
+. eststo: my_reg2hdfespatial acled_battle         main_lprice_mines triple_major_company  triple_icmm                     if sd_mines == 0, timevar(it) panelvar(cell) lat(latitude) lon(longitude) distcutoff(500) lagcutoff(100000) 
+ 
+OLS REGRESSION
+ 
+SE CORRECTED FOR CROSS-SECTIONAL SPATIAL DEPENDANCE
+             AND PANEL-SPECIFIC SERIAL CORRELATION
+ 
+DEPENDANT VARIABLE: acled_battle
+INDEPENDANT VARIABLES:  main_lprice_mines triple_major_company triple_icmm
+ 
+SPATIAL CORRELATION KERNAL CUTOFF: 500 KM
+(NOTE: LINEAR BARTLETT WINDOW USED FOR SPATIAL KERNAL)
+SERIAL CORRELATION KERNAL CUTOFF: 100000 PERIODS
+--------------------------------------------------------------------------------------
+        acled_battle |      Coef.   Std. Err.      t    P>|t|     [95% Conf. Interval]
+---------------------+----------------------------------------------------------------
+   main_lprice_mines |  -.0064913   .0077997    -0.83   0.405    -.0217785    .0087959
+triple_major_company |   .0117808   .0114513     1.03   0.304    -.0106636    .0342252
+         triple_icmm |   .0058868   .0159533     0.37   0.712    -.0253814    .0371551
+--------------------------------------------------------------------------------------
+D:\Travail\Dropbox\mining_conflict
+(est4 stored)
+
+. 
+. /* EITI */
+. eststo: reghdfe acled                                   main_lprice_mines triple_major_company  triple_EITIp                    if sd_mines == 0, vce(cluster country_nb) absorb(cell it) 
+(dropped 14 singleton observations)
+(converged in 3 iterations)
+
+HDFE Linear regression                            Number of obs   =    141,596
+Absorbing 2 HDFE groups                           F(   3,     50) =       5.95
+Statistics robust to heteroskedasticity           Prob > F        =     0.0015
+                                                  R-squared       =     0.4190
+                                                  Adj R-squared   =     0.3709
+                                                  Within R-sq.    =     0.0001
+Number of clusters (country_nb) =         51      Root MSE        =     0.1781
+
+                                    (Std. Err. adjusted for 51 clusters in country_nb)
+--------------------------------------------------------------------------------------
+                     |               Robust
+               acled |      Coef.   Std. Err.      t    P>|t|     [95% Conf. Interval]
+---------------------+----------------------------------------------------------------
+   main_lprice_mines |   .0333861   .0386157     0.86   0.391    -.0441757     .110948
+triple_major_company |   -.024481   .0514318    -0.48   0.636    -.1277847    .0788227
+        triple_EITIp |   .0144251    .005263     2.74   0.008      .003854    .0249962
+--------------------------------------------------------------------------------------
+
+Absorbed degrees of freedom:
+-----------------------------------------------------------------------+
+         Absorbed FE |  Num. Coefs.  =   Categories  -   Redundant     | 
+---------------------+-------------------------------------------------|
+                cell |            0           10114          10114 *   | 
+                  it |            0             714            714 *   | 
+-----------------------------------------------------------------------+
+* = fixed effect nested within cluster; treated as redundant for DoF computation
+(est5 stored)
+
+. eststo: reghdfe acled_battle                            main_lprice_mines triple_major_company  triple_EITIp                    if sd_mines == 0, vce(cluster country_nb) absorb(cell it) 
+(dropped 14 singleton observations)
+(converged in 3 iterations)
+
+HDFE Linear regression                            Number of obs   =    141,596
+Absorbing 2 HDFE groups                           F(   3,     50) =       1.96
+Statistics robust to heteroskedasticity           Prob > F        =     0.1324
+                                                  R-squared       =     0.3289
+                                                  Adj R-squared   =     0.2733
+                                                  Within R-sq.    =     0.0001
+Number of clusters (country_nb) =         51      Root MSE        =     0.1412
+
+                                    (Std. Err. adjusted for 51 clusters in country_nb)
+--------------------------------------------------------------------------------------
+                     |               Robust
+        acled_battle |      Coef.   Std. Err.      t    P>|t|     [95% Conf. Interval]
+---------------------+----------------------------------------------------------------
+   main_lprice_mines |  -.0175836   .0082776    -2.12   0.039    -.0342097   -.0009575
+triple_major_company |   .0020736   .0149584     0.14   0.890    -.0279712    .0321183
+        triple_EITIp |   .0141246    .007118     1.98   0.053    -.0001724    .0284216
+--------------------------------------------------------------------------------------
+
+Absorbed degrees of freedom:
+-----------------------------------------------------------------------+
+         Absorbed FE |  Num. Coefs.  =   Categories  -   Redundant     | 
+---------------------+-------------------------------------------------|
+                cell |            0           10114          10114 *   | 
+                  it |            0             714            714 *   | 
+-----------------------------------------------------------------------+
+* = fixed effect nested within cluster; treated as redundant for DoF computation
+(est6 stored)
+
+. 
+. eststo: reghdfe acled                                   main_lprice_mines triple_major_company  triple_EITIc_bis                if sd_mines == 0, vce(cluster country_nb) absorb(cell it) 
+(dropped 14 singleton observations)
+(converged in 3 iterations)
+WARNING: Missing F statistic (dropped variables due to collinearity or too few clusters).
+
+HDFE Linear regression                            Number of obs   =    141,596
+Absorbing 2 HDFE groups                           F(   2,     50) =          .
+Statistics robust to heteroskedasticity           Prob > F        =          .
+                                                  R-squared       =     0.4190
+                                                  Adj R-squared   =     0.3708
+                                                  Within R-sq.    =     0.0000
+Number of clusters (country_nb) =         51      Root MSE        =     0.1781
+
+                                    (Std. Err. adjusted for 51 clusters in country_nb)
+--------------------------------------------------------------------------------------
+                     |               Robust
+               acled |      Coef.   Std. Err.      t    P>|t|     [95% Conf. Interval]
+---------------------+----------------------------------------------------------------
+   main_lprice_mines |   .0457041   .0378788     1.21   0.233    -.0303778    .1217859
+triple_major_company |  -.0135663   .0405753    -0.33   0.740    -.0950641    .0679315
+    triple_EITIc_bis |  -.0094643   .0076259    -1.24   0.220    -.0247812    .0058527
+--------------------------------------------------------------------------------------
+
+Absorbed degrees of freedom:
+-----------------------------------------------------------------------+
+         Absorbed FE |  Num. Coefs.  =   Categories  -   Redundant     | 
+---------------------+-------------------------------------------------|
+                cell |            0           10114          10114 *   | 
+                  it |            0             714            714 *   | 
+-----------------------------------------------------------------------+
+* = fixed effect nested within cluster; treated as redundant for DoF computation
+(est7 stored)
+
+. eststo: reghdfe acled_battle                            main_lprice_mines triple_major_company  triple_EITIc_bis                if sd_mines == 0, vce(cluster country_nb) absorb(cell it) 
+(dropped 14 singleton observations)
+(converged in 3 iterations)
+WARNING: Missing F statistic (dropped variables due to collinearity or too few clusters).
+
+HDFE Linear regression                            Number of obs   =    141,596
+Absorbing 2 HDFE groups                           F(   2,     50) =          .
+Statistics robust to heteroskedasticity           Prob > F        =          .
+                                                  R-squared       =     0.3288
+                                                  Adj R-squared   =     0.2732
+                                                  Within R-sq.    =     0.0000
+Number of clusters (country_nb) =         51      Root MSE        =     0.1412
+
+                                    (Std. Err. adjusted for 51 clusters in country_nb)
+--------------------------------------------------------------------------------------
+                     |               Robust
+        acled_battle |      Coef.   Std. Err.      t    P>|t|     [95% Conf. Interval]
+---------------------+----------------------------------------------------------------
+   main_lprice_mines |  -.0063126   .0080768    -0.78   0.438    -.0225353    .0099102
+triple_major_company |   .0135488   .0083714     1.62   0.112    -.0032657    .0303632
+    triple_EITIc_bis |   .0008763    .001626     0.54   0.592    -.0023897    .0041423
+--------------------------------------------------------------------------------------
+
+Absorbed degrees of freedom:
+-----------------------------------------------------------------------+
+         Absorbed FE |  Num. Coefs.  =   Categories  -   Redundant     | 
+---------------------+-------------------------------------------------|
+                cell |            0           10114          10114 *   | 
+                  it |            0             714            714 *   | 
+-----------------------------------------------------------------------+
+* = fixed effect nested within cluster; treated as redundant for DoF computation
+(est8 stored)
+
+. 
+. /* GLR  */
+. eststo: reghdfe acled                                   main_lprice_mines triple_major_company  triple_glr_init                 if sd_mines == 0, vce(cluster country_nb) absorb(cell it) 
+(dropped 14 singleton observations)
+(converged in 3 iterations)
+WARNING: Missing F statistic (dropped variables due to collinearity or too few clusters).
+
+HDFE Linear regression                            Number of obs   =    141,596
+Absorbing 2 HDFE groups                           F(   2,     50) =          .
+Statistics robust to heteroskedasticity           Prob > F        =          .
+                                                  R-squared       =     0.4190
+                                                  Adj R-squared   =     0.3708
+                                                  Within R-sq.    =     0.0000
+Number of clusters (country_nb) =         51      Root MSE        =     0.1781
+
+                                    (Std. Err. adjusted for 51 clusters in country_nb)
+--------------------------------------------------------------------------------------
+                     |               Robust
+               acled |      Coef.   Std. Err.      t    P>|t|     [95% Conf. Interval]
+---------------------+----------------------------------------------------------------
+   main_lprice_mines |   .0471871   .0384945     1.23   0.226    -.0301314    .1245056
+triple_major_company |  -.0150447   .0411907    -0.37   0.716    -.0977787    .0676893
+     triple_glr_init |  -.0029493   .0017601    -1.68   0.100    -.0064846    .0005861
+--------------------------------------------------------------------------------------
+
+Absorbed degrees of freedom:
+-----------------------------------------------------------------------+
+         Absorbed FE |  Num. Coefs.  =   Categories  -   Redundant     | 
+---------------------+-------------------------------------------------|
+                cell |            0           10114          10114 *   | 
+                  it |            0             714            714 *   | 
+-----------------------------------------------------------------------+
+* = fixed effect nested within cluster; treated as redundant for DoF computation
+(est9 stored)
+
+. eststo: reghdfe acled_battle                            main_lprice_mines triple_major_company  triple_glr_init                 if sd_mines == 0, vce(cluster country_nb) absorb(cell it) 
+(dropped 14 singleton observations)
+(converged in 3 iterations)
+WARNING: Missing F statistic (dropped variables due to collinearity or too few clusters).
+
+HDFE Linear regression                            Number of obs   =    141,596
+Absorbing 2 HDFE groups                           F(   2,     50) =          .
+Statistics robust to heteroskedasticity           Prob > F        =          .
+                                                  R-squared       =     0.3288
+                                                  Adj R-squared   =     0.2732
+                                                  Within R-sq.    =     0.0000
+Number of clusters (country_nb) =         51      Root MSE        =     0.1412
+
+                                    (Std. Err. adjusted for 51 clusters in country_nb)
+--------------------------------------------------------------------------------------
+                     |               Robust
+        acled_battle |      Coef.   Std. Err.      t    P>|t|     [95% Conf. Interval]
+---------------------+----------------------------------------------------------------
+   main_lprice_mines |  -.0059009   .0082252    -0.72   0.476    -.0224218    .0106199
+triple_major_company |   .0131384    .008468     1.55   0.127    -.0038702    .0301469
+     triple_glr_init |  -.0004561   .0003761    -1.21   0.231    -.0012115    .0002993
+--------------------------------------------------------------------------------------
+
+Absorbed degrees of freedom:
+-----------------------------------------------------------------------+
+         Absorbed FE |  Num. Coefs.  =   Categories  -   Redundant     | 
+---------------------+-------------------------------------------------|
+                cell |            0           10114          10114 *   | 
+                  it |            0             714            714 *   | 
+-----------------------------------------------------------------------+
+* = fixed effect nested within cluster; treated as redundant for DoF computation
+(est10 stored)
+
+. 
+. drop triple*
+
+.         
+. set linesize 250
+
+. esttab, mtitles drop() b(%5.3f) se(%5.3f) compress r2 starlevels(c 0.1 b 0.05 a 0.01)  se 
+
+------------------------------------------------------------------------------------------------------------------------
+                 (1)        (2)        (3)        (4)        (5)        (6)        (7)        (8)        (9)       (10) 
+                est1       est2       est3       est4       est5       est6       est7       est8       est9      est10 
+------------------------------------------------------------------------------------------------------------------------
+main_lpr~s     0.025     -0.009      0.044     -0.006      0.033     -0.018b     0.046     -0.006      0.047     -0.006 
+             (0.035)    (0.005)    (0.036)    (0.008)    (0.039)    (0.008)    (0.038)    (0.008)    (0.038)    (0.008) 
+
+triple_m~y     0.026     -0.005     -0.020      0.012     -0.024      0.002     -0.014      0.014     -0.015      0.013 
+             (0.030)    (0.006)    (0.053)    (0.011)    (0.051)    (0.015)    (0.041)    (0.008)    (0.041)    (0.008) 
+
+triple_w~t    -0.023      0.021                                                                                         
+             (0.027)    (0.013)                                                                                         
+
+triple_i~m                           0.025      0.006                                                                   
+                                   (0.069)    (0.016)                                                                   
+
+triple_E~p                                                 0.014a     0.014c                                            
+                                                         (0.005)    (0.007)                                             
+
+triple_E~s                                                                      -0.009      0.001                       
+                                                                               (0.008)    (0.002)                       
+
+triple_g~t                                                                                            -0.003     -0.000 
+                                                                                                     (0.002)    (0.000) 
+------------------------------------------------------------------------------------------------------------------------
+N             130998     130998     141610     141610     141596     141596     141596     141596     141596     141596 
+R-sq           0.424      0.325      0.000      0.000      0.419      0.329      0.419      0.329      0.419      0.329 
+------------------------------------------------------------------------------------------------------------------------
+Standard errors in parentheses
+c p<0.1, b p<0.05, a p<0.01
+
+. esttab, mtitles drop() b(%5.3f) se(%5.3f) r2  starlevels({$^c$} 0.1 {$^b$} 0.05 {$^a$} 0.01) se tex label  title(Table A37) 
+
+\begin{table}[htbp]\centering
+\def\sym#1{\ifmmode^{#1}\else\(^{#1}\)\fi}
+\caption{Table A37}
+\begin{tabular}{l*{10}{c}}
+\hline\hline
+                    &\multicolumn{1}{c}{(1)}&\multicolumn{1}{c}{(2)}&\multicolumn{1}{c}{(3)}&\multicolumn{1}{c}{(4)}&\multicolumn{1}{c}{(5)}&\multicolumn{1}{c}{(6)}&\multicolumn{1}{c}{(7)}&\multicolumn{1}{c}{(8)}&\multicolumn{1}{c}{(9)}&\multicolumn{
+> 1}{c}{(10)}\\
+                    &\multicolumn{1}{c}{est1}&\multicolumn{1}{c}{est2}&\multicolumn{1}{c}{est3}&\multicolumn{1}{c}{est4}&\multicolumn{1}{c}{est5}&\multicolumn{1}{c}{est6}&\multicolumn{1}{c}{est7}&\multicolumn{1}{c}{est8}&\multicolumn{1}{c}{est9}&\mul
+> ticolumn{1}{c}{est10}\\
+\hline
+$\ln$ price $\times$ mines $>0$&       0.025      &      -0.009      &       0.044      &      -0.006      &       0.033      &      -0.018{$^b$}&       0.046      &      -0.006      &       0.047      &      -0.006      \\
+                    &     (0.035)      &     (0.005)      &     (0.036)      &     (0.008)      &     (0.039)      &     (0.008)      &     (0.038)      &     (0.008)      &     (0.038)      &     (0.008)      \\
+[1em]
+triple\_major\_company&       0.026      &      -0.005      &      -0.020      &       0.012      &      -0.024      &       0.002      &      -0.014      &       0.014      &      -0.015      &       0.013      \\
+                    &     (0.030)      &     (0.006)      &     (0.053)      &     (0.011)      &     (0.051)      &     (0.015)      &     (0.041)      &     (0.008)      &     (0.041)      &     (0.008)      \\
+[1em]
+triple\_wbgi\_cce\_init&      -0.023      &       0.021      &                  &                  &                  &                  &                  &                  &                  &                  \\
+                    &     (0.027)      &     (0.013)      &                  &                  &                  &                  &                  &                  &                  &                  \\
+[1em]
+triple\_icmm         &                  &                  &       0.025      &       0.006      &                  &                  &                  &                  &                  &                  \\
+                    &                  &                  &     (0.069)      &     (0.016)      &                  &                  &                  &                  &                  &                  \\
+[1em]
+triple\_EITIp        &                  &                  &                  &                  &       0.014{$^a$}&       0.014{$^c$}&                  &                  &                  &                  \\
+                    &                  &                  &                  &                  &     (0.005)      &     (0.007)      &                  &                  &                  &                  \\
+[1em]
+triple\_EITIc\_bis    &                  &                  &                  &                  &                  &                  &      -0.009      &       0.001      &                  &                  \\
+                    &                  &                  &                  &                  &                  &                  &     (0.008)      &     (0.002)      &                  &                  \\
+[1em]
+triple\_glr\_init     &                  &                  &                  &                  &                  &                  &                  &                  &      -0.003      &      -0.000      \\
+                    &                  &                  &                  &                  &                  &                  &                  &                  &     (0.002)      &     (0.000)      \\
+\hline
+Observations        &      130998      &      130998      &      141610      &      141610      &      141596      &      141596      &      141596      &      141596      &      141596      &      141596      \\
+\(R^{2}\)           &       0.424      &       0.325      &       0.000      &       0.000      &       0.419      &       0.329      &       0.419      &       0.329      &       0.419      &       0.329      \\
+\hline\hline
+\multicolumn{11}{l}{\footnotesize Standard errors in parentheses}\\
+\multicolumn{11}{l}{\footnotesize {$^c$} p<0.1, {$^b$} p<0.05, {$^a$} p<0.01}\\
+\end{tabular}
+\end{table}
+
+. eststo clear
+
+. 
+. ******************************
+. //Table A38: kimberley process
+. ******************************
+. 
+. use "$Output_data\BCRT_baseline", clear
+
+. 
+.  ** Tracability: GLR initiative + Kimberley ** 
+. cap drop diams
+
+. *
+. g diams = (mainmineral == "diamond")
+
+. *
+. g kimberley = (mainmineral  == "diamond" & year>2002) 
+
+. *
+. g post2002 = (year>2002) 
+
+. 
+. foreach var in  kimberley diams post2002{ 
+  2.         g triple_`var'   = main_lprice_mines*`var'
+  3. }
+(334 missing values generated)
+(334 missing values generated)
+(334 missing values generated)
+
+. foreach var in  kimberley diams post2002{ 
+  2.         g triple_`var'_0   = main_lprice_hist0*`var'
+  3. }
+(238 missing values generated)
+(238 missing values generated)
+(238 missing values generated)
+
+. 
+. g nb_acled_battle = nb_event1+nb_event2+nb_event3
+
+. g acled_battle    = (nb_acled_battle>0)
+
+. 
+. /* drop tantalum for baseline */
+. drop if mainmineral == "tantalum" 
+(28 observations deleted)
+
+. 
+. /*column 1: mine open the entire period*/
+. eststo: my_reg2hdfespatial acled  main_lprice_mines triple_kimberley triple_diams triple_post2002                       if sd_mines == 0                        , timevar(it) panelvar(cell) lat(latitude) lon(longitude) distcutoff(500) lagcutoff(1000
+> 00) 
+ 
+OLS REGRESSION
+ 
+SE CORRECTED FOR CROSS-SECTIONAL SPATIAL DEPENDANCE
+             AND PANEL-SPECIFIC SERIAL CORRELATION
+ 
+DEPENDANT VARIABLE: acled
+INDEPENDANT VARIABLES:  main_lprice_mines triple_kimberley triple_diams triple_post2002
+ 
+SPATIAL CORRELATION KERNAL CUTOFF: 500 KM
+(NOTE: LINEAR BARTLETT WINDOW USED FOR SPATIAL KERNAL)
+SERIAL CORRELATION KERNAL CUTOFF: 100000 PERIODS
+-----------------------------------------------------------------------------------
+            acled |      Coef.   Std. Err.      t    P>|t|     [95% Conf. Interval]
+------------------+----------------------------------------------------------------
+main_lprice_mines |   .0358492   .0245656     1.46   0.144    -.0122989    .0839973
+ triple_kimberley |   .0074064   .0104222     0.71   0.477    -.0130209    .0278338
+     triple_diams |  -.3580622   .1837334    -1.95   0.051    -.7181761    .0020517
+  triple_post2002 |    .003852   .0018665     2.06   0.039     .0001936    .0075104
+-----------------------------------------------------------------------------------
+D:\Travail\Dropbox\mining_conflict
+(est1 stored)
+
+. /*column 2: mine at some point over the period*/
+. eststo: my_reg2hdfespatial acled   main_lprice_hist0 triple_kimberley_0 triple_diams_0  triple_post2002_0                                                               , timevar(it) panelvar(cell) lat(latitude) lon(longitude) distcutoff(500) lagcut
+> off(100000) 
+ 
+OLS REGRESSION
+ 
+SE CORRECTED FOR CROSS-SECTIONAL SPATIAL DEPENDANCE
+             AND PANEL-SPECIFIC SERIAL CORRELATION
+ 
+DEPENDANT VARIABLE: acled
+INDEPENDANT VARIABLES:  main_lprice_hist0 triple_kimberley_0 triple_diams_0 triple_post2002_0
+ 
+SPATIAL CORRELATION KERNAL CUTOFF: 500 KM
+(NOTE: LINEAR BARTLETT WINDOW USED FOR SPATIAL KERNAL)
+SERIAL CORRELATION KERNAL CUTOFF: 100000 PERIODS
+------------------------------------------------------------------------------------
+             acled |      Coef.   Std. Err.      t    P>|t|     [95% Conf. Interval]
+-------------------+----------------------------------------------------------------
+ main_lprice_hist0 |   .0259935   .0163056     1.59   0.111     -.005965    .0579521
+triple_kimberley_0 |  -.0086391   .0101867    -0.85   0.396    -.0286047    .0113266
+    triple_diams_0 |  -.1128736   .1469345    -0.77   0.442    -.4008623     .175115
+ triple_post2002_0 |   .0019789   .0012217     1.62   0.105    -.0004155    .0043734
+------------------------------------------------------------------------------------
+D:\Travail\Dropbox\mining_conflict
+(est2 stored)
+
+. 
+. /*column 3: mine open the entire period*/
+. eststo: my_reg2hdfespatial acled_battle  main_lprice_mines triple_kimberley triple_diams triple_post2002        if sd_mines == 0                        , timevar(it) panelvar(cell) lat(latitude) lon(longitude) distcutoff(500) lagcutoff(100000) 
+ 
+OLS REGRESSION
+ 
+SE CORRECTED FOR CROSS-SECTIONAL SPATIAL DEPENDANCE
+             AND PANEL-SPECIFIC SERIAL CORRELATION
+ 
+DEPENDANT VARIABLE: acled_battle
+INDEPENDANT VARIABLES:  main_lprice_mines triple_kimberley triple_diams triple_post2002
+ 
+SPATIAL CORRELATION KERNAL CUTOFF: 500 KM
+(NOTE: LINEAR BARTLETT WINDOW USED FOR SPATIAL KERNAL)
+SERIAL CORRELATION KERNAL CUTOFF: 100000 PERIODS
+-----------------------------------------------------------------------------------
+     acled_battle |      Coef.   Std. Err.      t    P>|t|     [95% Conf. Interval]
+------------------+----------------------------------------------------------------
+main_lprice_mines |   .0104465   .0093826     1.11   0.266    -.0079432    .0288361
+ triple_kimberley |  -.0046123   .0025831    -1.79   0.074    -.0096751    .0004505
+     triple_diams |  -.1212344   .0718229    -1.69   0.091    -.2620059    .0195371
+  triple_post2002 |   .0005677   .0006368     0.89   0.373    -.0006804    .0018157
+-----------------------------------------------------------------------------------
+D:\Travail\Dropbox\mining_conflict
+(est3 stored)
+
+. /*column 4: mine at some point over the period*/
+. eststo: my_reg2hdfespatial acled_battle   main_lprice_hist0 triple_kimberley_0  triple_diams_0 triple_post2002_0                                                , timevar(it) panelvar(cell) lat(latitude) lon(longitude) distcutoff(500) lagcutoff(1000
+> 00) 
+ 
+OLS REGRESSION
+ 
+SE CORRECTED FOR CROSS-SECTIONAL SPATIAL DEPENDANCE
+             AND PANEL-SPECIFIC SERIAL CORRELATION
+ 
+DEPENDANT VARIABLE: acled_battle
+INDEPENDANT VARIABLES:  main_lprice_hist0 triple_kimberley_0 triple_diams_0 triple_post2002_0
+ 
+SPATIAL CORRELATION KERNAL CUTOFF: 500 KM
+(NOTE: LINEAR BARTLETT WINDOW USED FOR SPATIAL KERNAL)
+SERIAL CORRELATION KERNAL CUTOFF: 100000 PERIODS
+------------------------------------------------------------------------------------
+      acled_battle |      Coef.   Std. Err.      t    P>|t|     [95% Conf. Interval]
+-------------------+----------------------------------------------------------------
+ main_lprice_hist0 |   .0034171   .0065778     0.52   0.603    -.0094754    .0163095
+triple_kimberley_0 |  -.0076437   .0049127    -1.56   0.120    -.0172726    .0019851
+    triple_diams_0 |  -.0378773   .0582631    -0.65   0.516    -.1520719    .0763173
+ triple_post2002_0 |  -.0001754    .000499    -0.35   0.725    -.0011534    .0008026
+------------------------------------------------------------------------------------
+D:\Travail\Dropbox\mining_conflict
+(est4 stored)
+
+. 
+. set linesize 250
+
+. esttab, mtitles drop() b(%5.3f) se(%5.3f) compress r2 starlevels(c 0.1 b 0.05 a 0.01)  se 
+
+------------------------------------------------------
+                 (1)        (2)        (3)        (4) 
+                est1       est2       est3       est4 
+------------------------------------------------------
+main_lpr~s     0.036                 0.010            
+             (0.025)               (0.009)            
+
+triple_k~y     0.007                -0.005c           
+             (0.010)               (0.003)            
+
+triple_d~s    -0.358c               -0.121c           
+             (0.184)               (0.072)            
+
+tripl~2002     0.004b                0.001            
+             (0.002)               (0.001)            
+
+main_lpr~0                0.026                 0.003 
+                        (0.016)               (0.007) 
+
+triple_k~0               -0.009                -0.008 
+                        (0.010)               (0.005) 
+
+triple_d~0               -0.113                -0.038 
+                        (0.147)               (0.058) 
+
+triple_p~0                0.002                -0.000 
+                        (0.001)               (0.000) 
+------------------------------------------------------
+N             142646     144424     142646     144424 
+R-sq           0.000      0.000      0.000      0.000 
+------------------------------------------------------
+Standard errors in parentheses
+c p<0.1, b p<0.05, a p<0.01
+
+. esttab, mtitles drop() b(%5.3f) se(%5.3f) r2  starlevels({$^c$} 0.1 {$^b$} 0.05 {$^a$} 0.01) se tex label  title(Table A38) 
+
+\begin{table}[htbp]\centering
+\def\sym#1{\ifmmode^{#1}\else\(^{#1}\)\fi}
+\caption{Table A38}
+\begin{tabular}{l*{4}{c}}
+\hline\hline
+                    &\multicolumn{1}{c}{(1)}&\multicolumn{1}{c}{(2)}&\multicolumn{1}{c}{(3)}&\multicolumn{1}{c}{(4)}\\
+                    &\multicolumn{1}{c}{est1}&\multicolumn{1}{c}{est2}&\multicolumn{1}{c}{est3}&\multicolumn{1}{c}{est4}\\
+\hline
+$\ln$ price $\times$ mines $>0$&       0.036      &                  &       0.010      &                  \\
+                    &     (0.025)      &                  &     (0.009)      &                  \\
+[1em]
+triple\_kimberley    &       0.007      &                  &      -0.005{$^c$}&                  \\
+                    &     (0.010)      &                  &     (0.003)      &                  \\
+[1em]
+triple\_diams        &      -0.358{$^c$}&                  &      -0.121{$^c$}&                  \\
+                    &     (0.184)      &                  &     (0.072)      &                  \\
+[1em]
+triple\_post2002     &       0.004{$^b$}&                  &       0.001      &                  \\
+                    &     (0.002)      &                  &     (0.001)      &                  \\
+[1em]
+$\ln$ price $\times$ mines $>0$ (ever)&                  &       0.026      &                  &       0.003      \\
+                    &                  &     (0.016)      &                  &     (0.007)      \\
+[1em]
+triple\_kimberley\_0  &                  &      -0.009      &                  &      -0.008      \\
+                    &                  &     (0.010)      &                  &     (0.005)      \\
+[1em]
+triple\_diams\_0      &                  &      -0.113      &                  &      -0.038      \\
+                    &                  &     (0.147)      &                  &     (0.058)      \\
+[1em]
+triple\_post2002\_0   &                  &       0.002      &                  &      -0.000      \\
+                    &                  &     (0.001)      &                  &     (0.000)      \\
+\hline
+Observations        &      142646      &      144424      &      142646      &      144424      \\
+\(R^{2}\)           &       0.000      &       0.000      &       0.000      &       0.000      \\
+\hline\hline
+\multicolumn{5}{l}{\footnotesize Standard errors in parentheses}\\
+\multicolumn{5}{l}{\footnotesize {$^c$} p<0.1, {$^b$} p<0.05, {$^a$} p<0.01}\\
+\end{tabular}
+\end{table}
+
+. eststo clear
+
+. 
+. 
+. cap log close

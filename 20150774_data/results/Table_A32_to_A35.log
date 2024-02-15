@@ -1,0 +1,1672 @@
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+      name:  <unnamed>
+       log:  D:\Travail\Dropbox\mining_conflict\Data_Code_BCRT_AER\results\Table_A32_to_A35.log
+  log type:  text
+ opened on:  13 Dec 2016, 11:46:38
+
+. 
+. 
+. **************************
+. // Table A32 : Statistics
+. **************************
+. 
+. use "$Output_data\BCRT_rebel", clear
+
+. 
+. keep if ldistance_battle!=.
+(1,086,202 observations deleted)
+
+. distinct actor actor_country
+
+               |        Observations
+               |      total   distinct
+---------------+----------------------
+         actor |     204402        126
+ actor_country |     204402        210
+
+. preserve
+
+. 
+. *how many countries per actor on average? 
+. collapse year, by(actor iso_1)
+
+. g nb_country = 1
+
+. collapse (sum) nb_country, by(actor)
+
+. tab nb_country
+
+      (sum) |
+ nb_country |      Freq.     Percent        Cum.
+------------+-----------------------------------
+          1 |         82       65.08       65.08
+          2 |         22       17.46       82.54
+          3 |         11        8.73       91.27
+          4 |          6        4.76       96.03
+          5 |          3        2.38       98.41
+          6 |          2        1.59      100.00
+------------+-----------------------------------
+      Total |        126      100.00
+
+. sum nb_country
+
+    Variable |        Obs        Mean    Std. Dev.       Min        Max
+-------------+---------------------------------------------------------
+  nb_country |        126    1.666667     1.13842          1          6
+
+. restore 
+
+. 
+. foreach var in acled nb_acled nb_battle_all battle_a battle_m nb_battle_a nb_battle_m nb_battle_an nb_battle_mn distance_battle{
+  2.         use "$Output_data\BCRT_rebel", clear
+  3.         
+.         g distance_battle = exp(ldistance_battle)
+  4.         keep if distance_battle!=.
+  5. 
+.                 foreach var2 in nb_battle_all nb_battle_a nb_battle_m nb_battle_an nb_battle_mn{
+  6.                 replace `var2' = exp(`var2')-1
+  7.                 }
+  8. 
+.         collapse (count) N = `var' (mean) mean = `var' (median) median = `var' (sd) sd = `var'
+  9.         g name = "`var'" 
+ 10.         save "$Results\stats_`var'", replace
+ 11. }
+(1,086,202 missing values generated)
+(1,086,202 observations deleted)
+(83,936 real changes made)
+(83,936 real changes made)
+(2,940 real changes made)
+(198,750 real changes made)
+(15,257 real changes made)
+(note: file Data_Code_BCRT_AER\results\stats_acled.dta not found)
+file Data_Code_BCRT_AER\results\stats_acled.dta saved
+(1,086,202 missing values generated)
+(1,086,202 observations deleted)
+(83,936 real changes made)
+(83,936 real changes made)
+(2,940 real changes made)
+(198,750 real changes made)
+(15,257 real changes made)
+(note: file Data_Code_BCRT_AER\results\stats_nb_acled.dta not found)
+file Data_Code_BCRT_AER\results\stats_nb_acled.dta saved
+(1,086,202 missing values generated)
+(1,086,202 observations deleted)
+(83,936 real changes made)
+(83,936 real changes made)
+(2,940 real changes made)
+(198,750 real changes made)
+(15,257 real changes made)
+(note: file Data_Code_BCRT_AER\results\stats_nb_battle_all.dta not found)
+file Data_Code_BCRT_AER\results\stats_nb_battle_all.dta saved
+(1,086,202 missing values generated)
+(1,086,202 observations deleted)
+(83,936 real changes made)
+(83,936 real changes made)
+(2,940 real changes made)
+(198,750 real changes made)
+(15,257 real changes made)
+(note: file Data_Code_BCRT_AER\results\stats_battle_a.dta not found)
+file Data_Code_BCRT_AER\results\stats_battle_a.dta saved
+(1,086,202 missing values generated)
+(1,086,202 observations deleted)
+(83,936 real changes made)
+(83,936 real changes made)
+(2,940 real changes made)
+(198,750 real changes made)
+(15,257 real changes made)
+(note: file Data_Code_BCRT_AER\results\stats_battle_m.dta not found)
+file Data_Code_BCRT_AER\results\stats_battle_m.dta saved
+(1,086,202 missing values generated)
+(1,086,202 observations deleted)
+(83,936 real changes made)
+(83,936 real changes made)
+(2,940 real changes made)
+(198,750 real changes made)
+(15,257 real changes made)
+(note: file Data_Code_BCRT_AER\results\stats_nb_battle_a.dta not found)
+file Data_Code_BCRT_AER\results\stats_nb_battle_a.dta saved
+(1,086,202 missing values generated)
+(1,086,202 observations deleted)
+(83,936 real changes made)
+(83,936 real changes made)
+(2,940 real changes made)
+(198,750 real changes made)
+(15,257 real changes made)
+(note: file Data_Code_BCRT_AER\results\stats_nb_battle_m.dta not found)
+file Data_Code_BCRT_AER\results\stats_nb_battle_m.dta saved
+(1,086,202 missing values generated)
+(1,086,202 observations deleted)
+(83,936 real changes made)
+(83,936 real changes made)
+(2,940 real changes made)
+(198,750 real changes made)
+(15,257 real changes made)
+(note: file Data_Code_BCRT_AER\results\stats_nb_battle_an.dta not found)
+file Data_Code_BCRT_AER\results\stats_nb_battle_an.dta saved
+(1,086,202 missing values generated)
+(1,086,202 observations deleted)
+(83,936 real changes made)
+(83,936 real changes made)
+(2,940 real changes made)
+(198,750 real changes made)
+(15,257 real changes made)
+(note: file Data_Code_BCRT_AER\results\stats_nb_battle_mn.dta not found)
+file Data_Code_BCRT_AER\results\stats_nb_battle_mn.dta saved
+(1,086,202 missing values generated)
+(1,086,202 observations deleted)
+(83,936 real changes made)
+(83,936 real changes made)
+(2,940 real changes made)
+(198,750 real changes made)
+(15,257 real changes made)
+(note: file Data_Code_BCRT_AER\results\stats_distance_battle.dta not found)
+file Data_Code_BCRT_AER\results\stats_distance_battle.dta saved
+
+. 
+. use "$Results\stats_acled", clear
+
+. foreach var in nb_acled nb_battle_all battle_a battle_m nb_battle_a nb_battle_m nb_battle_an nb_battle_mn distance_battle{
+  2. append using "$Results\stats_`var'"
+  3. }
+(note: variable name was str5, now str8 to accommodate using data's values)
+(note: variable name was str8, now str13 to accommodate using data's values)
+(note: variable name was str13, now str15 to accommodate using data's values)
+
+. *
+. order name N mean sd median
+
+. save "$Results\Table_A32", replace
+file Data_Code_BCRT_AER\results\Table_A32.dta saved
+
+. *
+. foreach var in acled nb_acled nb_battle_all battle_a battle_m nb_battle_a nb_battle_m nb_battle_an nb_battle_mn distance_battle{
+  2. erase "$Results\stats_`var'.dta"
+  3. }
+
+. 
+. **************************
+. // Table A33 : Conley S.E. 
+. **************************
+. 
+. use "$Output_data\BCRT_baseline", clear
+
+. collapse (max) latitude longitude, by(gid)
+
+. save "$Output_data\temp0", replace
+(note: file Data_Code_BCRT_AER\Data\temp0.dta not found)
+file Data_Code_BCRT_AER\Data\temp0.dta saved
+
+. 
+. use "$Output_data\BCRT_rebel", clear
+
+. sort  gid 
+
+. merge gid using "$Output_data\temp0", nokeep
+(note: you are using old merge syntax; see [D] merge for new syntax)
+variable gid does not uniquely identify observations in the master data
+
+. tab  _merge
+
+     _merge |      Freq.     Percent        Cum.
+------------+-----------------------------------
+          3 |  1,290,604      100.00      100.00
+------------+-----------------------------------
+      Total |  1,290,604      100.00
+
+. drop _merge
+
+. 
+. erase "$Output_data\temp0.dta"
+
+. 
+. sort id year 
+
+. *
+. sort id year 
+
+. eststo: my_reg2hdfespatial acled nb_battle_all                                                                                                                                                  if l.acled == 0 & ldistance_battle != ., timevar(it) pan
+> elvar(id) lat(latitude) lon(longitude) distcutoff(500) lagcutoff(100000)  
+ 
+OLS REGRESSION
+ 
+SE CORRECTED FOR CROSS-SECTIONAL SPATIAL DEPENDANCE
+             AND PANEL-SPECIFIC SERIAL CORRELATION
+ 
+DEPENDANT VARIABLE: acled
+INDEPENDANT VARIABLES:  nb_battle_all
+ 
+SPATIAL CORRELATION KERNAL CUTOFF: 500 KM
+(NOTE: LINEAR BARTLETT WINDOW USED FOR SPATIAL KERNAL)
+SERIAL CORRELATION KERNAL CUTOFF: 100000 PERIODS
+-------------------------------------------------------------------------------
+        acled |      Coef.   Std. Err.      t    P>|t|     [95% Conf. Interval]
+--------------+----------------------------------------------------------------
+nb_battle_all |   .0019361   .0006296     3.08   0.002     .0007022      .00317
+-------------------------------------------------------------------------------
+D:\Travail\Dropbox\mining_conflict
+(est1 stored)
+
+. sort id year 
+
+. eststo: my_reg2hdfespatial acled battle_a battle_m                                                                                                                                      if l.acled == 0 & ldistance_battle != ., timevar(it) panelvar(id
+> ) lat(latitude) lon(longitude) distcutoff(500) lagcutoff(100000)
+ 
+OLS REGRESSION
+ 
+SE CORRECTED FOR CROSS-SECTIONAL SPATIAL DEPENDANCE
+             AND PANEL-SPECIFIC SERIAL CORRELATION
+ 
+DEPENDANT VARIABLE: acled
+INDEPENDANT VARIABLES:  battle_a battle_m
+ 
+SPATIAL CORRELATION KERNAL CUTOFF: 500 KM
+(NOTE: LINEAR BARTLETT WINDOW USED FOR SPATIAL KERNAL)
+SERIAL CORRELATION KERNAL CUTOFF: 100000 PERIODS
+------------------------------------------------------------------------------
+       acled |      Coef.   Std. Err.      t    P>|t|     [95% Conf. Interval]
+-------------+----------------------------------------------------------------
+    battle_a |   .0004104   .0011168     0.37   0.713    -.0017786    .0025994
+    battle_m |   .0397277   .0104584     3.80   0.000     .0192295    .0602258
+------------------------------------------------------------------------------
+D:\Travail\Dropbox\mining_conflict
+(est2 stored)
+
+. lincom battle_m - battle_a
+
+ ( 1)  - battle_a + battle_m = 0
+
+------------------------------------------------------------------------------
+       acled |      Coef.   Std. Err.      t    P>|t|     [95% Conf. Interval]
+-------------+----------------------------------------------------------------
+         (1) |   .0393172    .010688     3.68   0.000     .0183691    .0602654
+------------------------------------------------------------------------------
+
+. sort id year    
+
+. eststo: my_reg2hdfespatial acled nb_battle_a nb_battle_m                                                                                                                                if l.acled == 0 & ldistance_battle != . , timevar(it) panelvar(i
+> d) lat(latitude) lon(longitude) distcutoff(500) lagcutoff(100000)
+ 
+OLS REGRESSION
+ 
+SE CORRECTED FOR CROSS-SECTIONAL SPATIAL DEPENDANCE
+             AND PANEL-SPECIFIC SERIAL CORRELATION
+ 
+DEPENDANT VARIABLE: acled
+INDEPENDANT VARIABLES:  nb_battle_a nb_battle_m
+ 
+SPATIAL CORRELATION KERNAL CUTOFF: 500 KM
+(NOTE: LINEAR BARTLETT WINDOW USED FOR SPATIAL KERNAL)
+SERIAL CORRELATION KERNAL CUTOFF: 100000 PERIODS
+------------------------------------------------------------------------------
+       acled |      Coef.   Std. Err.      t    P>|t|     [95% Conf. Interval]
+-------------+----------------------------------------------------------------
+ nb_battle_a |   .0005113   .0006958     0.73   0.462    -.0008525     .001875
+ nb_battle_m |   .0531874   .0146324     3.63   0.000     .0245083    .0818665
+------------------------------------------------------------------------------
+D:\Travail\Dropbox\mining_conflict
+(est3 stored)
+
+. lincom nb_battle_m - nb_battle_a
+
+ ( 1)  - nb_battle_a + nb_battle_m = 0
+
+------------------------------------------------------------------------------
+       acled |      Coef.   Std. Err.      t    P>|t|     [95% Conf. Interval]
+-------------+----------------------------------------------------------------
+         (1) |   .0526762   .0148376     3.55   0.000     .0235948    .0817575
+------------------------------------------------------------------------------
+
+. sort id year    
+
+. eststo: my_reg2hdfespatial acled nb_battle_a nb_battle_m  nb_battle_an nb_battle_mn                                                                     if l.acled == 0 & ldistance_battle != . , timevar(it) panelvar(id) lat(latitude) lon(longitude) 
+> distcutoff(500) lagcutoff(100000)
+ 
+OLS REGRESSION
+ 
+SE CORRECTED FOR CROSS-SECTIONAL SPATIAL DEPENDANCE
+             AND PANEL-SPECIFIC SERIAL CORRELATION
+ 
+DEPENDANT VARIABLE: acled
+INDEPENDANT VARIABLES:  nb_battle_a nb_battle_m nb_battle_an nb_battle_mn
+ 
+SPATIAL CORRELATION KERNAL CUTOFF: 500 KM
+(NOTE: LINEAR BARTLETT WINDOW USED FOR SPATIAL KERNAL)
+SERIAL CORRELATION KERNAL CUTOFF: 100000 PERIODS
+------------------------------------------------------------------------------
+       acled |      Coef.   Std. Err.      t    P>|t|     [95% Conf. Interval]
+-------------+----------------------------------------------------------------
+ nb_battle_a |   -.000951   .0007524    -1.26   0.206    -.0024258    .0005237
+ nb_battle_m |   .0412074   .0146757     2.81   0.005     .0124434    .0699715
+nb_battle_an |   .0014275   .0005638     2.53   0.011     .0003225    .0025324
+nb_battle_mn |   .0082162   .0033582     2.45   0.014     .0016342    .0147982
+------------------------------------------------------------------------------
+D:\Travail\Dropbox\mining_conflict
+(est4 stored)
+
+. lincom nb_battle_m - nb_battle_a
+
+ ( 1)  - nb_battle_a + nb_battle_m = 0
+
+------------------------------------------------------------------------------
+       acled |      Coef.   Std. Err.      t    P>|t|     [95% Conf. Interval]
+-------------+----------------------------------------------------------------
+         (1) |   .0421584   .0148179     2.85   0.004     .0131157    .0712012
+------------------------------------------------------------------------------
+
+. lincom nb_battle_mn - nb_battle_an
+
+ ( 1)  - nb_battle_an + nb_battle_mn = 0
+
+------------------------------------------------------------------------------
+       acled |      Coef.   Std. Err.      t    P>|t|     [95% Conf. Interval]
+-------------+----------------------------------------------------------------
+         (1) |   .0067887     .00351     1.93   0.053    -.0000908    .0136682
+------------------------------------------------------------------------------
+
+. *
+. sort id year
+
+. eststo: my_reg2hdfespatial acled nb_battle_a nb_battle_m nb_battle_a_l1 nb_battle_m_l1                                                                  if l.acled == 0 & ldistance_battle != ., timevar(it) panelvar(id) lat(latitude) lon(longitude) d
+> istcutoff(500) lagcutoff(100000)
+ 
+OLS REGRESSION
+ 
+SE CORRECTED FOR CROSS-SECTIONAL SPATIAL DEPENDANCE
+             AND PANEL-SPECIFIC SERIAL CORRELATION
+ 
+DEPENDANT VARIABLE: acled
+INDEPENDANT VARIABLES:  nb_battle_a nb_battle_m nb_battle_a_l1 nb_battle_m_l1
+ 
+SPATIAL CORRELATION KERNAL CUTOFF: 500 KM
+(NOTE: LINEAR BARTLETT WINDOW USED FOR SPATIAL KERNAL)
+SERIAL CORRELATION KERNAL CUTOFF: 100000 PERIODS
+--------------------------------------------------------------------------------
+         acled |      Coef.   Std. Err.      t    P>|t|     [95% Conf. Interval]
+---------------+----------------------------------------------------------------
+   nb_battle_a |   .0000139   .0007358     0.02   0.985    -.0014283    .0014561
+   nb_battle_m |   .0615504   .0159884     3.85   0.000     .0302135    .0928873
+nb_battle_a_l1 |   -.000496   .0007178    -0.69   0.490     -.001903    .0009109
+nb_battle_m_l1 |   .0226332   .0078979     2.87   0.004     .0071535    .0381129
+--------------------------------------------------------------------------------
+D:\Travail\Dropbox\mining_conflict
+(est5 stored)
+
+. lincom nb_battle_m - nb_battle_a
+
+ ( 1)  - nb_battle_a + nb_battle_m = 0
+
+------------------------------------------------------------------------------
+       acled |      Coef.   Std. Err.      t    P>|t|     [95% Conf. Interval]
+-------------+----------------------------------------------------------------
+         (1) |   .0615365   .0163059     3.77   0.000     .0295774    .0934956
+------------------------------------------------------------------------------
+
+. lincom nb_battle_m_l1 - nb_battle_a_l1
+
+ ( 1)  - nb_battle_a_l1 + nb_battle_m_l1 = 0
+
+------------------------------------------------------------------------------
+       acled |      Coef.   Std. Err.      t    P>|t|     [95% Conf. Interval]
+-------------+----------------------------------------------------------------
+         (1) |   .0231292   .0081758     2.83   0.005      .007105    .0391535
+------------------------------------------------------------------------------
+
+. sort id year
+
+. eststo: my_reg2hdfespatial acled nb_battle_a nb_battle_m nb_battle_a_l1 nb_battle_m_l1 nb_battle_a_l2 nb_battle_m_l2    if l.acled == 0 & ldistance_battle != ., timevar(it) panelvar(id) lat(latitude) lon(longitude) distcutoff(500) lagcutoff(100000)
+ 
+OLS REGRESSION
+ 
+SE CORRECTED FOR CROSS-SECTIONAL SPATIAL DEPENDANCE
+             AND PANEL-SPECIFIC SERIAL CORRELATION
+ 
+DEPENDANT VARIABLE: acled
+INDEPENDANT VARIABLES:  nb_battle_a nb_battle_m nb_battle_a_l1 nb_battle_m_l1 nb_battle_a_l2 nb_battle_m_l2
+ 
+SPATIAL CORRELATION KERNAL CUTOFF: 500 KM
+(NOTE: LINEAR BARTLETT WINDOW USED FOR SPATIAL KERNAL)
+SERIAL CORRELATION KERNAL CUTOFF: 100000 PERIODS
+--------------------------------------------------------------------------------
+         acled |      Coef.   Std. Err.      t    P>|t|     [95% Conf. Interval]
+---------------+----------------------------------------------------------------
+   nb_battle_a |   .0004553   .0007297     0.62   0.533    -.0009749    .0018854
+   nb_battle_m |   .0535429   .0149443     3.58   0.000     .0242524    .0828333
+nb_battle_a_l1 |   .0002919   .0007196     0.41   0.685    -.0011185    .0017023
+nb_battle_m_l1 |   .0207203   .0080846     2.56   0.010     .0048746     .036566
+nb_battle_a_l2 |  -.0040355   .0007296    -5.53   0.000    -.0054656   -.0026055
+nb_battle_m_l2 |   .0299239   .0226629     1.32   0.187     -.014495    .0743427
+--------------------------------------------------------------------------------
+D:\Travail\Dropbox\mining_conflict
+(est6 stored)
+
+. lincom nb_battle_m - nb_battle_a
+
+ ( 1)  - nb_battle_a + nb_battle_m = 0
+
+------------------------------------------------------------------------------
+       acled |      Coef.   Std. Err.      t    P>|t|     [95% Conf. Interval]
+-------------+----------------------------------------------------------------
+         (1) |   .0530876   .0152071     3.49   0.000     .0232821    .0828931
+------------------------------------------------------------------------------
+
+. lincom nb_battle_m_l1 - nb_battle_a_l1
+
+ ( 1)  - nb_battle_a_l1 + nb_battle_m_l1 = 0
+
+------------------------------------------------------------------------------
+       acled |      Coef.   Std. Err.      t    P>|t|     [95% Conf. Interval]
+-------------+----------------------------------------------------------------
+         (1) |   .0204284    .008315     2.46   0.014     .0041311    .0367256
+------------------------------------------------------------------------------
+
+. lincom nb_battle_m_l2 - nb_battle_a_l2
+
+ ( 1)  - nb_battle_a_l2 + nb_battle_m_l2 = 0
+
+------------------------------------------------------------------------------
+       acled |      Coef.   Std. Err.      t    P>|t|     [95% Conf. Interval]
+-------------+----------------------------------------------------------------
+         (1) |   .0339594   .0226852     1.50   0.134     -.010503    .0784218
+------------------------------------------------------------------------------
+
+. *
+. sort id year 
+
+. eststo: my_reg2hdfespatial acled nb_battle_all  ldistance_battle nb_battle_all_dist                                                                     if l.acled == 0 & ldistance_battle != ., timevar(it) panelvar(id) lat(latitude) lon(longitude) d
+> istcutoff(500) lagcutoff(100000)
+ 
+OLS REGRESSION
+ 
+SE CORRECTED FOR CROSS-SECTIONAL SPATIAL DEPENDANCE
+             AND PANEL-SPECIFIC SERIAL CORRELATION
+ 
+DEPENDANT VARIABLE: acled
+INDEPENDANT VARIABLES:  nb_battle_all ldistance_battle nb_battle_all_dist
+ 
+SPATIAL CORRELATION KERNAL CUTOFF: 500 KM
+(NOTE: LINEAR BARTLETT WINDOW USED FOR SPATIAL KERNAL)
+SERIAL CORRELATION KERNAL CUTOFF: 100000 PERIODS
+------------------------------------------------------------------------------------
+             acled |      Coef.   Std. Err.      t    P>|t|     [95% Conf. Interval]
+-------------------+----------------------------------------------------------------
+     nb_battle_all |   .0331527   .0096617     3.43   0.001      .014216    .0520895
+  ldistance_battle |  -.0007454   .0022167    -0.34   0.737    -.0050901    .0035993
+nb_battle_all_dist |  -.0047098   .0014196    -3.32   0.001    -.0074922   -.0019275
+------------------------------------------------------------------------------------
+D:\Travail\Dropbox\mining_conflict
+(est7 stored)
+
+. sort id year 
+
+. eststo: my_reg2hdfespatial acled nb_battle_a nb_battle_m ldistance_battle nb_battle_a_dist nb_battle_m_dist                     if l.acled == 0 & ldistance_battle != ., timevar(it) panelvar(id) lat(latitude) lon(longitude) distcutoff(500) lagcutoff
+> (100000)
+ 
+OLS REGRESSION
+ 
+SE CORRECTED FOR CROSS-SECTIONAL SPATIAL DEPENDANCE
+             AND PANEL-SPECIFIC SERIAL CORRELATION
+ 
+DEPENDANT VARIABLE: acled
+INDEPENDANT VARIABLES:  nb_battle_a nb_battle_m ldistance_battle nb_battle_a_dist nb_battle_m_dist
+ 
+SPATIAL CORRELATION KERNAL CUTOFF: 500 KM
+(NOTE: LINEAR BARTLETT WINDOW USED FOR SPATIAL KERNAL)
+SERIAL CORRELATION KERNAL CUTOFF: 100000 PERIODS
+----------------------------------------------------------------------------------
+           acled |      Coef.   Std. Err.      t    P>|t|     [95% Conf. Interval]
+-----------------+----------------------------------------------------------------
+     nb_battle_a |   .0287088   .0096431     2.98   0.003     .0098086     .047609
+     nb_battle_m |   .5998623   .2135561     2.81   0.005     .1812976    1.018427
+ldistance_battle |  -.0008743   .0022141    -0.39   0.693     -.005214    .0034653
+nb_battle_a_dist |  -.0041978   .0014115    -2.97   0.003    -.0069643   -.0014313
+nb_battle_m_dist |  -.0842158   .0316646    -2.66   0.008    -.1462777    -.022154
+----------------------------------------------------------------------------------
+D:\Travail\Dropbox\mining_conflict
+(est8 stored)
+
+. 
+. set linesize 250
+
+. esttab, mtitles drop() b(%5.3f) se(%5.3f) compress r2 starlevels(c 0.1 b 0.05 a 0.01)  se 
+
+--------------------------------------------------------------------------------------------------
+                 (1)        (2)        (3)        (4)        (5)        (6)        (7)        (8) 
+                est1       est2       est3       est4       est5       est6       est7       est8 
+--------------------------------------------------------------------------------------------------
+nb_battl~l     0.002a                                                            0.033a           
+             (0.001)                                                           (0.010)            
+
+battle_a                  0.000                                                                   
+                        (0.001)                                                                   
+
+battle_m                  0.040a                                                                  
+                        (0.010)                                                                   
+
+nb_battl~a                           0.001     -0.001      0.000      0.000                 0.029a
+                                   (0.001)    (0.001)    (0.001)    (0.001)               (0.010) 
+
+nb_battl~m                           0.053a     0.041a     0.062a     0.054a                0.600a
+                                   (0.015)    (0.015)    (0.016)    (0.015)               (0.214) 
+
+nb_batt~an                                      0.001b                                            
+                                              (0.001)                                             
+
+nb_batt~mn                                      0.008b                                            
+                                              (0.003)                                             
+
+nb_ba~a_l1                                                -0.000      0.000                       
+                                                         (0.001)    (0.001)                       
+
+nb_ba~m_l1                                                 0.023a     0.021b                      
+                                                         (0.008)    (0.008)                       
+
+nb_ba~a_l2                                                           -0.004a                      
+                                                                    (0.001)                       
+
+nb_ba~m_l2                                                            0.030                       
+                                                                    (0.023)                       
+
+ldistanc~e                                                                      -0.001     -0.001 
+                                                                               (0.002)    (0.002) 
+
+nb_~l_dist                                                                      -0.005a           
+                                                                               (0.001)            
+
+nb_~a_dist                                                                                 -0.004a
+                                                                                          (0.001) 
+
+nb_~m_dist                                                                                 -0.084a
+                                                                                          (0.032) 
+--------------------------------------------------------------------------------------------------
+N             201352     201352     201352     201352     201352     189444     201352     201352 
+R-sq           0.000      0.001      0.001      0.001      0.001      0.002      0.001      0.002 
+--------------------------------------------------------------------------------------------------
+Standard errors in parentheses
+c p<0.1, b p<0.05, a p<0.01
+
+. esttab, mtitles drop() b(%5.3f) se(%5.3f) r2  starlevels({$^c$} 0.1 {$^b$} 0.05 {$^a$} 0.01) se tex label  title(Table A33) 
+
+\begin{table}[htbp]\centering
+\def\sym#1{\ifmmode^{#1}\else\(^{#1}\)\fi}
+\caption{Table A33}
+\begin{tabular}{l*{8}{c}}
+\hline\hline
+                    &\multicolumn{1}{c}{(1)}&\multicolumn{1}{c}{(2)}&\multicolumn{1}{c}{(3)}&\multicolumn{1}{c}{(4)}&\multicolumn{1}{c}{(5)}&\multicolumn{1}{c}{(6)}&\multicolumn{1}{c}{(7)}&\multicolumn{1}{c}{(8)}\\
+                    &\multicolumn{1}{c}{est1}&\multicolumn{1}{c}{est2}&\multicolumn{1}{c}{est3}&\multicolumn{1}{c}{est4}&\multicolumn{1}{c}{est5}&\multicolumn{1}{c}{est6}&\multicolumn{1}{c}{est7}&\multicolumn{1}{c}{est8}\\
+\hline
+\# battles won t-1  &       0.002{$^a$}&                  &                  &                  &                  &                  &       0.033{$^a$}&                  \\
+                    &     (0.001)      &                  &                  &                  &                  &                  &     (0.010)      &                  \\
+[1em]
+Battles won in non-mining area&                  &       0.000      &                  &                  &                  &                  &                  &                  \\
+                    &                  &     (0.001)      &                  &                  &                  &                  &                  &                  \\
+[1em]
+Battles won in mining area&                  &       0.040{$^a$}&                  &                  &                  &                  &                  &                  \\
+                    &                  &     (0.010)      &                  &                  &                  &                  &                  &                  \\
+[1em]
+\# battles won in non-mining area&                  &                  &       0.001      &      -0.001      &       0.000      &       0.000      &                  &       0.029{$^a$}\\
+                    &                  &                  &     (0.001)      &     (0.001)      &     (0.001)      &     (0.001)      &                  &     (0.010)      \\
+[1em]
+\# battles won in mining area&                  &                  &       0.053{$^a$}&       0.041{$^a$}&       0.062{$^a$}&       0.054{$^a$}&                  &       0.600{$^a$}\\
+                    &                  &                  &     (0.015)      &     (0.015)      &     (0.016)      &     (0.015)      &                  &     (0.214)      \\
+[1em]
+\# battles won in non-mining area - no change of territory&                  &                  &                  &       0.001{$^b$}&                  &                  &                  &                  \\
+                    &                  &                  &                  &     (0.001)      &                  &                  &                  &                  \\
+[1em]
+\# battles won in mining area - no change of territory&                  &                  &                  &       0.008{$^b$}&                  &                  &                  &                  \\
+                    &                  &                  &                  &     (0.003)      &                  &                  &                  &                  \\
+[1em]
+L1.Battles won in non-mining area&                  &                  &                  &                  &      -0.000      &       0.000      &                  &                  \\
+                    &                  &                  &                  &                  &     (0.001)      &     (0.001)      &                  &                  \\
+[1em]
+L1.Battles won in mining area&                  &                  &                  &                  &       0.023{$^a$}&       0.021{$^b$}&                  &                  \\
+                    &                  &                  &                  &                  &     (0.008)      &     (0.008)      &                  &                  \\
+[1em]
+L2.Battles won in non-mining area&                  &                  &                  &                  &                  &      -0.004{$^a$}&                  &                  \\
+                    &                  &                  &                  &                  &                  &     (0.001)      &                  &                  \\
+[1em]
+L2.Battles won in mining area&                  &                  &                  &                  &                  &       0.030      &                  &                  \\
+                    &                  &                  &                  &                  &                  &     (0.023)      &                  &                  \\
+[1em]
+Log distance battle &                  &                  &                  &                  &                  &                  &      -0.001      &      -0.001      \\
+                    &                  &                  &                  &                  &                  &                  &     (0.002)      &     (0.002)      \\
+[1em]
+Log distance nb. battle&                  &                  &                  &                  &                  &                  &      -0.005{$^a$}&                  \\
+                    &                  &                  &                  &                  &                  &                  &     (0.001)      &                  \\
+[1em]
+Log distance battles won in non-mining area&                  &                  &                  &                  &                  &                  &                  &      -0.004{$^a$}\\
+                    &                  &                  &                  &                  &                  &                  &                  &     (0.001)      \\
+[1em]
+Log distance battles won in mining area&                  &                  &                  &                  &                  &                  &                  &      -0.084{$^a$}\\
+                    &                  &                  &                  &                  &                  &                  &                  &     (0.032)      \\
+\hline
+Observations        &      201352      &      201352      &      201352      &      201352      &      201352      &      189444      &      201352      &      201352      \\
+\(R^{2}\)           &       0.000      &       0.001      &       0.001      &       0.001      &       0.001      &       0.002      &       0.001      &       0.002      \\
+\hline\hline
+\multicolumn{9}{l}{\footnotesize Standard errors in parentheses}\\
+\multicolumn{9}{l}{\footnotesize {$^c$} p<0.1, {$^b$} p<0.05, {$^a$} p<0.01}\\
+\end{tabular}
+\end{table}
+
+. eststo clear
+
+. 
+. **********************************
+. // Table A34 : Two way clustering
+. **********************************
+. 
+. use "$Output_data\BCRT_rebel", clear
+
+. 
+. egen actor_cell = group(actor gid)
+
+. 
+. sort id year 
+
+. *
+. sort id year 
+
+. eststo: reghdfe acled nb_battle_all                                                                                                                                             if l.acled == 0 & ldistance_battle != ., vce(cluster actor_g gid) absorb
+> (id it)
+(dropped 32465 singleton observations)
+(converged in 23 iterations)
+
+HDFE Linear regression                            Number of obs   =    168,887
+Absorbing 2 HDFE groups                           F(   1,     72) =       1.20
+Statistics robust to heteroskedasticity           Prob > F        =     0.2772
+                                                  R-squared       =     0.3142
+                                                  Adj R-squared   =     0.0917
+Number of clusters (actor_g) =         73         Within R-sq.    =     0.0002
+Number of clusters (gid)     =      7,540         Root MSE        =     0.0889
+
+                            (Std. Err. adjusted for 73 clusters in actor_g gid)
+-------------------------------------------------------------------------------
+              |               Robust
+        acled |      Coef.   Std. Err.      t    P>|t|     [95% Conf. Interval]
+--------------+----------------------------------------------------------------
+nb_battle_all |   .0019361   .0017683     1.09   0.277    -.0015889     .005461
+-------------------------------------------------------------------------------
+
+Absorbed degrees of freedom:
+----------------------------------------------------------------+
+  Absorbed FE |  Num. Coefs.  =   Categories  -   Redundant     | 
+--------------+-------------------------------------------------|
+           id |            0           41170          41170 *   | 
+           it |          213             214              1     | 
+----------------------------------------------------------------+
+* = fixed effect nested within cluster; treated as redundant for DoF computation
+(est1 stored)
+
+. sort id year 
+
+. eststo: reghdfe acled battle_a battle_m                                                                                                                                         if l.acled == 0 & ldistance_battle != . , vce(cluster actor_g gid) absor
+> b(id it)
+(dropped 32465 singleton observations)
+(converged in 23 iterations)
+
+HDFE Linear regression                            Number of obs   =    168,887
+Absorbing 2 HDFE groups                           F(   2,     72) =       5.71
+Statistics robust to heteroskedasticity           Prob > F        =     0.0050
+                                                  R-squared       =     0.3148
+                                                  Adj R-squared   =     0.0924
+Number of clusters (actor_g) =         73         Within R-sq.    =     0.0010
+Number of clusters (gid)     =      7,540         Root MSE        =     0.0889
+
+                           (Std. Err. adjusted for 73 clusters in actor_g gid)
+------------------------------------------------------------------------------
+             |               Robust
+       acled |      Coef.   Std. Err.      t    P>|t|     [95% Conf. Interval]
+-------------+----------------------------------------------------------------
+    battle_a |   .0004103   .0024004     0.17   0.865    -.0043748    .0051954
+    battle_m |   .0397278   .0117548     3.38   0.001      .016295    .0631605
+------------------------------------------------------------------------------
+
+Absorbed degrees of freedom:
+---------------------------------------------------------------+
+ Absorbed FE |  Num. Coefs.  =   Categories  -   Redundant     | 
+-------------+-------------------------------------------------|
+          id |            0           41170          41170 *   | 
+          it |          213             214              1     | 
+---------------------------------------------------------------+
+* = fixed effect nested within cluster; treated as redundant for DoF computation
+(est2 stored)
+
+. lincom battle_m - battle_a
+
+ ( 1)  - battle_a + battle_m = 0
+
+------------------------------------------------------------------------------
+       acled |      Coef.   Std. Err.      t    P>|t|     [95% Conf. Interval]
+-------------+----------------------------------------------------------------
+         (1) |   .0393175    .011887     3.31   0.001     .0156211    .0630138
+------------------------------------------------------------------------------
+
+. sort id year    
+
+. eststo: reghdfe acled nb_battle_a nb_battle_m                                                                                                                           if l.acled == 0 & ldistance_battle != . , vce(cluster actor_g gid) absorb(id it)
+(dropped 32465 singleton observations)
+(converged in 23 iterations)
+
+HDFE Linear regression                            Number of obs   =    168,887
+Absorbing 2 HDFE groups                           F(   2,     72) =       6.10
+Statistics robust to heteroskedasticity           Prob > F        =     0.0036
+                                                  R-squared       =     0.3148
+                                                  Adj R-squared   =     0.0924
+Number of clusters (actor_g) =         73         Within R-sq.    =     0.0009
+Number of clusters (gid)     =      7,540         Root MSE        =     0.0889
+
+                           (Std. Err. adjusted for 73 clusters in actor_g gid)
+------------------------------------------------------------------------------
+             |               Robust
+       acled |      Coef.   Std. Err.      t    P>|t|     [95% Conf. Interval]
+-------------+----------------------------------------------------------------
+ nb_battle_a |   .0005112   .0016443     0.31   0.757    -.0027667    .0037891
+ nb_battle_m |   .0531877   .0156991     3.39   0.001      .021892    .0844833
+------------------------------------------------------------------------------
+
+Absorbed degrees of freedom:
+---------------------------------------------------------------+
+ Absorbed FE |  Num. Coefs.  =   Categories  -   Redundant     | 
+-------------+-------------------------------------------------|
+          id |            0           41170          41170 *   | 
+          it |          213             214              1     | 
+---------------------------------------------------------------+
+* = fixed effect nested within cluster; treated as redundant for DoF computation
+(est3 stored)
+
+. lincom nb_battle_m - nb_battle_a
+
+ ( 1)  - nb_battle_a + nb_battle_m = 0
+
+------------------------------------------------------------------------------
+       acled |      Coef.   Std. Err.      t    P>|t|     [95% Conf. Interval]
+-------------+----------------------------------------------------------------
+         (1) |   .0526765   .0160358     3.28   0.002     .0207097    .0846433
+------------------------------------------------------------------------------
+
+. sort id year    
+
+. eststo: reghdfe acled nb_battle_a nb_battle_m  nb_battle_an nb_battle_mn                                                                        if l.acled == 0 & ldistance_battle != . , vce(cluster actor_g gid) absorb(id it)
+(dropped 32465 singleton observations)
+(converged in 23 iterations)
+
+HDFE Linear regression                            Number of obs   =    168,887
+Absorbing 2 HDFE groups                           F(   4,     72) =      10.04
+Statistics robust to heteroskedasticity           Prob > F        =     0.0000
+                                                  R-squared       =     0.3150
+                                                  Adj R-squared   =     0.0926
+Number of clusters (actor_g) =         73         Within R-sq.    =     0.0012
+Number of clusters (gid)     =      7,540         Root MSE        =     0.0889
+
+                           (Std. Err. adjusted for 73 clusters in actor_g gid)
+------------------------------------------------------------------------------
+             |               Robust
+       acled |      Coef.   Std. Err.      t    P>|t|     [95% Conf. Interval]
+-------------+----------------------------------------------------------------
+ nb_battle_a |  -.0009511    .001669    -0.57   0.571    -.0042781    .0023759
+ nb_battle_m |   .0412076   .0166364     2.48   0.016     .0080435    .0743716
+nb_battle_an |   .0014275   .0007695     1.86   0.068    -.0001065    .0029615
+nb_battle_mn |   .0082162   .0025393     3.24   0.002     .0031542    .0132783
+------------------------------------------------------------------------------
+
+Absorbed degrees of freedom:
+---------------------------------------------------------------+
+ Absorbed FE |  Num. Coefs.  =   Categories  -   Redundant     | 
+-------------+-------------------------------------------------|
+          id |            0           41170          41170 *   | 
+          it |          213             214              1     | 
+---------------------------------------------------------------+
+* = fixed effect nested within cluster; treated as redundant for DoF computation
+(est4 stored)
+
+. lincom nb_battle_m - nb_battle_a
+
+ ( 1)  - nb_battle_a + nb_battle_m = 0
+
+------------------------------------------------------------------------------
+       acled |      Coef.   Std. Err.      t    P>|t|     [95% Conf. Interval]
+-------------+----------------------------------------------------------------
+         (1) |   .0421587   .0164805     2.56   0.013     .0093054    .0750119
+------------------------------------------------------------------------------
+
+. lincom nb_battle_mn - nb_battle_an
+
+ ( 1)  - nb_battle_an + nb_battle_mn = 0
+
+------------------------------------------------------------------------------
+       acled |      Coef.   Std. Err.      t    P>|t|     [95% Conf. Interval]
+-------------+----------------------------------------------------------------
+         (1) |   .0067887   .0027716     2.45   0.017     .0012637    .0123137
+------------------------------------------------------------------------------
+
+. *
+. sort id year
+
+. eststo: reghdfe acled nb_battle_a nb_battle_m nb_battle_a_l1 nb_battle_m_l1                                                             if l.acled == 0 & ldistance_battle != ., vce(cluster actor_g gid) absorb(id it)
+(dropped 32465 singleton observations)
+(converged in 23 iterations)
+
+HDFE Linear regression                            Number of obs   =    168,887
+Absorbing 2 HDFE groups                           F(   4,     72) =      12.34
+Statistics robust to heteroskedasticity           Prob > F        =     0.0000
+                                                  R-squared       =     0.3149
+                                                  Adj R-squared   =     0.0925
+Number of clusters (actor_g) =         73         Within R-sq.    =     0.0011
+Number of clusters (gid)     =      7,540         Root MSE        =     0.0889
+
+                             (Std. Err. adjusted for 73 clusters in actor_g gid)
+--------------------------------------------------------------------------------
+               |               Robust
+         acled |      Coef.   Std. Err.      t    P>|t|     [95% Conf. Interval]
+---------------+----------------------------------------------------------------
+   nb_battle_a |   .0000138   .0016396     0.01   0.993    -.0032547    .0032824
+   nb_battle_m |   .0615508   .0129652     4.75   0.000     .0357051    .0873964
+nb_battle_a_l1 |   -.000496   .0009088    -0.55   0.587    -.0023076    .0013157
+nb_battle_m_l1 |   .0226332   .0087957     2.57   0.012     .0050992    .0401672
+--------------------------------------------------------------------------------
+
+Absorbed degrees of freedom:
+-----------------------------------------------------------------+
+   Absorbed FE |  Num. Coefs.  =   Categories  -   Redundant     | 
+---------------+-------------------------------------------------|
+            id |            0           41170          41170 *   | 
+            it |          213             214              1     | 
+-----------------------------------------------------------------+
+* = fixed effect nested within cluster; treated as redundant for DoF computation
+(est5 stored)
+
+. lincom nb_battle_m - nb_battle_a
+
+ ( 1)  - nb_battle_a + nb_battle_m = 0
+
+------------------------------------------------------------------------------
+       acled |      Coef.   Std. Err.      t    P>|t|     [95% Conf. Interval]
+-------------+----------------------------------------------------------------
+         (1) |    .061537   .0132729     4.64   0.000     .0350779     .087996
+------------------------------------------------------------------------------
+
+. lincom nb_battle_m_l1 - nb_battle_a_l1
+
+ ( 1)  - nb_battle_a_l1 + nb_battle_m_l1 = 0
+
+------------------------------------------------------------------------------
+       acled |      Coef.   Std. Err.      t    P>|t|     [95% Conf. Interval]
+-------------+----------------------------------------------------------------
+         (1) |   .0231292   .0092209     2.51   0.014     .0047476    .0415108
+------------------------------------------------------------------------------
+
+. sort id year
+
+. eststo: reghdfe acled nb_battle_a nb_battle_m nb_battle_a_l1 nb_battle_m_l1 nb_battle_a_l2 nb_battle_m_l2       if l.acled == 0 & ldistance_battle != ., vce(cluster actor_g gid) absorb(id it)
+(dropped 31404 singleton observations)
+(converged in 23 iterations)
+
+HDFE Linear regression                            Number of obs   =    158,040
+Absorbing 2 HDFE groups                           F(   6,     70) =      12.51
+Statistics robust to heteroskedasticity           Prob > F        =     0.0000
+                                                  R-squared       =     0.3172
+                                                  Adj R-squared   =     0.0911
+Number of clusters (actor_g) =         71         Within R-sq.    =     0.0015
+Number of clusters (gid)     =      7,539         Root MSE        =     0.0885
+
+                             (Std. Err. adjusted for 71 clusters in actor_g gid)
+--------------------------------------------------------------------------------
+               |               Robust
+         acled |      Coef.   Std. Err.      t    P>|t|     [95% Conf. Interval]
+---------------+----------------------------------------------------------------
+   nb_battle_a |   .0004552   .0016754     0.27   0.787    -.0028863    .0037967
+   nb_battle_m |   .0535431   .0125526     4.27   0.000     .0285078    .0785785
+nb_battle_a_l1 |    .000292   .0008831     0.33   0.742    -.0014693    .0020533
+nb_battle_m_l1 |     .02072   .0076787     2.70   0.009     .0054054    .0360347
+nb_battle_a_l2 |  -.0040357   .0007429    -5.43   0.000    -.0055173    -.002554
+nb_battle_m_l2 |   .0299238   .0162167     1.85   0.069    -.0024193     .062267
+--------------------------------------------------------------------------------
+
+Absorbed degrees of freedom:
+-----------------------------------------------------------------+
+   Absorbed FE |  Num. Coefs.  =   Categories  -   Redundant     | 
+---------------+-------------------------------------------------|
+            id |            0           39101          39101 *   | 
+            it |          199             200              1     | 
+-----------------------------------------------------------------+
+* = fixed effect nested within cluster; treated as redundant for DoF computation
+(est6 stored)
+
+. lincom nb_battle_m - nb_battle_a
+
+ ( 1)  - nb_battle_a + nb_battle_m = 0
+
+------------------------------------------------------------------------------
+       acled |      Coef.   Std. Err.      t    P>|t|     [95% Conf. Interval]
+-------------+----------------------------------------------------------------
+         (1) |   .0530879   .0125807     4.22   0.000     .0279964    .0781794
+------------------------------------------------------------------------------
+
+. lincom nb_battle_m_l1 - nb_battle_a_l1
+
+ ( 1)  - nb_battle_a_l1 + nb_battle_m_l1 = 0
+
+------------------------------------------------------------------------------
+       acled |      Coef.   Std. Err.      t    P>|t|     [95% Conf. Interval]
+-------------+----------------------------------------------------------------
+         (1) |    .020428    .008106     2.52   0.014     .0042611     .036595
+------------------------------------------------------------------------------
+
+. lincom nb_battle_m_l2 - nb_battle_a_l2
+
+ ( 1)  - nb_battle_a_l2 + nb_battle_m_l2 = 0
+
+------------------------------------------------------------------------------
+       acled |      Coef.   Std. Err.      t    P>|t|     [95% Conf. Interval]
+-------------+----------------------------------------------------------------
+         (1) |   .0339595   .0163974     2.07   0.042     .0012559    .0666631
+------------------------------------------------------------------------------
+
+. *
+. sort id year 
+
+. eststo: reghdfe acled nb_battle_all ldistance_battle nb_battle_all_dist                                                                         if l.acled == 0 & ldistance_battle != ., vce(cluster actor_g gid) absorb(id it)
+(dropped 32465 singleton observations)
+(converged in 23 iterations)
+
+HDFE Linear regression                            Number of obs   =    168,887
+Absorbing 2 HDFE groups                           F(   3,     72) =       2.88
+Statistics robust to heteroskedasticity           Prob > F        =     0.0419
+                                                  R-squared       =     0.3146
+                                                  Adj R-squared   =     0.0921
+Number of clusters (actor_g) =         73         Within R-sq.    =     0.0007
+Number of clusters (gid)     =      7,540         Root MSE        =     0.0889
+
+                                 (Std. Err. adjusted for 73 clusters in actor_g gid)
+------------------------------------------------------------------------------------
+                   |               Robust
+             acled |      Coef.   Std. Err.      t    P>|t|     [95% Conf. Interval]
+-------------------+----------------------------------------------------------------
+     nb_battle_all |   .0331493    .014517     2.28   0.025     .0042103    .0620883
+  ldistance_battle |  -.0007457   .0030681    -0.24   0.809    -.0068618    .0053705
+nb_battle_all_dist |  -.0047093   .0020937    -2.25   0.028    -.0088831   -.0005355
+------------------------------------------------------------------------------------
+
+Absorbed degrees of freedom:
+---------------------------------------------------------------------+
+       Absorbed FE |  Num. Coefs.  =   Categories  -   Redundant     | 
+-------------------+-------------------------------------------------|
+                id |            0           41170          41170 *   | 
+                it |          213             214              1     | 
+---------------------------------------------------------------------+
+* = fixed effect nested within cluster; treated as redundant for DoF computation
+(est7 stored)
+
+. sort id year 
+
+. eststo: reghdfe acled nb_battle_a nb_battle_m ldistance_battle nb_battle_a_dist nb_battle_m_dist                        if l.acled == 0 & ldistance_battle != ., vce(cluster actor_g gid) absorb(id it)
+(dropped 32465 singleton observations)
+(converged in 23 iterations)
+
+HDFE Linear regression                            Number of obs   =    168,887
+Absorbing 2 HDFE groups                           F(   5,     72) =       5.13
+Statistics robust to heteroskedasticity           Prob > F        =     0.0004
+                                                  R-squared       =     0.3156
+                                                  Adj R-squared   =     0.0934
+Number of clusters (actor_g) =         73         Within R-sq.    =     0.0021
+Number of clusters (gid)     =      7,540         Root MSE        =     0.0888
+
+                               (Std. Err. adjusted for 73 clusters in actor_g gid)
+----------------------------------------------------------------------------------
+                 |               Robust
+           acled |      Coef.   Std. Err.      t    P>|t|     [95% Conf. Interval]
+-----------------+----------------------------------------------------------------
+     nb_battle_a |   .0287053    .014371     2.00   0.050     .0000572    .0573533
+     nb_battle_m |   .5998738   .1837386     3.26   0.002     .2335975      .96615
+ldistance_battle |  -.0008746   .0030988    -0.28   0.779     -.007052    .0053028
+nb_battle_a_dist |  -.0041973   .0020964    -2.00   0.049    -.0083764   -.0000181
+nb_battle_m_dist |  -.0842176   .0268935    -3.13   0.003    -.1378289   -.0306063
+----------------------------------------------------------------------------------
+
+Absorbed degrees of freedom:
+-------------------------------------------------------------------+
+     Absorbed FE |  Num. Coefs.  =   Categories  -   Redundant     | 
+-----------------+-------------------------------------------------|
+              id |            0           41170          41170 *   | 
+              it |          213             214              1     | 
+-------------------------------------------------------------------+
+* = fixed effect nested within cluster; treated as redundant for DoF computation
+(est8 stored)
+
+. *
+. set linesize 250
+
+. esttab, mtitles drop() b(%5.3f) se(%5.3f) compress r2 starlevels(c 0.1 b 0.05 a 0.01)  se 
+
+--------------------------------------------------------------------------------------------------
+                 (1)        (2)        (3)        (4)        (5)        (6)        (7)        (8) 
+                est1       est2       est3       est4       est5       est6       est7       est8 
+--------------------------------------------------------------------------------------------------
+nb_battl~l     0.002                                                             0.033b           
+             (0.002)                                                           (0.015)            
+
+battle_a                  0.000                                                                   
+                        (0.002)                                                                   
+
+battle_m                  0.040a                                                                  
+                        (0.012)                                                                   
+
+nb_battl~a                           0.001     -0.001      0.000      0.000                 0.029b
+                                   (0.002)    (0.002)    (0.002)    (0.002)               (0.014) 
+
+nb_battl~m                           0.053a     0.041b     0.062a     0.054a                0.600a
+                                   (0.016)    (0.017)    (0.013)    (0.013)               (0.184) 
+
+nb_batt~an                                      0.001c                                            
+                                              (0.001)                                             
+
+nb_batt~mn                                      0.008a                                            
+                                              (0.003)                                             
+
+nb_ba~a_l1                                                -0.000      0.000                       
+                                                         (0.001)    (0.001)                       
+
+nb_ba~m_l1                                                 0.023b     0.021a                      
+                                                         (0.009)    (0.008)                       
+
+nb_ba~a_l2                                                           -0.004a                      
+                                                                    (0.001)                       
+
+nb_ba~m_l2                                                            0.030c                      
+                                                                    (0.016)                       
+
+ldistanc~e                                                                      -0.001     -0.001 
+                                                                               (0.003)    (0.003) 
+
+nb_~l_dist                                                                      -0.005b           
+                                                                               (0.002)            
+
+nb_~a_dist                                                                                 -0.004b
+                                                                                          (0.002) 
+
+nb_~m_dist                                                                                 -0.084a
+                                                                                          (0.027) 
+--------------------------------------------------------------------------------------------------
+N             168887     168887     168887     168887     168887     158040     168887     168887 
+R-sq           0.314      0.315      0.315      0.315      0.315      0.317      0.315      0.316 
+--------------------------------------------------------------------------------------------------
+Standard errors in parentheses
+c p<0.1, b p<0.05, a p<0.01
+
+. esttab, mtitles drop() b(%5.3f) se(%5.3f) r2  starlevels({$^c$} 0.1 {$^b$} 0.05 {$^a$} 0.01) se tex label  title(Table A34) 
+
+\begin{table}[htbp]\centering
+\def\sym#1{\ifmmode^{#1}\else\(^{#1}\)\fi}
+\caption{Table A34}
+\begin{tabular}{l*{8}{c}}
+\hline\hline
+                    &\multicolumn{1}{c}{(1)}&\multicolumn{1}{c}{(2)}&\multicolumn{1}{c}{(3)}&\multicolumn{1}{c}{(4)}&\multicolumn{1}{c}{(5)}&\multicolumn{1}{c}{(6)}&\multicolumn{1}{c}{(7)}&\multicolumn{1}{c}{(8)}\\
+                    &\multicolumn{1}{c}{est1}&\multicolumn{1}{c}{est2}&\multicolumn{1}{c}{est3}&\multicolumn{1}{c}{est4}&\multicolumn{1}{c}{est5}&\multicolumn{1}{c}{est6}&\multicolumn{1}{c}{est7}&\multicolumn{1}{c}{est8}\\
+\hline
+\# battles won t-1  &       0.002      &                  &                  &                  &                  &                  &       0.033{$^b$}&                  \\
+                    &     (0.002)      &                  &                  &                  &                  &                  &     (0.015)      &                  \\
+[1em]
+Battles won in non-mining area&                  &       0.000      &                  &                  &                  &                  &                  &                  \\
+                    &                  &     (0.002)      &                  &                  &                  &                  &                  &                  \\
+[1em]
+Battles won in mining area&                  &       0.040{$^a$}&                  &                  &                  &                  &                  &                  \\
+                    &                  &     (0.012)      &                  &                  &                  &                  &                  &                  \\
+[1em]
+\# battles won in non-mining area&                  &                  &       0.001      &      -0.001      &       0.000      &       0.000      &                  &       0.029{$^b$}\\
+                    &                  &                  &     (0.002)      &     (0.002)      &     (0.002)      &     (0.002)      &                  &     (0.014)      \\
+[1em]
+\# battles won in mining area&                  &                  &       0.053{$^a$}&       0.041{$^b$}&       0.062{$^a$}&       0.054{$^a$}&                  &       0.600{$^a$}\\
+                    &                  &                  &     (0.016)      &     (0.017)      &     (0.013)      &     (0.013)      &                  &     (0.184)      \\
+[1em]
+\# battles won in non-mining area - no change of territory&                  &                  &                  &       0.001{$^c$}&                  &                  &                  &                  \\
+                    &                  &                  &                  &     (0.001)      &                  &                  &                  &                  \\
+[1em]
+\# battles won in mining area - no change of territory&                  &                  &                  &       0.008{$^a$}&                  &                  &                  &                  \\
+                    &                  &                  &                  &     (0.003)      &                  &                  &                  &                  \\
+[1em]
+L1.Battles won in non-mining area&                  &                  &                  &                  &      -0.000      &       0.000      &                  &                  \\
+                    &                  &                  &                  &                  &     (0.001)      &     (0.001)      &                  &                  \\
+[1em]
+L1.Battles won in mining area&                  &                  &                  &                  &       0.023{$^b$}&       0.021{$^a$}&                  &                  \\
+                    &                  &                  &                  &                  &     (0.009)      &     (0.008)      &                  &                  \\
+[1em]
+L2.Battles won in non-mining area&                  &                  &                  &                  &                  &      -0.004{$^a$}&                  &                  \\
+                    &                  &                  &                  &                  &                  &     (0.001)      &                  &                  \\
+[1em]
+L2.Battles won in mining area&                  &                  &                  &                  &                  &       0.030{$^c$}&                  &                  \\
+                    &                  &                  &                  &                  &                  &     (0.016)      &                  &                  \\
+[1em]
+Log distance battle &                  &                  &                  &                  &                  &                  &      -0.001      &      -0.001      \\
+                    &                  &                  &                  &                  &                  &                  &     (0.003)      &     (0.003)      \\
+[1em]
+Log distance nb. battle&                  &                  &                  &                  &                  &                  &      -0.005{$^b$}&                  \\
+                    &                  &                  &                  &                  &                  &                  &     (0.002)      &                  \\
+[1em]
+Log distance battles won in non-mining area&                  &                  &                  &                  &                  &                  &                  &      -0.004{$^b$}\\
+                    &                  &                  &                  &                  &                  &                  &                  &     (0.002)      \\
+[1em]
+Log distance battles won in mining area&                  &                  &                  &                  &                  &                  &                  &      -0.084{$^a$}\\
+                    &                  &                  &                  &                  &                  &                  &                  &     (0.027)      \\
+\hline
+Observations        &      168887      &      168887      &      168887      &      168887      &      168887      &      158040      &      168887      &      168887      \\
+\(R^{2}\)           &       0.314      &       0.315      &       0.315      &       0.315      &       0.315      &       0.317      &       0.315      &       0.316      \\
+\hline\hline
+\multicolumn{9}{l}{\footnotesize Standard errors in parentheses}\\
+\multicolumn{9}{l}{\footnotesize {$^c$} p<0.1, {$^b$} p<0.05, {$^a$} p<0.01}\\
+\end{tabular}
+\end{table}
+
+. eststo clear
+
+. 
+. **********************************
+. // Table A35 : Battles only on RHS
+. **********************************
+. 
+. use "$Output_data\BCRT_rebel", clear
+
+. 
+. sort id year 
+
+. *
+. sort id year 
+
+. eststo: reghdfe acled_battles nb_battle_all                                                                                                                                             if l.acled == 0 & ldistance_battle != ., vce(cluster actor_g) ab
+> sorb(id it)
+(dropped 32465 singleton observations)
+(converged in 23 iterations)
+
+HDFE Linear regression                            Number of obs   =    168,887
+Absorbing 2 HDFE groups                           F(   1,     72) =       2.14
+Statistics robust to heteroskedasticity           Prob > F        =     0.1482
+                                                  R-squared       =     0.2943
+                                                  Adj R-squared   =     0.0653
+                                                  Within R-sq.    =     0.0003
+Number of clusters (actor_g) =         73         Root MSE        =     0.0787
+
+                                (Std. Err. adjusted for 73 clusters in actor_g)
+-------------------------------------------------------------------------------
+              |               Robust
+acled_battles |      Coef.   Std. Err.      t    P>|t|     [95% Conf. Interval]
+--------------+----------------------------------------------------------------
+nb_battle_all |   .0021573    .001476     1.46   0.148     -.000785    .0050996
+-------------------------------------------------------------------------------
+
+Absorbed degrees of freedom:
+----------------------------------------------------------------+
+  Absorbed FE |  Num. Coefs.  =   Categories  -   Redundant     | 
+--------------+-------------------------------------------------|
+           id |            0           41170          41170 *   | 
+           it |          213             214              1     | 
+----------------------------------------------------------------+
+* = fixed effect nested within cluster; treated as redundant for DoF computation
+(est1 stored)
+
+. sort id year 
+
+. eststo: reghdfe acled_battles battle_a battle_m                                                                                                                                         if l.acled == 0 & ldistance_battle != . , vce(cluster actor_g) a
+> bsorb(id it)
+(dropped 32465 singleton observations)
+(converged in 23 iterations)
+
+HDFE Linear regression                            Number of obs   =    168,887
+Absorbing 2 HDFE groups                           F(   2,     72) =       7.40
+Statistics robust to heteroskedasticity           Prob > F        =     0.0012
+                                                  R-squared       =     0.2951
+                                                  Adj R-squared   =     0.0662
+                                                  Within R-sq.    =     0.0013
+Number of clusters (actor_g) =         73         Root MSE        =     0.0786
+
+                               (Std. Err. adjusted for 73 clusters in actor_g)
+------------------------------------------------------------------------------
+             |               Robust
+acled_batt~s |      Coef.   Std. Err.      t    P>|t|     [95% Conf. Interval]
+-------------+----------------------------------------------------------------
+    battle_a |   .0010286   .0018948     0.54   0.589    -.0027487    .0048058
+    battle_m |   .0396658   .0103982     3.81   0.000     .0189374    .0603941
+------------------------------------------------------------------------------
+
+Absorbed degrees of freedom:
+---------------------------------------------------------------+
+ Absorbed FE |  Num. Coefs.  =   Categories  -   Redundant     | 
+-------------+-------------------------------------------------|
+          id |            0           41170          41170 *   | 
+          it |          213             214              1     | 
+---------------------------------------------------------------+
+* = fixed effect nested within cluster; treated as redundant for DoF computation
+(est2 stored)
+
+. lincom battle_m - battle_a
+
+ ( 1)  - battle_a + battle_m = 0
+
+------------------------------------------------------------------------------
+acled_batt~s |      Coef.   Std. Err.      t    P>|t|     [95% Conf. Interval]
+-------------+----------------------------------------------------------------
+         (1) |   .0386372   .0105457     3.66   0.000     .0176147    .0596596
+------------------------------------------------------------------------------
+
+. sort id year    
+
+. eststo: reghdfe acled_battles nb_battle_a nb_battle_m                                                                                                                           if l.acled == 0 & ldistance_battle != . , vce(cluster actor_g) absorb(id
+>  it)
+(dropped 32465 singleton observations)
+(converged in 23 iterations)
+
+HDFE Linear regression                            Number of obs   =    168,887
+Absorbing 2 HDFE groups                           F(   2,     72) =       7.90
+Statistics robust to heteroskedasticity           Prob > F        =     0.0008
+                                                  R-squared       =     0.2950
+                                                  Adj R-squared   =     0.0662
+                                                  Within R-sq.    =     0.0012
+Number of clusters (actor_g) =         73         Root MSE        =     0.0786
+
+                               (Std. Err. adjusted for 73 clusters in actor_g)
+------------------------------------------------------------------------------
+             |               Robust
+acled_batt~s |      Coef.   Std. Err.      t    P>|t|     [95% Conf. Interval]
+-------------+----------------------------------------------------------------
+ nb_battle_a |   .0007452   .0013185     0.57   0.574    -.0018832    .0033737
+ nb_battle_m |   .0528026   .0138633     3.81   0.000     .0251666    .0804386
+------------------------------------------------------------------------------
+
+Absorbed degrees of freedom:
+---------------------------------------------------------------+
+ Absorbed FE |  Num. Coefs.  =   Categories  -   Redundant     | 
+-------------+-------------------------------------------------|
+          id |            0           41170          41170 *   | 
+          it |          213             214              1     | 
+---------------------------------------------------------------+
+* = fixed effect nested within cluster; treated as redundant for DoF computation
+(est3 stored)
+
+. lincom nb_battle_m - nb_battle_a
+
+ ( 1)  - nb_battle_a + nb_battle_m = 0
+
+------------------------------------------------------------------------------
+acled_batt~s |      Coef.   Std. Err.      t    P>|t|     [95% Conf. Interval]
+-------------+----------------------------------------------------------------
+         (1) |   .0520574   .0141168     3.69   0.000     .0239161    .0801986
+------------------------------------------------------------------------------
+
+. sort id year    
+
+. eststo: reghdfe acled_battles nb_battle_a nb_battle_m  nb_battle_an nb_battle_mn                                                                        if l.acled == 0 & ldistance_battle != . , vce(cluster actor_g) absorb(id it)
+(dropped 32465 singleton observations)
+(converged in 23 iterations)
+
+HDFE Linear regression                            Number of obs   =    168,887
+Absorbing 2 HDFE groups                           F(   4,     72) =       9.78
+Statistics robust to heteroskedasticity           Prob > F        =     0.0000
+                                                  R-squared       =     0.2952
+                                                  Adj R-squared   =     0.0665
+                                                  Within R-sq.    =     0.0015
+Number of clusters (actor_g) =         73         Root MSE        =     0.0786
+
+                               (Std. Err. adjusted for 73 clusters in actor_g)
+------------------------------------------------------------------------------
+             |               Robust
+acled_batt~s |      Coef.   Std. Err.      t    P>|t|     [95% Conf. Interval]
+-------------+----------------------------------------------------------------
+ nb_battle_a |  -.0006209   .0013063    -0.48   0.636    -.0032248    .0019831
+ nb_battle_m |   .0439137   .0144468     3.04   0.003     .0151146    .0727128
+nb_battle_an |   .0015097   .0006029     2.50   0.015     .0003078    .0027115
+nb_battle_mn |   .0057954   .0020213     2.87   0.005     .0017661    .0098248
+------------------------------------------------------------------------------
+
+Absorbed degrees of freedom:
+---------------------------------------------------------------+
+ Absorbed FE |  Num. Coefs.  =   Categories  -   Redundant     | 
+-------------+-------------------------------------------------|
+          id |            0           41170          41170 *   | 
+          it |          213             214              1     | 
+---------------------------------------------------------------+
+* = fixed effect nested within cluster; treated as redundant for DoF computation
+(est4 stored)
+
+. lincom nb_battle_m - nb_battle_a
+
+ ( 1)  - nb_battle_a + nb_battle_m = 0
+
+------------------------------------------------------------------------------
+acled_batt~s |      Coef.   Std. Err.      t    P>|t|     [95% Conf. Interval]
+-------------+----------------------------------------------------------------
+         (1) |   .0445346    .014343     3.10   0.003     .0159423    .0731268
+------------------------------------------------------------------------------
+
+. lincom nb_battle_mn - nb_battle_an
+
+ ( 1)  - nb_battle_an + nb_battle_mn = 0
+
+------------------------------------------------------------------------------
+acled_batt~s |      Coef.   Std. Err.      t    P>|t|     [95% Conf. Interval]
+-------------+----------------------------------------------------------------
+         (1) |   .0042858    .002227     1.92   0.058    -.0001538    .0087253
+------------------------------------------------------------------------------
+
+. *
+. sort id year
+
+. eststo: reghdfe acled_battles nb_battle_a nb_battle_m nb_battle_a_l1 nb_battle_m_l1                                                             if l.acled == 0 & ldistance_battle != ., vce(cluster actor_g) absorb(id it)
+(dropped 32465 singleton observations)
+(converged in 23 iterations)
+
+HDFE Linear regression                            Number of obs   =    168,887
+Absorbing 2 HDFE groups                           F(   4,     72) =      13.05
+Statistics robust to heteroskedasticity           Prob > F        =     0.0000
+                                                  R-squared       =     0.2952
+                                                  Adj R-squared   =     0.0664
+                                                  Within R-sq.    =     0.0014
+Number of clusters (actor_g) =         73         Root MSE        =     0.0786
+
+                                 (Std. Err. adjusted for 73 clusters in actor_g)
+--------------------------------------------------------------------------------
+               |               Robust
+ acled_battles |      Coef.   Std. Err.      t    P>|t|     [95% Conf. Interval]
+---------------+----------------------------------------------------------------
+   nb_battle_a |   .0003486   .0013097     0.27   0.791    -.0022622    .0029593
+   nb_battle_m |   .0596931   .0118609     5.03   0.000     .0360487    .0833374
+nb_battle_a_l1 |   -.000515   .0007069    -0.73   0.469    -.0019243    .0008942
+nb_battle_m_l1 |   .0192259   .0066034     2.91   0.005     .0060623    .0323895
+--------------------------------------------------------------------------------
+
+Absorbed degrees of freedom:
+-----------------------------------------------------------------+
+   Absorbed FE |  Num. Coefs.  =   Categories  -   Redundant     | 
+---------------+-------------------------------------------------|
+            id |            0           41170          41170 *   | 
+            it |          213             214              1     | 
+-----------------------------------------------------------------+
+* = fixed effect nested within cluster; treated as redundant for DoF computation
+(est5 stored)
+
+. lincom nb_battle_m - nb_battle_a
+
+ ( 1)  - nb_battle_a + nb_battle_m = 0
+
+------------------------------------------------------------------------------
+acled_batt~s |      Coef.   Std. Err.      t    P>|t|     [95% Conf. Interval]
+-------------+----------------------------------------------------------------
+         (1) |   .0593445   .0120728     4.92   0.000     .0352779    .0834111
+------------------------------------------------------------------------------
+
+. lincom nb_battle_m_l1 - nb_battle_a_l1
+
+ ( 1)  - nb_battle_a_l1 + nb_battle_m_l1 = 0
+
+------------------------------------------------------------------------------
+acled_batt~s |      Coef.   Std. Err.      t    P>|t|     [95% Conf. Interval]
+-------------+----------------------------------------------------------------
+         (1) |   .0197409   .0069447     2.84   0.006     .0058969    .0335849
+------------------------------------------------------------------------------
+
+. sort id year
+
+. eststo: reghdfe acled_battles nb_battle_a nb_battle_m nb_battle_a_l1 nb_battle_m_l1 nb_battle_a_l2 nb_battle_m_l2       if l.acled == 0 & ldistance_battle != ., vce(cluster actor_g) absorb(id it)
+(dropped 31404 singleton observations)
+(converged in 23 iterations)
+
+HDFE Linear regression                            Number of obs   =    158,040
+Absorbing 2 HDFE groups                           F(   6,     70) =      16.51
+Statistics robust to heteroskedasticity           Prob > F        =     0.0000
+                                                  R-squared       =     0.2975
+                                                  Adj R-squared   =     0.0649
+                                                  Within R-sq.    =     0.0016
+Number of clusters (actor_g) =         71         Root MSE        =     0.0785
+
+                                 (Std. Err. adjusted for 71 clusters in actor_g)
+--------------------------------------------------------------------------------
+               |               Robust
+ acled_battles |      Coef.   Std. Err.      t    P>|t|     [95% Conf. Interval]
+---------------+----------------------------------------------------------------
+   nb_battle_a |   .0007195   .0013388     0.54   0.593    -.0019508    .0033897
+   nb_battle_m |   .0521896   .0114049     4.58   0.000     .0294431     .074936
+nb_battle_a_l1 |    .000034    .000691     0.05   0.961    -.0013441    .0014121
+nb_battle_m_l1 |   .0167575   .0061286     2.73   0.008     .0045344    .0289807
+nb_battle_a_l2 |  -.0028182   .0005545    -5.08   0.000    -.0039241   -.0017122
+nb_battle_m_l2 |   .0142162   .0112682     1.26   0.211    -.0082574    .0366899
+--------------------------------------------------------------------------------
+
+Absorbed degrees of freedom:
+-----------------------------------------------------------------+
+   Absorbed FE |  Num. Coefs.  =   Categories  -   Redundant     | 
+---------------+-------------------------------------------------|
+            id |            0           39101          39101 *   | 
+            it |          199             200              1     | 
+-----------------------------------------------------------------+
+* = fixed effect nested within cluster; treated as redundant for DoF computation
+(est6 stored)
+
+. lincom nb_battle_m - nb_battle_a
+
+ ( 1)  - nb_battle_a + nb_battle_m = 0
+
+------------------------------------------------------------------------------
+acled_batt~s |      Coef.   Std. Err.      t    P>|t|     [95% Conf. Interval]
+-------------+----------------------------------------------------------------
+         (1) |   .0514701   .0114574     4.49   0.000     .0286191    .0743211
+------------------------------------------------------------------------------
+
+. lincom nb_battle_m_l1 - nb_battle_a_l1
+
+ ( 1)  - nb_battle_a_l1 + nb_battle_m_l1 = 0
+
+------------------------------------------------------------------------------
+acled_batt~s |      Coef.   Std. Err.      t    P>|t|     [95% Conf. Interval]
+-------------+----------------------------------------------------------------
+         (1) |   .0167235   .0064721     2.58   0.012     .0038153    .0296318
+------------------------------------------------------------------------------
+
+. lincom nb_battle_m_l2 - nb_battle_a_l2
+
+ ( 1)  - nb_battle_a_l2 + nb_battle_m_l2 = 0
+
+------------------------------------------------------------------------------
+acled_batt~s |      Coef.   Std. Err.      t    P>|t|     [95% Conf. Interval]
+-------------+----------------------------------------------------------------
+         (1) |   .0170344    .011378     1.50   0.139    -.0056582     .039727
+------------------------------------------------------------------------------
+
+. *
+. sort id year 
+
+. eststo: reghdfe acled_battles nb_battle_all ldistance_battle nb_battle_all_dist                                                                         if l.acled == 0 & ldistance_battle != ., vce(cluster actor_g) absorb(id it)
+(dropped 32465 singleton observations)
+(converged in 23 iterations)
+
+HDFE Linear regression                            Number of obs   =    168,887
+Absorbing 2 HDFE groups                           F(   3,     72) =       3.34
+Statistics robust to heteroskedasticity           Prob > F        =     0.0239
+                                                  R-squared       =     0.2948
+                                                  Adj R-squared   =     0.0659
+                                                  Within R-sq.    =     0.0009
+Number of clusters (actor_g) =         73         Root MSE        =     0.0787
+
+                                     (Std. Err. adjusted for 73 clusters in actor_g)
+------------------------------------------------------------------------------------
+                   |               Robust
+     acled_battles |      Coef.   Std. Err.      t    P>|t|     [95% Conf. Interval]
+-------------------+----------------------------------------------------------------
+     nb_battle_all |    .034007   .0116975     2.91   0.005     .0106885    .0573255
+  ldistance_battle |   .0001146   .0026221     0.04   0.965    -.0051124    .0053416
+nb_battle_all_dist |  -.0048064   .0016937    -2.84   0.006    -.0081827   -.0014301
+------------------------------------------------------------------------------------
+
+Absorbed degrees of freedom:
+---------------------------------------------------------------------+
+       Absorbed FE |  Num. Coefs.  =   Categories  -   Redundant     | 
+-------------------+-------------------------------------------------|
+                id |            0           41170          41170 *   | 
+                it |          213             214              1     | 
+---------------------------------------------------------------------+
+* = fixed effect nested within cluster; treated as redundant for DoF computation
+(est7 stored)
+
+. sort id year 
+
+. eststo: reghdfe acled_battles nb_battle_a nb_battle_m ldistance_battle nb_battle_a_dist nb_battle_m_dist                        if l.acled == 0 & ldistance_battle != ., vce(cluster actor_g) absorb(id it)
+(dropped 32465 singleton observations)
+(converged in 23 iterations)
+
+HDFE Linear regression                            Number of obs   =    168,887
+Absorbing 2 HDFE groups                           F(   5,     72) =       7.30
+Statistics robust to heteroskedasticity           Prob > F        =     0.0000
+                                                  R-squared       =     0.2960
+                                                  Adj R-squared   =     0.0674
+                                                  Within R-sq.    =     0.0026
+Number of clusters (actor_g) =         73         Root MSE        =     0.0786
+
+                                   (Std. Err. adjusted for 73 clusters in actor_g)
+----------------------------------------------------------------------------------
+                 |               Robust
+   acled_battles |      Coef.   Std. Err.      t    P>|t|     [95% Conf. Interval]
+-----------------+----------------------------------------------------------------
+     nb_battle_a |   .0299114   .0114978     2.60   0.011     .0069908    .0528319
+     nb_battle_m |   .5554471   .1346077     4.13   0.000     .2871116    .8237826
+ldistance_battle |   4.50e-06   .0026526     0.00   0.999    -.0052834    .0052924
+nb_battle_a_dist |  -.0043498   .0016899    -2.57   0.012    -.0077186    -.000981
+nb_battle_m_dist |  -.0774212   .0194819    -3.97   0.000    -.1162578   -.0385847
+----------------------------------------------------------------------------------
+
+Absorbed degrees of freedom:
+-------------------------------------------------------------------+
+     Absorbed FE |  Num. Coefs.  =   Categories  -   Redundant     | 
+-----------------+-------------------------------------------------|
+              id |            0           41170          41170 *   | 
+              it |          213             214              1     | 
+-------------------------------------------------------------------+
+* = fixed effect nested within cluster; treated as redundant for DoF computation
+(est8 stored)
+
+. 
+. set linesize 250
+
+. esttab, mtitles drop() b(%5.3f) se(%5.3f) compress r2 starlevels(c 0.1 b 0.05 a 0.01)  se 
+
+--------------------------------------------------------------------------------------------------
+                 (1)        (2)        (3)        (4)        (5)        (6)        (7)        (8) 
+                est1       est2       est3       est4       est5       est6       est7       est8 
+--------------------------------------------------------------------------------------------------
+nb_battl~l     0.002                                                             0.034a           
+             (0.001)                                                           (0.012)            
+
+battle_a                  0.001                                                                   
+                        (0.002)                                                                   
+
+battle_m                  0.040a                                                                  
+                        (0.010)                                                                   
+
+nb_battl~a                           0.001     -0.001      0.000      0.001                 0.030b
+                                   (0.001)    (0.001)    (0.001)    (0.001)               (0.011) 
+
+nb_battl~m                           0.053a     0.044a     0.060a     0.052a                0.555a
+                                   (0.014)    (0.014)    (0.012)    (0.011)               (0.135) 
+
+nb_batt~an                                      0.002b                                            
+                                              (0.001)                                             
+
+nb_batt~mn                                      0.006a                                            
+                                              (0.002)                                             
+
+nb_ba~a_l1                                                -0.001      0.000                       
+                                                         (0.001)    (0.001)                       
+
+nb_ba~m_l1                                                 0.019a     0.017a                      
+                                                         (0.007)    (0.006)                       
+
+nb_ba~a_l2                                                           -0.003a                      
+                                                                    (0.001)                       
+
+nb_ba~m_l2                                                            0.014                       
+                                                                    (0.011)                       
+
+ldistanc~e                                                                       0.000      0.000 
+                                                                               (0.003)    (0.003) 
+
+nb_~l_dist                                                                      -0.005a           
+                                                                               (0.002)            
+
+nb_~a_dist                                                                                 -0.004b
+                                                                                          (0.002) 
+
+nb_~m_dist                                                                                 -0.077a
+                                                                                          (0.019) 
+--------------------------------------------------------------------------------------------------
+N             168887     168887     168887     168887     168887     158040     168887     168887 
+R-sq           0.294      0.295      0.295      0.295      0.295      0.297      0.295      0.296 
+--------------------------------------------------------------------------------------------------
+Standard errors in parentheses
+c p<0.1, b p<0.05, a p<0.01
+
+. esttab, mtitles drop() b(%5.3f) se(%5.3f) r2  starlevels({$^c$} 0.1 {$^b$} 0.05 {$^a$} 0.01) se tex label  title(Table A35) 
+
+\begin{table}[htbp]\centering
+\def\sym#1{\ifmmode^{#1}\else\(^{#1}\)\fi}
+\caption{Table A35}
+\begin{tabular}{l*{8}{c}}
+\hline\hline
+                    &\multicolumn{1}{c}{(1)}&\multicolumn{1}{c}{(2)}&\multicolumn{1}{c}{(3)}&\multicolumn{1}{c}{(4)}&\multicolumn{1}{c}{(5)}&\multicolumn{1}{c}{(6)}&\multicolumn{1}{c}{(7)}&\multicolumn{1}{c}{(8)}\\
+                    &\multicolumn{1}{c}{est1}&\multicolumn{1}{c}{est2}&\multicolumn{1}{c}{est3}&\multicolumn{1}{c}{est4}&\multicolumn{1}{c}{est5}&\multicolumn{1}{c}{est6}&\multicolumn{1}{c}{est7}&\multicolumn{1}{c}{est8}\\
+\hline
+\# battles won t-1  &       0.002      &                  &                  &                  &                  &                  &       0.034{$^a$}&                  \\
+                    &     (0.001)      &                  &                  &                  &                  &                  &     (0.012)      &                  \\
+[1em]
+Battles won in non-mining area&                  &       0.001      &                  &                  &                  &                  &                  &                  \\
+                    &                  &     (0.002)      &                  &                  &                  &                  &                  &                  \\
+[1em]
+Battles won in mining area&                  &       0.040{$^a$}&                  &                  &                  &                  &                  &                  \\
+                    &                  &     (0.010)      &                  &                  &                  &                  &                  &                  \\
+[1em]
+\# battles won in non-mining area&                  &                  &       0.001      &      -0.001      &       0.000      &       0.001      &                  &       0.030{$^b$}\\
+                    &                  &                  &     (0.001)      &     (0.001)      &     (0.001)      &     (0.001)      &                  &     (0.011)      \\
+[1em]
+\# battles won in mining area&                  &                  &       0.053{$^a$}&       0.044{$^a$}&       0.060{$^a$}&       0.052{$^a$}&                  &       0.555{$^a$}\\
+                    &                  &                  &     (0.014)      &     (0.014)      &     (0.012)      &     (0.011)      &                  &     (0.135)      \\
+[1em]
+\# battles won in non-mining area - no change of territory&                  &                  &                  &       0.002{$^b$}&                  &                  &                  &                  \\
+                    &                  &                  &                  &     (0.001)      &                  &                  &                  &                  \\
+[1em]
+\# battles won in mining area - no change of territory&                  &                  &                  &       0.006{$^a$}&                  &                  &                  &                  \\
+                    &                  &                  &                  &     (0.002)      &                  &                  &                  &                  \\
+[1em]
+L1.Battles won in non-mining area&                  &                  &                  &                  &      -0.001      &       0.000      &                  &                  \\
+                    &                  &                  &                  &                  &     (0.001)      &     (0.001)      &                  &                  \\
+[1em]
+L1.Battles won in mining area&                  &                  &                  &                  &       0.019{$^a$}&       0.017{$^a$}&                  &                  \\
+                    &                  &                  &                  &                  &     (0.007)      &     (0.006)      &                  &                  \\
+[1em]
+L2.Battles won in non-mining area&                  &                  &                  &                  &                  &      -0.003{$^a$}&                  &                  \\
+                    &                  &                  &                  &                  &                  &     (0.001)      &                  &                  \\
+[1em]
+L2.Battles won in mining area&                  &                  &                  &                  &                  &       0.014      &                  &                  \\
+                    &                  &                  &                  &                  &                  &     (0.011)      &                  &                  \\
+[1em]
+Log distance battle &                  &                  &                  &                  &                  &                  &       0.000      &       0.000      \\
+                    &                  &                  &                  &                  &                  &                  &     (0.003)      &     (0.003)      \\
+[1em]
+Log distance nb. battle&                  &                  &                  &                  &                  &                  &      -0.005{$^a$}&                  \\
+                    &                  &                  &                  &                  &                  &                  &     (0.002)      &                  \\
+[1em]
+Log distance battles won in non-mining area&                  &                  &                  &                  &                  &                  &                  &      -0.004{$^b$}\\
+                    &                  &                  &                  &                  &                  &                  &                  &     (0.002)      \\
+[1em]
+Log distance battles won in mining area&                  &                  &                  &                  &                  &                  &                  &      -0.077{$^a$}\\
+                    &                  &                  &                  &                  &                  &                  &                  &     (0.019)      \\
+\hline
+Observations        &      168887      &      168887      &      168887      &      168887      &      168887      &      158040      &      168887      &      168887      \\
+\(R^{2}\)           &       0.294      &       0.295      &       0.295      &       0.295      &       0.295      &       0.297      &       0.295      &       0.296      \\
+\hline\hline
+\multicolumn{9}{l}{\footnotesize Standard errors in parentheses}\\
+\multicolumn{9}{l}{\footnotesize {$^c$} p<0.1, {$^b$} p<0.05, {$^a$} p<0.01}\\
+\end{tabular}
+\end{table}
+
+. eststo clear
+
+. 
+. log close
+      name:  <unnamed>
+       log:  D:\Travail\Dropbox\mining_conflict\Data_Code_BCRT_AER\results\Table_A32_to_A35.log
+  log type:  text
+ closed on:  13 Dec 2016, 12:48:22
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------

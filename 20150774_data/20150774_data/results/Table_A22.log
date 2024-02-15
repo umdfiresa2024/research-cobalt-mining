@@ -1,0 +1,316 @@
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+      name:  <unnamed>
+       log:  D:\Travail\Dropbox\mining_conflict\Data_Code_BCRT_AER\results\Table_A22.log
+  log type:  text
+ opened on:  14 Dec 2016, 12:21:52
+
+. 
+. use "$Output_data\BCRT_baseline", clear
+
+. collapse year, by(gid)
+
+. drop year
+
+. sort gid
+
+. save "$Output_data\tmp", replace
+(note: file Data_Code_BCRT_AER\Data\tmp.dta not found)
+file Data_Code_BCRT_AER\Data\tmp.dta saved
+
+. 
+. use "$Output_data\Diamond_gid", clear
+
+. rename long longitude
+
+. drop longitude
+
+. 
+. gen know_prod           = (mineinfo == "Y"      | mineinfo == "y")
+
+. gen artisanal_prod      = (mineinfo == "YA")
+
+. gen commercial_prod     = (mineinfo == "YC")
+
+. gen possible_prod       = (mineinfo == "P1" | mineinfo == "P2")
+
+. gen unknow_prod         = (mineinfo == "N"      | mineinfo == "U")
+
+. 
+. keep if know_prod == 1 | artisanal_prod == 1| commercial_prod == 1
+(360 observations deleted)
+
+. 
+. sort gid 
+
+. merge gid using "$Output_data\tmp"
+(note: you are using old merge syntax; see [D] merge for new syntax)
+variable gid does not uniquely identify observations in the master data
+(note: variable gid was float, now double to accommodate using data's values)
+
+. keep if _merge == 3
+(10,598 observations deleted)
+
+. drop _merge
+
+. 
+. gen t = 1
+
+. bys gid : egen nb_mines_diam = sum(t)
+
+. label var nb_mines_diam "Nb of mines by grid. Source: DIADATA"
+
+. duplicates drop
+
+Duplicates in terms of all variables
+
+(0 observations are duplicates)
+
+. keep gid nb_mines_diam know_prod artisanal_prod commercial_prod
+
+. sort gid
+
+. save "$Output_data\lujala_temp", replace
+(note: file Data_Code_BCRT_AER\Data\lujala_temp.dta not found)
+file Data_Code_BCRT_AER\Data\lujala_temp.dta saved
+
+. 
+. use "$Output_data\BCRT_baseline", clear
+
+. sort gid
+
+. merge gid using "$Output_data\lujala_temp"
+(note: you are using old merge syntax; see [D] merge for new syntax)
+variable gid does not uniquely identify observations in the master data
+(note: variable gid was long, now double to accommodate using data's values)
+variable gid does not uniquely identify observations in Data_Code_BCRT_AER\Data\lujala_temp.dta
+
+. replace nb_mines_diam=0 if nb_mines_diam==.
+(142,366 real changes made)
+
+. erase "$Output_data\lujala_temp.dta"
+
+. 
+. *start with correlation
+. correlate nb_diamond nb_mines_diam
+(obs=144,690)
+
+             | nb_dia~d nb_min~m
+-------------+------------------
+  nb_diamond |   1.0000
+nb_mines_d~m |   0.4317   1.0000
+
+
+. 
+. *cross-tab
+. tabulate nb_diamond nb_mines_diam
+
+\# diamond |                                                Nb of mines by grid. Source: DIADATA
+     mines |         0          1          2          3          4          5          6          7          8          9         13         14 |     Total
+-----------+------------------------------------------------------------------------------------------------------------------------------------+----------
+         0 |   142,117      1,424        372        112         56         28         29         14         14         14         14          0 |   144,194 
+         1 |       243         61         31         14          0          0         14         14         14         14          0          0 |       405 
+         2 |         6          5         17          0          0          0         27          0          0          0          0          2 |        57 
+         3 |         0          8          0          0          0          0          0         14          0          0          0         12 |        34 
+-----------+------------------------------------------------------------------------------------------------------------------------------------+----------
+     Total |   142,366      1,498        420        126         56         28         70         42         28         28         14         14 |   144,690 
+
+
+. 
+. gen RMD_ddummy=0
+
+. replace RMD_ddummy=1 if nb_diamond>=1
+(496 real changes made)
+
+. replace RMD_ddummy=. if nb_diamond==.
+(0 real changes made)
+
+. 
+. gen Lujala_ddummy=0
+
+. replace Lujala_ddummy=1 if nb_mines_diam>=1
+(2,324 real changes made)
+
+. replace Lujala_ddummy=. if nb_mines_diam==.
+(0 real changes made)
+
+. 
+. tabulate RMD_ddummy Lujala_ddummy
+
+           |     Lujala_ddummy
+RMD_ddummy |         0          1 |     Total
+-----------+----------------------+----------
+         0 |   142,117      2,077 |   144,194 
+         1 |       249        247 |       496 
+-----------+----------------------+----------
+     Total |   142,366      2,324 |   144,690 
+
+
+. tabulate RMD_ddummy artisanal_prod
+
+           |    artisanal_prod
+RMD_ddummy |         0          1 |     Total
+-----------+----------------------+----------
+         0 |     1,569        508 |     2,077 
+         1 |       232         15 |       247 
+-----------+----------------------+----------
+     Total |     1,801        523 |     2,324 
+
+
+. tabulate RMD_ddummy commercial_prod
+
+           |    commercial_prod
+RMD_ddummy |         0          1 |     Total
+-----------+----------------------+----------
+         0 |     2,049         28 |     2,077 
+         1 |       246          1 |       247 
+-----------+----------------------+----------
+     Total |     2,295         29 |     2,324 
+
+
+. 
+. egen id_iso = group(iso_1)
+
+. 
+. *pooled panel
+. eststo: reg nb_diamond nb_mines_diam nb_acled                                   ,  r cl(country_nb)
+
+Linear regression                               Number of obs     =    144,690
+                                                F(2, 51)          =       4.19
+                                                Prob > F          =     0.0206
+                                                R-squared         =     0.1864
+                                                Root MSE          =     .07256
+
+                             (Std. Err. adjusted for 52 clusters in country_nb)
+-------------------------------------------------------------------------------
+              |               Robust
+   nb_diamond |      Coef.   Std. Err.      t    P>|t|     [95% Conf. Interval]
+--------------+----------------------------------------------------------------
+nb_mines_diam |   .0946001    .032698     2.89   0.006      .028956    .1602441
+     nb_acled |  -.0001381   .0000989    -1.40   0.169    -.0003366    .0000604
+        _cons |   .0012882   .0008074     1.60   0.117    -.0003328    .0029091
+-------------------------------------------------------------------------------
+(est1 stored)
+
+. *pooled panel with yearFE
+. eststo: areg nb_diamond nb_mines_diam nb_acled                                  , absorb(year) r cl(country_nb)
+
+Linear regression, absorbing indicators         Number of obs     =    144,690
+                                                F(   2,     51)   =       4.19
+                                                Prob > F          =     0.0207
+                                                R-squared         =     0.1864
+                                                Adj R-squared     =     0.1863
+                                                Root MSE          =     0.0726
+
+                             (Std. Err. adjusted for 52 clusters in country_nb)
+-------------------------------------------------------------------------------
+              |               Robust
+   nb_diamond |      Coef.   Std. Err.      t    P>|t|     [95% Conf. Interval]
+--------------+----------------------------------------------------------------
+nb_mines_diam |   .0946001   .0326995     2.89   0.006     .0289531    .1602472
+     nb_acled |  -.0001387   .0000992    -1.40   0.168    -.0003378    .0000604
+        _cons |   .0012883   .0008076     1.60   0.117    -.0003329    .0029096
+--------------+----------------------------------------------------------------
+         year |   absorbed                                      (14 categories)
+(est2 stored)
+
+. *pooled panel with countryFE
+. eststo: areg nb_diamond nb_mines_diam nb_acled                                  , absorb(id_iso) ro cl(country_nb)
+
+Linear regression, absorbing indicators         Number of obs     =    144,690
+                                                F(   2,     51)   =       4.85
+                                                Prob > F          =     0.0118
+                                                R-squared         =     0.2019
+                                                Adj R-squared     =     0.2016
+                                                Root MSE          =     0.0719
+
+                             (Std. Err. adjusted for 52 clusters in country_nb)
+-------------------------------------------------------------------------------
+              |               Robust
+   nb_diamond |      Coef.   Std. Err.      t    P>|t|     [95% Conf. Interval]
+--------------+----------------------------------------------------------------
+nb_mines_diam |   .0958424   .0322963     2.97   0.005     .0310049    .1606799
+     nb_acled |  -.0000429   .0000517    -0.83   0.411    -.0001468     .000061
+        _cons |    .001224   .0010304     1.19   0.240    -.0008445    .0032926
+--------------+----------------------------------------------------------------
+       id_iso |   absorbed                                      (52 categories)
+(est3 stored)
+
+. *pooled panel with country*yearFE
+. eststo: areg nb_diamond nb_mines_diam nb_acled                                  , absorb(it) r cl(country_nb)
+
+Linear regression, absorbing indicators         Number of obs     =    144,690
+                                                F(   2,     51)   =       4.80
+                                                Prob > F          =     0.0123
+                                                R-squared         =     0.2030
+                                                Adj R-squared     =     0.1990
+                                                Root MSE          =     0.0720
+
+                             (Std. Err. adjusted for 52 clusters in country_nb)
+-------------------------------------------------------------------------------
+              |               Robust
+   nb_diamond |      Coef.   Std. Err.      t    P>|t|     [95% Conf. Interval]
+--------------+----------------------------------------------------------------
+nb_mines_diam |   .0958425   .0323721     2.96   0.005     .0308529    .1608321
+     nb_acled |  -.0000454   .0000544    -0.84   0.407    -.0001546    .0000637
+        _cons |   .0012247   .0010325     1.19   0.241    -.0008482    .0032975
+--------------+----------------------------------------------------------------
+           it |   absorbed                                     (728 categories)
+(est4 stored)
+
+. 
+. set linesize 250
+
+. esttab, mtitles keep(nb_mines_diam nb_acled) b(%5.3f) se(%5.3f) compress r2 starlevels(c 0.1 b 0.05 a 0.01)  se 
+
+------------------------------------------------------
+                 (1)        (2)        (3)        (4) 
+                est1       est2       est3       est4 
+------------------------------------------------------
+nb_mines~m     0.095a     0.095a     0.096a     0.096a
+             (0.033)    (0.033)    (0.032)    (0.032) 
+
+nb_acled      -0.000     -0.000     -0.000     -0.000 
+             (0.000)    (0.000)    (0.000)    (0.000) 
+------------------------------------------------------
+N             144690     144690     144690     144690 
+R-sq           0.186      0.186      0.202      0.203 
+------------------------------------------------------
+Standard errors in parentheses
+c p<0.1, b p<0.05, a p<0.01
+
+. esttab, mtitles keep(nb_mines_diam nb_acled) b(%5.3f) se(%5.3f) r2  starlevels({$^c$} 0.1 {$^b$} 0.05 {$^a$} 0.01) se tex label  title() 
+
+{
+\def\sym#1{\ifmmode^{#1}\else\(^{#1}\)\fi}
+\begin{tabular}{l*{4}{c}}
+\hline\hline
+                    &\multicolumn{1}{c}{(1)}&\multicolumn{1}{c}{(2)}&\multicolumn{1}{c}{(3)}&\multicolumn{1}{c}{(4)}\\
+                    &\multicolumn{1}{c}{est1}&\multicolumn{1}{c}{est2}&\multicolumn{1}{c}{est3}&\multicolumn{1}{c}{est4}\\
+\hline
+Nb of mines by grid. Source: DIADATA&       0.095{$^a$}&       0.095{$^a$}&       0.096{$^a$}&       0.096{$^a$}\\
+                    &     (0.033)      &     (0.033)      &     (0.032)      &     (0.032)      \\
+[1em]
+\# conflicts        &      -0.000      &      -0.000      &      -0.000      &      -0.000      \\
+                    &     (0.000)      &     (0.000)      &     (0.000)      &     (0.000)      \\
+\hline
+Observations        &      144690      &      144690      &      144690      &      144690      \\
+\(R^{2}\)           &       0.186      &       0.186      &       0.202      &       0.203      \\
+\hline\hline
+\multicolumn{5}{l}{\footnotesize Standard errors in parentheses}\\
+\multicolumn{5}{l}{\footnotesize {$^c$} p<0.1, {$^b$} p<0.05, {$^a$} p<0.01}\\
+\end{tabular}
+}
+
+. eststo clear
+
+. 
+. erase "$Output_data\tmp.dta"
+
+. 
+. 
+. log close 
+      name:  <unnamed>
+       log:  D:\Travail\Dropbox\mining_conflict\Data_Code_BCRT_AER\results\Table_A22.log
+  log type:  text
+ closed on:  14 Dec 2016, 12:21:56
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------

@@ -1,0 +1,390 @@
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+      name:  <unnamed>
+       log:  D:\Travail\Dropbox\mining_conflict\Data_Code_BCRT_AER\results\Table_A14.log
+  log type:  text
+ opened on:  14 Dec 2016, 11:53:14
+
+. 
+. use "$Output_data\BCRT_baseline", clear
+
+. 
+. /* drop diamonds and tantalum for baseline */
+. drop if mainmineral == "diamond" | mainmineral == "tantalum"
+(588 observations deleted)
+
+. 
+. /*condition for estimation with spatial lags of mines*/
+. global condition_around "(mainmineral != "diamond" & mainmineral_around != "diamond" & mainmineral != "tantalum" & mainmineral_around != "tantalum")"
+
+. 
+. /*column 1: time varying mining area dummy*/
+. eststo: clogit acled  mines main_lprice main_lprice_mines m_lprice_mines yeard*                                                                                                                                 , group(cell) cluster(country_nb)
+note: yeard14 omitted because of collinearity
+note: multiple positive outcomes within groups encountered.
+note: 7,739 groups (108,298 obs) dropped because of all positive or
+      all negative outcomes.
+
+Iteration 0:   log pseudolikelihood = -11457.627  
+Iteration 1:   log pseudolikelihood =  -11445.74  
+Iteration 2:   log pseudolikelihood = -11445.737  
+Iteration 3:   log pseudolikelihood = -11445.737  
+
+Conditional (fixed-effects) logistic regression
+
+                                                Number of obs     =     35,470
+                                                Wald chi2(17)     =     179.62
+                                                Prob > chi2       =     0.0000
+Log pseudolikelihood = -11445.737               Pseudo R2         =     0.0102
+
+                                 (Std. Err. adjusted for 48 clusters in country_nb)
+-----------------------------------------------------------------------------------
+                  |               Robust
+            acled |      Coef.   Std. Err.      z    P>|z|     [95% Conf. Interval]
+------------------+----------------------------------------------------------------
+            mines |   .7075378   1.065234     0.66   0.507    -1.380282    2.795357
+      main_lprice |  -.4600884   .4804166    -0.96   0.338    -1.401688    .4815108
+main_lprice_mines |   1.374549   .4037452     3.40   0.001     .5832225    2.165875
+   m_lprice_mines |  -1.496704   .3849009    -3.89   0.000    -2.251096   -.7423122
+           yeard1 |  -.4690058   .3842432    -1.22   0.222    -1.222109     .284097
+           yeard2 |  -.3360741   .4063329    -0.83   0.408    -1.132472    .4603238
+           yeard3 |  -.0798024   .4419468    -0.18   0.857    -.9460022    .7863974
+           yeard4 |   -.033444   .2821903    -0.12   0.906    -.5865269     .519639
+           yeard5 |  -.2676809   .3115063    -0.86   0.390     -.878222    .3428602
+           yeard6 |  -.0953607   .1931398    -0.49   0.621    -.4739077    .2831863
+           yeard7 |  -.5430581   .1669168    -3.25   0.001     -.870209   -.2159072
+           yeard8 |  -.3692578   .1346127    -2.74   0.006    -.6330938   -.1054217
+           yeard9 |  -.4823342   .2387508    -2.02   0.043    -.9502772   -.0143912
+          yeard10 |  -.4983019   .2026378    -2.46   0.014    -.8954647   -.1011392
+          yeard11 |  -.4913061   .2118801    -2.32   0.020    -.9065836   -.0760287
+          yeard12 |  -.1460143   .1520302    -0.96   0.337    -.4439881    .1519594
+          yeard13 |    .037224   .1719896     0.22   0.829    -.2998694    .3743174
+          yeard14 |          0  (omitted)
+-----------------------------------------------------------------------------------
+(est1 stored)
+
+. /*column 2: mine open the entire period*/                       
+. eststo: clogit acled  main_lprice_mines yeard*                                                                          if sd_mines == 0                                                                                , group(cell) cluster(country_nb
+> )
+note: yeard14 omitted because of collinearity
+note: multiple positive outcomes within groups encountered.
+note: 7,681 groups (107,534 obs) dropped because of all positive or
+      all negative outcomes.
+
+Iteration 0:   log pseudolikelihood =  -11200.64  
+Iteration 1:   log pseudolikelihood = -11187.826  
+Iteration 2:   log pseudolikelihood = -11187.819  
+Iteration 3:   log pseudolikelihood = -11187.819  
+
+Conditional (fixed-effects) logistic regression
+
+                                                Number of obs     =     34,762
+                                                Wald chi2(14)     =     104.72
+                                                Prob > chi2       =     0.0000
+Log pseudolikelihood = -11187.819               Pseudo R2         =     0.0099
+
+                                 (Std. Err. adjusted for 48 clusters in country_nb)
+-----------------------------------------------------------------------------------
+                  |               Robust
+            acled |      Coef.   Std. Err.      z    P>|z|     [95% Conf. Interval]
+------------------+----------------------------------------------------------------
+main_lprice_mines |   1.173471   .3106911     3.78   0.000     .5645277    1.782414
+           yeard1 |  -.4669924   .3818242    -1.22   0.221    -1.215354    .2813692
+           yeard2 |  -.3505687   .4076162    -0.86   0.390    -1.149482    .4483443
+           yeard3 |  -.0781405   .4424943    -0.18   0.860    -.9454135    .7891324
+           yeard4 |  -.0529706   .2832501    -0.19   0.852    -.6081306    .5021894
+           yeard5 |   -.276337   .3124289    -0.88   0.376    -.8886864    .3360123
+           yeard6 |  -.1097047    .190613    -0.58   0.565    -.4832994    .2638899
+           yeard7 |  -.5667794   .1667986    -3.40   0.001    -.8936987   -.2398602
+           yeard8 |  -.3783734   .1368889    -2.76   0.006    -.6466707   -.1100761
+           yeard9 |  -.4995369   .2380684    -2.10   0.036    -.9661423   -.0329314
+          yeard10 |  -.5061766   .2040951    -2.48   0.013    -.9061958   -.1061575
+          yeard11 |  -.5088421   .2130822    -2.39   0.017    -.9264756   -.0912086
+          yeard12 |   -.149442   .1520343    -0.98   0.326    -.4474237    .1485397
+          yeard13 |   .0147289   .1751759     0.08   0.933    -.3286096    .3580673
+          yeard14 |          0  (omitted)
+-----------------------------------------------------------------------------------
+(est2 stored)
+
+. /*column 3: mine open the entire period, with surrounding mines*/
+. eststo: clogit acled  main_lprice_mines main_lprice_a yeard*                                            if sd_mines == 0  & sd_mines_a ==0  & $condition_around         , group(cell) cluster(country_nb)
+note: yeard14 omitted because of collinearity
+note: multiple positive outcomes within groups encountered.
+note: 6,955 groups (97,370 obs) dropped because of all positive or
+      all negative outcomes.
+
+Iteration 0:   log pseudolikelihood = -9854.1455  
+Iteration 1:   log pseudolikelihood = -9829.2075  
+Iteration 2:   log pseudolikelihood = -9829.1997  
+Iteration 3:   log pseudolikelihood = -9829.1997  
+
+Conditional (fixed-effects) logistic regression
+
+                                                Number of obs     =     30,604
+                                                Wald chi2(15)     =     141.27
+                                                Prob > chi2       =     0.0000
+Log pseudolikelihood = -9829.1997               Pseudo R2         =     0.0126
+
+                                 (Std. Err. adjusted for 47 clusters in country_nb)
+-----------------------------------------------------------------------------------
+                  |               Robust
+            acled |      Coef.   Std. Err.      z    P>|z|     [95% Conf. Interval]
+------------------+----------------------------------------------------------------
+main_lprice_mines |   .7462298   .2740584     2.72   0.006     .2090852    1.283374
+    main_lprice_a |   .5998529   .2368509     2.53   0.011     .1356336    1.064072
+           yeard1 |  -.4281715    .409051    -1.05   0.295    -1.229897    .3735537
+           yeard2 |  -.3264096   .4321775    -0.76   0.450    -1.173462    .5206426
+           yeard3 |  -.0143445   .4834674    -0.03   0.976    -.9619232    .9332343
+           yeard4 |  -.0016735   .2920065    -0.01   0.995    -.5739958    .5706489
+           yeard5 |  -.2647405   .3385789    -0.78   0.434    -.9283429    .3988619
+           yeard6 |  -.0534289   .2172748    -0.25   0.806    -.4792797    .3724219
+           yeard7 |  -.5648239   .1884788    -3.00   0.003    -.9342356   -.1954122
+           yeard8 |  -.3087756   .1601162    -1.93   0.054    -.6225976    .0050465
+           yeard9 |   -.458862     .27385    -1.68   0.094    -.9955981    .0778742
+          yeard10 |  -.4273638   .2084602    -2.05   0.040    -.8359384   -.0187893
+          yeard11 |  -.4349256   .2142488    -2.03   0.042    -.8548455   -.0150056
+          yeard12 |  -.1070875   .1549447    -0.69   0.489    -.4107736    .1965986
+          yeard13 |   .1259132   .1776648     0.71   0.479    -.2223034    .4741298
+          yeard14 |          0  (omitted)
+-----------------------------------------------------------------------------------
+(est3 stored)
+
+. /*column 4: mine at some point over the period (simply the price variable )*/
+. eststo: clogit acled   main_lprice_hist0 yeard*                                                                                                                                                                                                 , group(
+> cell) cluster(country_nb)
+note: yeard14 omitted because of collinearity
+note: multiple positive outcomes within groups encountered.
+note: 7,738 groups (108,332 obs) dropped because of all positive or
+      all negative outcomes.
+
+Iteration 0:   log pseudolikelihood = -11476.377  
+Iteration 1:   log pseudolikelihood = -11465.277  
+Iteration 2:   log pseudolikelihood = -11465.274  
+Iteration 3:   log pseudolikelihood = -11465.274  
+
+Conditional (fixed-effects) logistic regression
+
+                                                Number of obs     =     35,532
+                                                Wald chi2(14)     =      81.09
+                                                Prob > chi2       =     0.0000
+Log pseudolikelihood = -11465.274               Pseudo R2         =     0.0097
+
+                                 (Std. Err. adjusted for 48 clusters in country_nb)
+-----------------------------------------------------------------------------------
+                  |               Robust
+            acled |      Coef.   Std. Err.      z    P>|z|     [95% Conf. Interval]
+------------------+----------------------------------------------------------------
+main_lprice_hist0 |   .6890422   .2601032     2.65   0.008     .1792493    1.198835
+           yeard1 |  -.4721509   .3832017    -1.23   0.218    -1.223212    .2789106
+           yeard2 |  -.3417797   .4060207    -0.84   0.400    -1.137566    .4540063
+           yeard3 |  -.0851931    .441416    -0.19   0.847    -.9503526    .7799664
+           yeard4 |  -.0354119    .282529    -0.13   0.900    -.5891585    .5183347
+           yeard5 |  -.2680597   .3116452    -0.86   0.390    -.8788731    .3427537
+           yeard6 |  -.0965506    .193456    -0.50   0.618    -.4757175    .2826163
+           yeard7 |  -.5442737   .1663927    -3.27   0.001    -.8703974   -.2181499
+           yeard8 |  -.3706281   .1343878    -2.76   0.006    -.6340233    -.107233
+           yeard9 |  -.4855675    .238357    -2.04   0.042    -.9527386   -.0183963
+          yeard10 |   -.503558   .2022307    -2.49   0.013    -.8999229   -.1071931
+          yeard11 |  -.4976875   .2117745    -2.35   0.019     -.912758   -.0826171
+          yeard12 |  -.1491179   .1525942    -0.98   0.328     -.448197    .1499612
+          yeard13 |   .0349214   .1718181     0.20   0.839     -.301836    .3716788
+          yeard14 |          0  (omitted)
+-----------------------------------------------------------------------------------
+(est4 stored)
+
+. 
+. preserve
+
+. /*column 6: neighbour-pair FE */
+. use "$Output_data\BCRT_neighbour", clear
+
+. eststo: clogit acled   mines main_lprice main_lprice_mines m_lprice_mines                       if sd_mines == 0                                                                                , group(cell) cluster(country_nb)
+note: multiple positive outcomes within groups encountered.
+note: 566 groups (10,710 obs) dropped because of all positive or
+      all negative outcomes.
+note: mines omitted because of no within-group variance.
+note: m_lprice_mines omitted because of no within-group variance.
+
+Iteration 0:   log pseudolikelihood = -2439.2205  
+Iteration 1:   log pseudolikelihood = -2427.8061  
+Iteration 2:   log pseudolikelihood =  -2427.791  
+Iteration 3:   log pseudolikelihood =  -2427.791  
+
+Conditional (fixed-effects) logistic regression
+
+                                                Number of obs     =      6,650
+                                                Wald chi2(2)      =      24.09
+                                                Prob > chi2       =     0.0000
+Log pseudolikelihood =  -2427.791               Pseudo R2         =     0.0051
+
+                                 (Std. Err. adjusted for 29 clusters in country_nb)
+-----------------------------------------------------------------------------------
+                  |               Robust
+            acled |      Coef.   Std. Err.      z    P>|z|     [95% Conf. Interval]
+------------------+----------------------------------------------------------------
+            mines |          0  (omitted)
+      main_lprice |   .0098828   .0048017     2.06   0.040     .0004717    .0192939
+main_lprice_mines |   1.221879    .262059     4.66   0.000     .7082526    1.735505
+   m_lprice_mines |          0  (omitted)
+-----------------------------------------------------------------------------------
+(est5 stored)
+
+. 
+. restore
+
+. 
+. set linesize 250
+
+. esttab, mtitles drop(m_lprice_mines) b(%5.3f) se(%5.3f) compress r2 starlevels(c 0.1 b 0.05 a 0.01)  se 
+
+-----------------------------------------------------------------
+                 (1)        (2)        (3)        (4)        (5) 
+                est1       est2       est3       est4       est5 
+-----------------------------------------------------------------
+acled                                                            
+mines          0.708                                       0.000 
+             (1.065)                                         (.) 
+
+main_lpr~e    -0.460                                       0.010b
+             (0.480)                                     (0.005) 
+
+main_lpr~s     1.375a     1.173a     0.746a                1.222a
+             (0.404)    (0.311)    (0.274)               (0.262) 
+
+yeard1        -0.469     -0.467     -0.428     -0.472            
+             (0.384)    (0.382)    (0.409)    (0.383)            
+
+yeard2        -0.336     -0.351     -0.326     -0.342            
+             (0.406)    (0.408)    (0.432)    (0.406)            
+
+yeard3        -0.080     -0.078     -0.014     -0.085            
+             (0.442)    (0.442)    (0.483)    (0.441)            
+
+yeard4        -0.033     -0.053     -0.002     -0.035            
+             (0.282)    (0.283)    (0.292)    (0.283)            
+
+yeard5        -0.268     -0.276     -0.265     -0.268            
+             (0.312)    (0.312)    (0.339)    (0.312)            
+
+yeard6        -0.095     -0.110     -0.053     -0.097            
+             (0.193)    (0.191)    (0.217)    (0.193)            
+
+yeard7        -0.543a    -0.567a    -0.565a    -0.544a           
+             (0.167)    (0.167)    (0.188)    (0.166)            
+
+yeard8        -0.369a    -0.378a    -0.309c    -0.371a           
+             (0.135)    (0.137)    (0.160)    (0.134)            
+
+yeard9        -0.482b    -0.500b    -0.459c    -0.486b           
+             (0.239)    (0.238)    (0.274)    (0.238)            
+
+yeard10       -0.498b    -0.506b    -0.427b    -0.504b           
+             (0.203)    (0.204)    (0.208)    (0.202)            
+
+yeard11       -0.491b    -0.509b    -0.435b    -0.498b           
+             (0.212)    (0.213)    (0.214)    (0.212)            
+
+yeard12       -0.146     -0.149     -0.107     -0.149            
+             (0.152)    (0.152)    (0.155)    (0.153)            
+
+yeard13        0.037      0.015      0.126      0.035            
+             (0.172)    (0.175)    (0.178)    (0.172)            
+
+yeard14        0.000      0.000      0.000      0.000            
+                 (.)        (.)        (.)        (.)            
+
+main_lpr~a                           0.600b                      
+                                   (0.237)                       
+
+main_lpr~0                                      0.689a           
+                                              (0.260)            
+-----------------------------------------------------------------
+N              35470      34762      30604      35532       6650 
+R-sq                                                             
+-----------------------------------------------------------------
+Standard errors in parentheses
+c p<0.1, b p<0.05, a p<0.01
+
+. esttab, mtitles drop(m_lprice_mines) b(%5.3f) se(%5.3f) r2  starlevels({$^c$} 0.1 {$^b$} 0.05 {$^a$} 0.01) se tex label  title() 
+
+{
+\def\sym#1{\ifmmode^{#1}\else\(^{#1}\)\fi}
+\begin{tabular}{l*{5}{c}}
+\hline\hline
+                    &\multicolumn{1}{c}{(1)}&\multicolumn{1}{c}{(2)}&\multicolumn{1}{c}{(3)}&\multicolumn{1}{c}{(4)}&\multicolumn{1}{c}{(5)}\\
+                    &\multicolumn{1}{c}{est1}&\multicolumn{1}{c}{est2}&\multicolumn{1}{c}{est3}&\multicolumn{1}{c}{est4}&\multicolumn{1}{c}{est5}\\
+\hline
+Conflict incidence (Acled)&                  &                  &                  &                  &                  \\
+mine $>0$           &       0.708      &                  &                  &                  &       0.000      \\
+                    &     (1.065)      &                  &                  &                  &         (.)      \\
+[1em]
+$\ln$ price main mineral&      -0.460      &                  &                  &                  &       0.010{$^b$}\\
+                    &     (0.480)      &                  &                  &                  &     (0.005)      \\
+[1em]
+$\ln$ price $\times$ mines $>0$&       1.375{$^a$}&       1.173{$^a$}&       0.746{$^a$}&                  &       1.222{$^a$}\\
+                    &     (0.404)      &     (0.311)      &     (0.274)      &                  &     (0.262)      \\
+[1em]
+year==  1997.0000   &      -0.469      &      -0.467      &      -0.428      &      -0.472      &                  \\
+                    &     (0.384)      &     (0.382)      &     (0.409)      &     (0.383)      &                  \\
+[1em]
+year==  1998.0000   &      -0.336      &      -0.351      &      -0.326      &      -0.342      &                  \\
+                    &     (0.406)      &     (0.408)      &     (0.432)      &     (0.406)      &                  \\
+[1em]
+year==  1999.0000   &      -0.080      &      -0.078      &      -0.014      &      -0.085      &                  \\
+                    &     (0.442)      &     (0.442)      &     (0.483)      &     (0.441)      &                  \\
+[1em]
+year==  2000.0000   &      -0.033      &      -0.053      &      -0.002      &      -0.035      &                  \\
+                    &     (0.282)      &     (0.283)      &     (0.292)      &     (0.283)      &                  \\
+[1em]
+year==  2001.0000   &      -0.268      &      -0.276      &      -0.265      &      -0.268      &                  \\
+                    &     (0.312)      &     (0.312)      &     (0.339)      &     (0.312)      &                  \\
+[1em]
+year==  2002.0000   &      -0.095      &      -0.110      &      -0.053      &      -0.097      &                  \\
+                    &     (0.193)      &     (0.191)      &     (0.217)      &     (0.193)      &                  \\
+[1em]
+year==  2003.0000   &      -0.543{$^a$}&      -0.567{$^a$}&      -0.565{$^a$}&      -0.544{$^a$}&                  \\
+                    &     (0.167)      &     (0.167)      &     (0.188)      &     (0.166)      &                  \\
+[1em]
+year==  2004.0000   &      -0.369{$^a$}&      -0.378{$^a$}&      -0.309{$^c$}&      -0.371{$^a$}&                  \\
+                    &     (0.135)      &     (0.137)      &     (0.160)      &     (0.134)      &                  \\
+[1em]
+year==  2005.0000   &      -0.482{$^b$}&      -0.500{$^b$}&      -0.459{$^c$}&      -0.486{$^b$}&                  \\
+                    &     (0.239)      &     (0.238)      &     (0.274)      &     (0.238)      &                  \\
+[1em]
+year==  2006.0000   &      -0.498{$^b$}&      -0.506{$^b$}&      -0.427{$^b$}&      -0.504{$^b$}&                  \\
+                    &     (0.203)      &     (0.204)      &     (0.208)      &     (0.202)      &                  \\
+[1em]
+year==  2007.0000   &      -0.491{$^b$}&      -0.509{$^b$}&      -0.435{$^b$}&      -0.498{$^b$}&                  \\
+                    &     (0.212)      &     (0.213)      &     (0.214)      &     (0.212)      &                  \\
+[1em]
+year==  2008.0000   &      -0.146      &      -0.149      &      -0.107      &      -0.149      &                  \\
+                    &     (0.152)      &     (0.152)      &     (0.155)      &     (0.153)      &                  \\
+[1em]
+year==  2009.0000   &       0.037      &       0.015      &       0.126      &       0.035      &                  \\
+                    &     (0.172)      &     (0.175)      &     (0.178)      &     (0.172)      &                  \\
+[1em]
+year==  2010.0000   &       0.000      &       0.000      &       0.000      &       0.000      &                  \\
+                    &         (.)      &         (.)      &         (.)      &         (.)      &                  \\
+[1em]
+$\ln$ price $\times$ mines $>0$ (neighbouring cells)&                  &                  &       0.600{$^b$}&                  &                  \\
+                    &                  &                  &     (0.237)      &                  &                  \\
+[1em]
+$\ln$ price $\times$ mines $>0$ (ever)&                  &                  &                  &       0.689{$^a$}&                  \\
+                    &                  &                  &                  &     (0.260)      &                  \\
+\hline
+Observations        &       35470      &       34762      &       30604      &       35532      &        6650      \\
+\(R^{2}\)           &                  &                  &                  &                  &                  \\
+\hline\hline
+\multicolumn{6}{l}{\footnotesize Standard errors in parentheses}\\
+\multicolumn{6}{l}{\footnotesize {$^c$} p<0.1, {$^b$} p<0.05, {$^a$} p<0.01}\\
+\end{tabular}
+}
+
+. eststo clear
+
+. 
+. log close
+      name:  <unnamed>
+       log:  D:\Travail\Dropbox\mining_conflict\Data_Code_BCRT_AER\results\Table_A14.log
+  log type:  text
+ closed on:  14 Dec 2016, 11:53:34
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
