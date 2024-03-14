@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 library("haven")
 library("tidyverse")
 library("foreign")
