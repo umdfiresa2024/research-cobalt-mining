@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 library("haven")
 library("tidyverse")
 library("foreign")
@@ -59,4 +60,3 @@ df_conf_congo <- df_eth_conf %>%
 
 cobalt_prices <- read.csv(cobalt_pth)
 copper_prices <- read.csv(copper_pth)
-
