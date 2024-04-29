@@ -181,7 +181,7 @@ ggplot(data = final_df_finished,
 ggsave("/Users/lukemorelli/documents/research-cobalt-mining/plot.png", width = 1000, height = 1000, units = "px")
 
 ggplot(data = final_results_df, aes(x=in_copper_mine, y=num_conflicts)) + geom_col(fill="red") + ylab("Number of Conflicts") +
-  ggtitle("Average Number of Conflicts for Artisanal Cobalt Mines \n within the Boundaries of Industrial Copper Mines") +
-  theme(plot.title = element_text(size=10, face="bold", hjust=0.5))
+  ggtitle("Average Number of Conflicts for Artisanal Cobalt Mines within \n and outside the Boundaries of Industrial Copper Mines") +
+  theme(plot.title = element_text(size=12, face="bold", hjust = 0.5))
 
 ggplot(data = df5, aes(x=company, y=average_conflicts)) + geom_col()

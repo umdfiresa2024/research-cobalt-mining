@@ -33,9 +33,11 @@ Vargas’ findings in the context of the DRC by analyzing whether
 artisanal cobalt mines that are within the boundaries of an industrial
 copper mine are more susceptible to conflict.
 
-![Artisanal miners struggle under the weight of 50kg sacks of cobalt ore
+![](artisanal_mining.png)
+
+Artisanal miners struggle under the weight of 50kg sacks of cobalt ore
 at the Shabara mine in the Democratic Republic of Congo (Siddharth
-Kara)](artisanal_mining.png)
+Kara).
 
 ## Data
 
@@ -51,8 +53,11 @@ in the region. Overall, there were 4,710 conflicts that met the criteria
 to be used in the research. The conflict data can be exported from this
 webpage: <https://acleddata.com/data-export-tool/>
 
-<img src="conflicts_locations.png" width="639"
-alt="The map above displays all of the conflicts that occurred in the Democratic Republic of the Congo between May 1, 2019 and October 31, 2020. Each conflict is represented by a singular red circle on the map" />
+<img src="conflicts_locations.png" width="639" />
+
+The map above displays all of the conflicts that occurred in the
+Democratic Republic of the Congo between May 1, 2019 and October 31,
+2020. Each conflict is represented by a singular red circle on the map.
 
 **Wrangling Methodology**
 
@@ -103,8 +108,11 @@ research. The data on industrial copper mines may be extracted from the
 following webpage:
 <https://data.globalforestwatch.org/datasets/3b4c0c91306c47abaec0c3fd46088242_5/explore>
 
-<img src="mines.png" width="581"
-alt="This map above displays the boundaries of industrial copper mining permits (in red) and the locations of artisanal cobalt mines (as points in blue)" />
+<img src="mines.png" width="672" />
+
+The map above displays the boundaries of industrial copper mining
+permits (in red) and the locations of artisanal cobalt mines (as points
+in blue).
 
 **Wrangling Methodology**
 
@@ -166,14 +174,16 @@ copper_mines <- merge(vect_permits_shape, df_copper_permits, by="objectid", all.
 
 **Intersection Process**
 
-Now that we have extracted and cleaned all of the necessary data, we
-must calculate the number of conflicts that occurred within a 2.5
+Now that all of the data has been extracted and cleaned, it must be used
+to calculate the number of conflicts that occurred within a 2.5
 kilometer radius of each artisanal cobalt mine over the duration of the
-specified time period. We must also determine if each artisanal cobalt
-mine is within the boundaries of an industrial copper mine, so we can
-compare the number of conflicts between the two categories. This will
-require intersecting shapefiles by utilizing the Terra package, which is
-demonstrated by the following R code snippet:
+specified time period. Additonally, it must be determined if each
+artisanal cobalt mine is within the boundaries of an industrial copper
+mine, as that information is required to compare the number of conflicts
+between artisanal cobalt mines within and outside the boundaries of
+industrial copper mines. This will require intersecting shapefiles by
+utilizing the Terra package, which is demonstrated by the following R
+code snippet:
 
 ``` r
 library("tidyverse")
@@ -211,9 +221,9 @@ for(i in 1:nrow(cobalt_areas)) {
 }
 ```
 
-Now, the intersections data must be filtered/cleaned and merged together
-to ensure it is in the correct format for calculating our final result.
-The R code snippet below demonstrates this process
+Then, the intersections data must be filtered/cleaned and merged
+together to ensure it is in the correct format for calculating our final
+result. The R code snippet below demonstrates this process
 
 ``` r
 library("tidyverse")
@@ -274,15 +284,17 @@ number of these conflicts that can be specifically attributed to mining.
 
 **Final Results Graph:**
 
-<img src="within_copper_mine.png" width="537" />
+<img src="within_copper_mine.png" width="580" />
 
-The bar graph aboce illustrates the final results of the research. There
-were on average 0.587 conflicts within 2.5 kilometers of artisanal
-cobalt mines that are within the boundaries of industrial copper mines,
-compared to 0 conflicts for those that are not. However, this result is
-not conclusive due to data limitations (small sample size), as 46 of the
-52 artisanal cobalt mines are within the boundaries of industrial copper
-mines.
+The bar graph above compares the average number of conflicts for
+artisanal cobalt mines located within and outside the boundaries of
+industrial copper mines. On average, there were 0.587 conflicts within
+2.5 kilometers of artisanal cobalt mines situated within industrial
+copper mines, whereas there were no conflicts for those outside
+industrial copper mines. However, this finding is inconclusive due to
+data limitations, particularly the small sample size. Out of the 52
+artisanal cobalt mines analyzed, 46 were found within the boundaries of
+industrial copper mines.
 
 **Results by Industrial Mining Company**
 
@@ -304,9 +316,9 @@ mines.
 The table above illustrates the average number of conflicts that occur
 within a 2.5 kilometer radius of artisanal cobalt mines, categorized by
 the industrial mining company whose copper mine the artisanal cobalt
-mine lies within. Although the mining company Gecamines has the highest
-number of average conflicts, this result also cannot be statistically
-significant due to data limitations. There were 24 Gecamines mines in
-the final dataframe, whereas no other company had more than five mines.
+mines lie within. Although the mining company Gecamines has the highest
+number of average conflicts, this result also lacks statistically
+significant due to data limitations. In the final dataframe there were
+24 Gecamines mines, whereas no other company had more than five mines.
 This is likely the reason why Gecamines was one of the two companies
 whose mines experienced any conflicts at all.
