@@ -159,7 +159,7 @@ head(final_df_finished)
 shp_cobalt_mine$legend<-"Artisanal Cobalt Mine"
 copper_mines$legend<-"Industrial Copper Mine"
 
-png("/Users/lukemorelli/documents/research-cobalt-mining/mines.png", width=600, height = 300, units = "px")
+png("/Users/lukemorelli/documents/research-cobalt-mining/mines.png", width=1000, height = 500, units = "px")
 plot(shp_cobalt_mine, main = "Locations of Industrial Copper Mines (in Red) and Artisanal Cobalt Mines (in Blue) in the DRC", cex.main = 0.8,
      col="blue", cex = 0.7, xlab = "Longitude", ylab = "Latitude")
 lines(copper_mines, col="red")

@@ -53,7 +53,7 @@ in the region. Overall, there were 4,710 conflicts that met the criteria
 to be used in the research. The conflict data can be exported from this
 webpage: <https://acleddata.com/data-export-tool/>
 
-<img src="conflicts_locations.png" width="639" />
+![](DRC_Conflicts.png)
 
 The map above displays all of the conflicts that occurred in the
 Democratic Republic of the Congo between May 1, 2019 and October 31,
@@ -108,7 +108,7 @@ research. The data on industrial copper mines may be extracted from the
 following webpage:
 <https://data.globalforestwatch.org/datasets/3b4c0c91306c47abaec0c3fd46088242_5/explore>
 
-<img src="mines.png" width="672" />
+![](mines.png)
 
 The map above displays the boundaries of industrial copper mining
 permits (in red) and the locations of artisanal cobalt mines (as points
