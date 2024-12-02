@@ -27,7 +27,7 @@ Artisanal miners struggle under the weight of 50kg sacks of cobalt ore at the Sh
 
 The outcome variable for this experiment is the number of conflicts that occur within a 2.5 kilometer radius of each cobalt mine between May 1, 2019 and October 31, 2020 (as this was the time period during which data on artisanal cobalt mines is available). The conflict data was sourced from the Armed Conflict Location & Event Data Project (ACLED), which provides a location, time, and description of each documented conflict in the region. Overall, there were 4,710 conflicts that met the criteria to be used in the research. The conflict data can be exported from this webpage: <https://acleddata.com/data-export-tool/>
 
-![](conflicts_locations.png){width="639"}
+![](DRC_Conflicts.png)
 
 The map above displays all of the conflicts that occurred in the Democratic Republic of the Congo between May 1, 2019 and October 31, 2020. Each conflict is represented by a singular red circle on the map.
 
@@ -216,7 +216,7 @@ head(final_df_finished)
 ```
 
 | pcode        | num_conflicts | in_copper_mine | company          | copper_conflicts |
-|---------------|---------------|---------------|---------------|---------------|
+|--------------|---------------|----------------|------------------|------------------|
 | codmine03389 | 0             | 0              |                  | 0                |
 | codmine03393 | 0             | 1              | BOSS MINING SPRL | 0                |
 | codmine03396 | 0             | 0              |                  | 0                |

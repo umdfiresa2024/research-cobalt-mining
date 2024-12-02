@@ -95,12 +95,12 @@ copper_mines <- merge(vect_permits_shape, df_copper_permits, by="objectid", all.
 
 borders<-vect(borders_pth)
 admin_borders <- borders[borders$ADMIN_LEVE==2]
-plot(admin_borders, main = "Map of Conflicts between May 2019 and October 2020 in the DRC", cex.main = 0.8, xlab = "Latitude", ylab = "Longitude")
+plot(admin_borders, main = "Map of Conflicts between May 2019 and October 2020 overlayed with Cobalt Mines in the DRC", cex.main = 0.55, xlab = "Longitude", ylab = "Latitude")
 plot(conflicts_shp, col = "red", add=TRUE)
 
 lines(copper_mines, col="blue")
 points(shp_cobalt_mine, col="red")
-legend("topleft", legend = c("Cobalt Mines", "Copper Mines"), col = c("red", "blue"), pch = 16, cex=0.75)
+legend("topleft", legend = c("Copper", "Cobalt"), col = c("red", "blue"), pch = 16, cex=0.75)
 
 all_intersections <- data.frame()
 for(i in 1:nrow(copper_mines)) {
@@ -159,10 +159,12 @@ head(final_df_finished)
 shp_cobalt_mine$legend<-"Artisanal Cobalt Mine"
 copper_mines$legend<-"Industrial Copper Mine"
 
-png("/Users/lukemorelli/documents/research-cobalt-mining/mines.png", width=1000, height = 500, units = "px")
+png("/Users/lukemorelli/documents/research-cobalt-mining/mines.png", width=600, height = 300, units = "px")
 plot(shp_cobalt_mine, main = "Locations of Industrial Copper Mines (in Red) and Artisanal Cobalt Mines (in Blue) in the DRC", cex.main = 0.8,
-     col="blue", cex = 0.7, xlab = "Latitude", ylab = "Longitude")
+     col="blue", cex = 0.7, xlab = "Longitude", ylab = "Latitude")
 lines(copper_mines, col="red")
+#legend("bottomleft", legend = c("Industrial Copper Mines", "Artisanal Cobalt Mines"), 
+       #fill = c("red", "blue"), cex = 1, box.col = "brown", lty = 1)
 dev.off()
 
 final_results_df <- final_df_finished %>%
